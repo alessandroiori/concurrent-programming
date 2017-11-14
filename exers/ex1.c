@@ -12,7 +12,7 @@
  * Quali difficoltà nascono utilizzando solo mutex per questo problema di cooperazione?
  *
  *
- * NOTE: nel seguente esempio abbiamo ATTESE ATTIVE sui MUTEX, evitati fenomeni intereferenza.
+ * NOTE: nel seguente esempio NON abbiamo ATTESE ATTIVE sui MUTEX, evitati fenomeni intereferenza.
  */
 
 
@@ -20,6 +20,9 @@
 uint8_t buffer;
 uint8_t c_msg_cnt;
 uint8_t p_msg_cnt;
+
+uint8_t p_can_work;
+uint8_t c_can_work;
 
 pthread_mutex_t not_empty = PTHREAD_MUTEX_INITIALIZER,
                 not_full = PTHREAD_MUTEX_INITIALIZER;
@@ -29,16 +32,27 @@ void* thread_productor(void* args)
 {
     while(1)
     {
-        //produce il messaggio
-        p_msg_cnt++;
         uint8_t msg = rand();
-        printf("p: message #%d, value = %d\t\n", p_msg_cnt, msg);
-        sleep(1);
 
-        pthread_mutex_lock(&not_full);
-        printf("p: write message #%d\t\n", p_msg_cnt);
-        buffer = msg;
-        pthread_mutex_unlock(&not_empty);
+        if(p_can_work)
+        {
+            //produce il messaggio
+            p_msg_cnt++;
+            printf("p.1: message #%d, value = %d\t\n", p_msg_cnt, msg);
+
+            p_can_work = 0;
+        }
+
+        if(pthread_mutex_trylock(&not_full) == 0)
+        {
+            printf("p.2: write message #%d\t\n", p_msg_cnt);
+            buffer = msg;
+            pthread_mutex_unlock(&not_empty);
+
+            p_can_work = 1;
+        }
+
+        sleep(1);
     }
 
     return NULL;
@@ -48,14 +62,23 @@ void* thread_consumer(void* args)
 {
     while(1)
     {
-        c_msg_cnt++;
-        pthread_mutex_lock(&not_empty);
-        printf("c: read message #%d\t\n", c_msg_cnt);
-        uint8_t msg = buffer;
-        pthread_mutex_unlock(&not_full);
+        if(pthread_mutex_trylock(&not_empty) == 0)
+        {
+            c_msg_cnt++;
+            printf("c.1: read message #%d\t\n", c_msg_cnt);
+            c_can_work = 1;
+        }
 
-        //consuma messaggio
-        printf("c: message #%d, value = %d\t\n", c_msg_cnt, msg);
+        uint8_t msg = buffer;
+
+        if(c_can_work)
+        {
+            //consuma messaggio
+            printf("c.2: message #%d, value = %d\t\n", c_msg_cnt, msg);
+            pthread_mutex_unlock(&not_full);
+            c_can_work = 0;
+        }
+
         sleep(1);
     }
     return NULL;
@@ -69,6 +92,8 @@ int main(void)
     pthread_t producer, consumer;
 
     // set to 0 not_empty mutex (only procuder thread can start)
+    p_can_work = 1;
+    c_can_work = 0;
     pthread_mutex_lock(&not_empty);
 
     if(pthread_create(&producer, NULL, thread_productor, NULL))
