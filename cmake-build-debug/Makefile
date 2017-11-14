@@ -123,32 +123,59 @@ untitled/fast:
 	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/build
 .PHONY : untitled/fast
 
-main.o: main.c.o
+args_threads.o: args_threads.c.o
 
-.PHONY : main.o
+.PHONY : args_threads.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/main.c.o
-.PHONY : main.c.o
+args_threads.c.o:
+	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/args_threads.c.o
+.PHONY : args_threads.c.o
 
-main.i: main.c.i
+args_threads.i: args_threads.c.i
 
-.PHONY : main.i
+.PHONY : args_threads.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/main.c.i
-.PHONY : main.c.i
+args_threads.c.i:
+	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/args_threads.c.i
+.PHONY : args_threads.c.i
 
-main.s: main.c.s
+args_threads.s: args_threads.c.s
 
-.PHONY : main.s
+.PHONY : args_threads.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/main.c.s
-.PHONY : main.c.s
+args_threads.c.s:
+	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/args_threads.c.s
+.PHONY : args_threads.c.s
+
+firstthread.o: firstthread.c.o
+
+.PHONY : firstthread.o
+
+# target to build an object file
+firstthread.c.o:
+	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/firstthread.c.o
+.PHONY : firstthread.c.o
+
+firstthread.i: firstthread.c.i
+
+.PHONY : firstthread.i
+
+# target to preprocess a source file
+firstthread.c.i:
+	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/firstthread.c.i
+.PHONY : firstthread.c.i
+
+firstthread.s: firstthread.c.s
+
+.PHONY : firstthread.s
+
+# target to generate assembly for a file
+firstthread.c.s:
+	$(MAKE) -f CMakeFiles/untitled.dir/build.make CMakeFiles/untitled.dir/firstthread.c.s
+.PHONY : firstthread.c.s
 
 # Help Target
 help:
@@ -159,9 +186,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... untitled"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... args_threads.o"
+	@echo "... args_threads.i"
+	@echo "... args_threads.s"
+	@echo "... firstthread.o"
+	@echo "... firstthread.i"
+	@echo "... firstthread.s"
 .PHONY : help
 
 
