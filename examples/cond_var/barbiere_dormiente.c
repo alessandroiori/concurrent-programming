@@ -87,7 +87,6 @@ int main(void)
     pthread_t barber, clients[CLIENTS_NUMBER];
 
     init_flag();
-    printf("test");
 
     if(pthread_create(&barber, NULL, barber_function, NULL))
     {
@@ -98,8 +97,7 @@ int main(void)
     int i;
     for (i=0; i < CLIENTS_NUMBER; i++)
     {
-        printf("test");
-        if(pthread_create(&(clients[i]), NULL, barber_function, NULL))
+        if(pthread_create(&(clients[i]), NULL, client_function, NULL))
         {
             printf("error creating client thread %d\t\n", i);
             exit(1);
