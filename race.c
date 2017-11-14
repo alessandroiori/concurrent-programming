@@ -13,8 +13,11 @@ void* thread_function(void* thread_args)
     {
         tmp = global_var;
         tmp = tmp +1;
+        printf("thread: global_var start = %d\t\n", global_var);
         sleep(1);
+        printf("thread: global_var after sleep = %d\t\n", global_var);
         global_var = tmp;
+        printf("thread: global_var end value = %d\t\n", global_var);
     }
     return NULL;
 }
@@ -33,7 +36,9 @@ int main(void)
     int i;
     for (i = 0; i < 20; i++)
     {
+        printf("main: global_var start = %d\t\n", global_var);
         global_var = global_var +1;
+        printf("main: global_var end value = %d\t\n", global_var);
         sleep(1);
     }
 
