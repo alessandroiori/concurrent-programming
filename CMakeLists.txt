@@ -3,5 +3,5 @@ project(untitled)
 
 set(CMAKE_C_STANDARD 99)
 
-set(SOURCE_FILES firstthread.c args_threads.c)
+set(SOURCE_FILES examples/firstthread.c examples/args_threads.c)
 add_executable(untitled ${SOURCE_FILES})
