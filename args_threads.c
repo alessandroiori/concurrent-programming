@@ -2,6 +2,10 @@
 // Created by Alessandro Iori on 14/11/2017.
 //
 
+/**
+ * args_thread.c sample project to give args to start_routine function
+ */
+
 #include <stdio.h>
 #include <pthread.h>
 
