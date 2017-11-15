@@ -18,6 +18,7 @@ void* barber_function(void* args)
         pthread_mutex_lock(&MX);
         while(queue_value == 0)
         {
+            // TODO: replace with "pthread_cond_timedwait()", wait max N sec
             pthread_cond_wait(&C, &MX);
         }
 
