@@ -21,13 +21,15 @@ void* barber_function(void* args)
             pthread_cond_wait(&C, &MX);
         }
 
+        //printf("queue value %d,\t\n", queue_value);
+
         queue_value = queue_value - 1;
 
         pthread_cond_signal(&B);
         pthread_mutex_unlock(&MX);
 
         //taglia capelli
-        printf("B: cut hair\t\n");
+        printf("B: ready to cut hair\t\n");
         sleep(1);
     }
     return NULL;
@@ -35,6 +37,11 @@ void* barber_function(void* args)
 
 void* client_function(void* args)
 {
+
+    int* p_client_number = (int*) args;
+    int client_number = *p_client_number;
+    //entra nel negozio
+
     pthread_mutex_lock(&MX);
     if(queue_value < MAX_QUEUE)
     {
@@ -42,19 +49,22 @@ void* client_function(void* args)
 
         pthread_cond_signal(&C);
 
+        //TODO: ADD while??
+        pthread_cond_wait(&B, &MX);
+
         pthread_mutex_unlock(&MX);
 
-        pthread_cond_wait(&B, &MX);
         //siede
-        printf("C: sit down for cut hair\t\n");
+        printf("C%d: sit for haircut\t\n", client_number);
     } else {
-        printf("C: go away\t\n");
         pthread_mutex_unlock(&MX);
+
+        printf("C%d: go away\t\n", client_number);
     }
 
     sleep(1);
 
-    //destroy client
+    //TODO: destroy client??
     return NULL;
 }
 
@@ -94,20 +104,15 @@ int main(void)
         exit(1);
     }
 
+
     int i;
     for (i=0; i < CLIENTS_NUMBER; i++)
     {
-        if(pthread_create(&(clients[i]), NULL, client_function, NULL))
+        if(pthread_create(&(clients[i]), NULL, client_function, &i))
         {
             printf("error creating client thread %d\t\n", i);
             exit(1);
         }
-    }
-
-    if(pthread_join(barber, NULL))
-    {
-        printf("error joining barber thread %d\t\n", i);
-        exit(1);
     }
 
     for (i=0; i < CLIENTS_NUMBER; i++)
@@ -116,7 +121,15 @@ int main(void)
         {
             printf("error joining client thread %d\t\n", i);
             exit(1);
+        } else {
+            printf("joined client thread %d\t\n", i);
         }
+    }
+
+    if(pthread_join(barber, NULL))
+    {
+        printf("error joining barber thread %d\t\n", i);
+        exit(1);
     }
 
     return 0;
