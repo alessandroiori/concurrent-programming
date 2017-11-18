@@ -6,6 +6,7 @@
 int main(void)
 {
     uint8_t tmp = 11;
+    pid_t my_pid = getpid();
 
     pid_t pid;
     pid = fork();
@@ -19,18 +20,26 @@ int main(void)
 
     if(pid == 0)
     {
-        printf("S: I'm the son! My pid: %d\r\n", (uint8_t) pid);
+        pid_t son_pid = getpid();
+        pid_t p_pid = my_pid;
+
+        printf("S: I'm the son! My pid: %d\r\n", (uint8_t) son_pid);
         printf("S: tmp start value: %d\r\n", tmp);
         printf("S: tmp after modification value: %d\r\n", tmp-1);
-
+        printf("S: parent's pid: %d\r\n", (uint8_t) p_pid);
+        printf("\n");
         exit(0);
     }
 
     if(pid > 0)
     {
-        printf("F: I'm the father! Son's pid: %d\r\n", (uint8_t) pid);
+        pid_t son_pid = pid;
+
+        printf("F: I'm the father! My pid: %d\r\n", (uint8_t) my_pid);
         printf("F: tmp start value: %d\r\n", tmp);
         printf("F: tmp after modification value: %d\r\n", tmp+1);
+        printf("F: son's pid: %d\r\n", (uint8_t) son_pid);
+        printf("\n");
         exit(0);
     }
 
