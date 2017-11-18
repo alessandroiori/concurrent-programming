@@ -5,9 +5,10 @@
 
 int main(void)
 {
+    uint8_t tmp = 11;
+
     pid_t pid;
     pid = fork();
-
 
     if(pid == -1)
     {
@@ -18,13 +19,18 @@ int main(void)
 
     if(pid == 0)
     {
-        printf("I'm the son! My pid: %d\r\n", (uint8_t) pid);
+        printf("S: I'm the son! My pid: %d\r\n", (uint8_t) pid);
+        printf("S: tmp start value: %d\r\n", tmp);
+        printf("S: tmp after modification value: %d\r\n", tmp-1);
+
         exit(0);
     }
 
     if(pid > 0)
     {
-        printf("I'm the father! Son's pid: %d\r\n", (uint8_t) pid);
+        printf("F: I'm the father! Son's pid: %d\r\n", (uint8_t) pid);
+        printf("F: tmp start value: %d\r\n", tmp);
+        printf("F: tmp after modification value: %d\r\n", tmp+1);
         exit(0);
     }
 
