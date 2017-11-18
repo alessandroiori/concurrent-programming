@@ -28,7 +28,7 @@ int main(void)
         printf("S: tmp after modification value: %d\r\n", tmp-1);
         printf("S: parent's pid: %d\r\n", (uint8_t) p_pid);
         printf("\n");
-        exit(0);
+        //exit(0);
     }
 
     if(pid > 0)
@@ -40,7 +40,7 @@ int main(void)
         printf("F: tmp after modification value: %d\r\n", tmp+1);
         printf("F: son's pid: %d\r\n", (uint8_t) son_pid);
         printf("\n");
-        exit(0);
+        //exit(0);
     }
 
     return 0;
