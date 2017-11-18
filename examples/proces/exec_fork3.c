@@ -4,6 +4,15 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 
+int spawn(pid_t caller_pid, char ** p_args)
+{
+    printf("C%d: exe new code\r\n", caller_pid);
+    execvp("./exec_fork1", p_args);
+    // The execvp function returns only for errors
+    fprintf(stderr, "ecexlp error\r\n");
+    exit(3);
+}
+
 int main(void)
 {
     pid_t parent_pid = getpid();
@@ -20,16 +29,14 @@ int main(void)
         pid_t child_pid = getpid();
 
         printf("C%d: I'm children!\r\n", child_pid);
-        printf("C%d: exe new code\r\n", child_pid);
 
-        char* args[] = {"echo", "Hello!", (char*)NULL};
+        char* args[] = {"./exec_fork1", (char*)NULL};
 
-        if(execvp("echo", args) == -1)
-        {
-            fprintf(stderr, "ecexlp error\r\n");
-        }
+        spawn(child_pid, args);
 
-        exit(1);
+        printf("C%d: done!\r\n", child_pid);
+
+        exit(2);
 
     } else if(child_pid > 0) {
 
