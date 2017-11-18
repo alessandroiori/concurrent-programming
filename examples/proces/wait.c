@@ -25,6 +25,10 @@ int main(void)
         printf("P-%d: I'm the parent\r\n", my_pid);
         printf("P-%d: waiting son %d\r\n", my_pid, pid);
         pid_t s_pid = wait(NULL);
+        while(s_pid!=pid)
+        {
+            s_pid = wait(NULL);
+        }
         printf("P-%d: son with pid %d ended\r\n", my_pid, s_pid);
         //while (1);
         exit(0);
