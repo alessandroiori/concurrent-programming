@@ -15,8 +15,8 @@ typedef struct msg {
     struct msg* (*msg_copy)(struct msg *); // creazione/copia msg
 } msg_t;
 
-struct msg_t* msg_init_string(void* content);
-void msg_destroy_string(struct msg_t* msg);
-struct msg_t* msg_copy_string(struct msg_t* msg);
+msg_t* msg_init_string(void* content);
+void msg_destroy_string( msg_t* msg);
+msg_t* msg_copy_string( msg_t* msg);
 
 #endif //UNTITLED_MSG_H

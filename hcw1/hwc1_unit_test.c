@@ -10,7 +10,7 @@ static buffer_t* unitary_buffer;
  */
 int init_suite1(void)
 {
-    if (NULL == (unitary_buffer = NULL)) {
+    if(NULL != (unitary_buffer = NULL)) {
         return -1;
     }
     else {

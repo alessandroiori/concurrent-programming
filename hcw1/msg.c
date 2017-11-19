@@ -23,5 +23,5 @@ void msg_destroy_string(msg_t* msg) {
 }
 
 msg_t* msg_copy_string(msg_t* msg) {
-    return msg->msg_init_string( msg->content );
+    return msg->msg_init( msg->content );
 }
