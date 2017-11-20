@@ -11,7 +11,7 @@ msg_t* msg_init_string(void* content) {
     char* new_content = (char*)malloc(strlen(string)+1); // +1 per \0 finale
     strcpy(new_content, string);
     new_msg->content     = new_content;
-    new_msg->msg_init    = msg_init_string;
+    //new_msg->msg_init    = msg_init_string;
     new_msg->msg_destroy = msg_destroy_string;
     new_msg->msg_copy    = msg_copy_string;
     return new_msg;
@@ -23,5 +23,5 @@ void msg_destroy_string(msg_t* msg) {
 }
 
 msg_t* msg_copy_string(msg_t* msg) {
-    return msg->msg_init( msg->content );
+    return msg_init_string( msg->content );
 }

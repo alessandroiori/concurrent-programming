@@ -3,10 +3,12 @@
 #include "msg.h"
 
 /* Pointer to the buffer used by the tests. */
-static buffer_t* unitary_buffer;
+buffer_t* unitary_buffer;
 
-/* The suite initialization function.
+/**
+ * The suite initialization function.
  * Returns zero on success, non-zero otherwise.
+ * @return
  */
 int init_suite1(void)
 {
@@ -18,8 +20,10 @@ int init_suite1(void)
     }
 }
 
-/* The suite cleanup function.
+/**
+ * The suite cleanup function.
  * Returns zero on success, non-zero otherwise.
+ * @return
  */
 int clean_suite1(void)
 {
@@ -31,24 +35,36 @@ int clean_suite1(void)
     }
 }
 
-/*
+/**
  *
  */
 void test_init_unitary_buffer(void)
 {
     if (NULL == unitary_buffer) {
-        CU_ASSERT(NULL != (unitary_buffer = buffer_init(1)));
+        unitary_buffer = buffer_init(1);
+
+        CU_ASSERT(NULL != unitary_buffer);
+        CU_ASSERT(0 == *(unitary_buffer->p_d));
+        CU_ASSERT(0 == *(unitary_buffer->p_t));
     }
 }
 
+/**
+ *
+ */
 void test_destroy_unitary_buffer(void)
 {
     if (NULL != unitary_buffer) {
         buffer_destroy(unitary_buffer);
+        unitary_buffer = (buffer_t*) NULL;
         CU_ASSERT(NULL == unitary_buffer);
     }
 }
 
+/**
+ *
+ * @return
+ */
 int main()
 {
     CU_pSuite pSuite = NULL;

@@ -7,13 +7,22 @@
 // creazione di un buffer vuoto di dim. max nota
 buffer_t* buffer_init(unsigned int maxsize)
 {
-    return NULL;
+    buffer_t* p_buffer = (buffer_t*) malloc(sizeof(buffer_t));
+    p_buffer->msgs = (struct msg_t*) malloc((sizeof(msg_t) * maxsize));
+    p_buffer->p_d = (uint8_t*) malloc(sizeof(uint8_t));
+    p_buffer->p_t = (uint8_t*) malloc(sizeof(uint8_t));
+    *(p_buffer->p_d) = 0;
+    *(p_buffer->p_t) = 0;
+    return p_buffer;
 }
 
 // deallocazione di un buffer
 void buffer_destroy(buffer_t* buffer)
 {
-
+    free(buffer->msgs);
+    free(buffer->p_t);
+    free(buffer->p_d);
+    free(buffer);
 }
 
 /* operazioni sul buffer */
