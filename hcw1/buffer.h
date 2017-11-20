@@ -12,7 +12,7 @@
 typedef struct buffer_t {
     uint8_t* p_t;
     uint8_t* p_d;
-    struct msg_t* msgs;
+    msg_t* msgs;
 } buffer_t;
 
 /* allocazione / deallocazione  buffer */

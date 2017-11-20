@@ -8,7 +8,7 @@
 buffer_t* buffer_init(unsigned int maxsize)
 {
     buffer_t* p_buffer = (buffer_t*) malloc(sizeof(buffer_t));
-    p_buffer->msgs = (struct msg_t*) malloc((sizeof(msg_t) * maxsize));
+    p_buffer->msgs = (msg_t*) malloc((sizeof(msg_t) * maxsize));
     p_buffer->p_d = (uint8_t*) malloc(sizeof(uint8_t));
     p_buffer->p_t = (uint8_t*) malloc(sizeof(uint8_t));
     *(p_buffer->p_d) = 0;
