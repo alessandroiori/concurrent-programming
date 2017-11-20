@@ -15,8 +15,6 @@ buffer_t* buffer_pieno;
 int init_suite1(void)
 {
     msg_t* msg = msg_init_string(EXPECTED_MSG);
-    msg_t* array;
-    //array[0] = msg;
     buffer_pieno = buffer_init(1);
     buffer_pieno->msgs = msg;
 
@@ -43,6 +41,8 @@ int init_suite1(void)
  */
 int clean_suite1(void)
 {
+    buffer_destroy(buffer_pieno);
+
     if (NULL != NULL) {
         return -1;
     }
