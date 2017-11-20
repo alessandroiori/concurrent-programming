@@ -2,7 +2,6 @@
 #include "buffer.h"
 #include "msg.h"
 
-#define EXPECTED_MSG "1"
 /* Pointer to the buffer used by the tests. */
 buffer_t* buffer_pieno;
 
@@ -14,9 +13,9 @@ buffer_t* buffer_pieno;
  */
 int init_suite1(void)
 {
-    msg_t* msg = msg_init_string(EXPECTED_MSG);
+    msg_t* EXPECTED_MSG = msg_init_string("1");
     buffer_pieno = buffer_init(1);
-    buffer_pieno->msgs = msg;
+    buffer_pieno->msgs = EXPECTED_MSG;
 
     if(NULL == buffer_pieno) {
         return -1;
@@ -26,7 +25,7 @@ int init_suite1(void)
         return -1;
     }
 
-    if(NULL == msg) {
+    if(NULL == EXPECTED_MSG) {
         return -1;
     }
 
@@ -54,20 +53,12 @@ int clean_suite1(void)
 /**
  *
  */
-void test_init_unitary_buffer(void)
+void test_buffer_put_non_bloccante(void)
 {
-    if (NULL == NULL) {
-
-    }
-}
-
-/**
- *
- */
-void test_destroy_unitary_buffer(void)
-{
-    if (NULL == NULL) {
-
+    msg_t* MSG = msg_init_string("2");
+    if (NULL != buffer_pieno) {
+        CU_ASSERT(BUFFER_ERROR == buffer_put_non_bloccante(buffer_pieno, MSG));
+        CU_ASSERT(0 == strcmp("1", buffer_pieno->msgs->content));
     }
 }
 
@@ -92,8 +83,8 @@ int main()
 
     /* add the tests to the suite */
     /* NOTE - ORDER IS IMPORTANT */
-    if ((NULL == CU_add_test(pSuite, "test of buffer_init()", test_init_unitary_buffer)) ||
-        (NULL == CU_add_test(pSuite, "test of buffer_destroy()", test_destroy_unitary_buffer)))
+    if ((NULL == CU_add_test(pSuite, "test of buffer_put_non_bloccante()", test_buffer_put_non_bloccante))) //||
+        //(NULL == CU_add_test(pSuite, "test of buffer_destroy()", test_destroy_unitary_buffer)))
     {
         CU_cleanup_registry();
         return CU_get_error();
