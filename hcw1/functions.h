@@ -2,8 +2,8 @@
 // Created by Alessandro Iori on 21/11/2017.
 //
 
-#ifndef UNTITLED_PROD_CONS_H
-#define UNTITLED_PROD_CONS_H
+#ifndef UNTITLED_FUNCTIONS_H
+#define UNTITLED_FUNCTIONS_H
 
 #include <pthread.h>
 #include "msg.h"

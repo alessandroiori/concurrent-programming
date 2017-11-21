@@ -2,7 +2,7 @@
 // Created by Alessandro Iori on 21/11/2017.
 //
 
-#include "prod_cons.h"
+#include "functions.h"
 
 pthread_mutex_t MUTEX;
 pthread_cond_t COND_NOT_FULL;
@@ -27,11 +27,15 @@ msg_t* put_non_bloccante(buffer_t* buffer, msg_t* msg)
     pthread_mutex_lock(&MUTEX);
     if(*buffer->p_size < *buffer->p_max_size)
     {
-        buffer->msgs[*buffer->p_d] = msg;
-        *buffer->p_size = *buffer->p_size + 1;
-        *buffer->p_d = *buffer->p_d + 1;
+        uint8_t d = *buffer->p_d;
+        uint8_t max_size = *buffer->p_max_size;
+        uint8_t size = *buffer->p_size;
 
-        return_msg = msg;
+        buffer->msgs[d] = *msg;
+        *buffer->p_size = size + 1;
+        *buffer->p_d = (d + 1) % max_size;
+
+        return_msg = &buffer->msgs[d];
         //pthread_cond_wait(&COND_NOT_FULL,&MUTEX_BUFFER);
     }
     pthread_mutex_unlock(&MUTEX);
