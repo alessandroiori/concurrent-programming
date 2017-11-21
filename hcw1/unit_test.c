@@ -3,6 +3,10 @@
 #include "msg.h"
 
 /* Pointer to the buffer used by the tests. */
+/*
+ * (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno
+ */
+char* EXPECTED_MSG_STRING = "1";
 buffer_t* buffer_pieno;
 
 
@@ -13,7 +17,7 @@ buffer_t* buffer_pieno;
  */
 int init_suite1(void)
 {
-    msg_t* EXPECTED_MSG = msg_init_string("1");
+    msg_t* EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
     buffer_pieno = buffer_init(1);
     buffer_pieno->msgs = EXPECTED_MSG;
 
@@ -51,14 +55,27 @@ int clean_suite1(void)
 }
 
 /**
- *
+ * 2.
  */
-void test_buffer_put_non_bloccante(void)
+void T2_buffer_get_non_bloccante(void)
 {
-    msg_t* MSG = msg_init_string("2");
-    if (NULL != buffer_pieno) {
-        CU_ASSERT(BUFFER_ERROR == buffer_put_non_bloccante(buffer_pieno, MSG));
-        CU_ASSERT(0 == strcmp("1", buffer_pieno->msgs->content));
+    msg_t* MSG;
+
+    if (NULL != buffer_pieno)
+    {
+        uint8_t size_before = *buffer_pieno->p_size;
+        MSG = buffer_get_non_bloccante(buffer_pieno);
+        uint8_t size_after = *buffer_pieno->p_size;
+
+        CU_ASSERT(size_before == size_after + 1);
+
+    }
+
+    //TODO: do another test
+    if(MSG != NULL)
+    {
+        CU_ASSERT(BUFFER_ERROR != MSG);
+        CU_ASSERT(0 == strcmp(EXPECTED_MSG_STRING, MSG->content));
     }
 }
 
@@ -83,7 +100,7 @@ int main()
 
     /* add the tests to the suite */
     /* NOTE - ORDER IS IMPORTANT */
-    if ((NULL == CU_add_test(pSuite, "test of buffer_put_non_bloccante()", test_buffer_put_non_bloccante))) //||
+    if ((NULL == CU_add_test(pSuite, "test 2 of T2_buffer_get_non_bloccante()", T2_buffer_get_non_bloccante))) //||
         //(NULL == CU_add_test(pSuite, "test of buffer_destroy()", test_destroy_unitary_buffer)))
     {
         CU_cleanup_registry();
