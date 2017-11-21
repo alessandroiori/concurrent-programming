@@ -54,5 +54,20 @@ msg_t* get_bloccante(buffer_t* buffer)
 // ed il valore estratto in caso contrario
 msg_t* get_non_bloccante(buffer_t* buffer)
 {
-    return BUFFER_ERROR;
+    msg_t* return_msg = BUFFER_ERROR;
+
+    pthread_mutex_lock(&MUTEX);
+    if(*buffer->p_size > 0)
+    {
+        uint8_t t = *buffer->p_t;
+        uint8_t max_size = *buffer->p_max_size;
+        uint8_t size = *buffer->p_size;
+
+        *buffer->p_size = size - 1;
+        *buffer->p_t = (t + 1) % max_size;
+        return_msg = &buffer->msgs[t];
+    }
+    pthread_mutex_unlock(&MUTEX);
+
+    return return_msg;
 }

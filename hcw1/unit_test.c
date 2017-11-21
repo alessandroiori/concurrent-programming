@@ -4,14 +4,14 @@
 #include "functions.h"
 
 char* EXPECTED_MSG_STRING = "1";
-msg_t* MSG;
-msg_t* EXPECTED_MSG;
 
 /* Pointer to the buffer used by the tests. */
 /*
  * 1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto
  */
 buffer_t* buffer_vuoto;
+msg_t* MSG1;
+msg_t* EXPECTED_MSG1;
 
 /**
 * The suite initialization function.
@@ -20,11 +20,11 @@ buffer_t* buffer_vuoto;
 */
 int init_suite1(void)
 {
-    MSG = (msg_t*) NULL;
-    EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
+    MSG1 = (msg_t*) NULL;
+    EXPECTED_MSG1 = msg_init_string(EXPECTED_MSG_STRING);
     buffer_vuoto = buffer_init(1);
 
-    if(NULL == EXPECTED_MSG) {
+    if(NULL == EXPECTED_MSG1) {
         return -1;
     }
 
@@ -43,29 +43,25 @@ int init_suite1(void)
  */
 int clean_suite1(void)
 {
-
-    //MSG->msg_destroy(MSG);
-    //EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
-
-
     if(NULL != buffer_vuoto)
     {
         buffer_destroy(buffer_vuoto);
     }
 
-    if (NULL != EXPECTED_MSG)
+    if (NULL != EXPECTED_MSG1)
     {
-        EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
+        EXPECTED_MSG1->msg_destroy(EXPECTED_MSG1);
         //return -1;
     }
 
     /* TODO: Perchè segmentation fault?
-    if (NULL != MSG)
+    if (NULL != MSG1)
     {
-        MSG->msg_destroy(MSG);
+        MSG1->msg_destroy(MSG1);
         //return -1;
     }
      */
+
 
     return 0;
 }
@@ -75,12 +71,25 @@ void T1_put_non_bloccante1(void)
 
     if (NULL != buffer_vuoto)
     {
+
+        uint8_t max_size_before = *buffer_vuoto->p_max_size;
         uint8_t size_before = *buffer_vuoto->p_size;
-        MSG = put_non_bloccante(buffer_vuoto, EXPECTED_MSG);
+        uint8_t t_before = *buffer_vuoto->p_t;
+        uint8_t d_before = *buffer_vuoto->p_d;
+
+
+        MSG1 = put_non_bloccante(buffer_vuoto, EXPECTED_MSG1);
+
         uint8_t size_after = *buffer_vuoto->p_size;
+        uint8_t t_after = *buffer_vuoto->p_t;
+        uint8_t d_after = *buffer_vuoto->p_d;
+        uint8_t max_size_after = *buffer_vuoto->p_max_size;
 
         CU_ASSERT(0 == size_before);
-        CU_ASSERT(size_before +1 == size_after);
+        CU_ASSERT((size_before + 1) == size_after);
+        CU_ASSERT(t_before == t_after);
+        CU_ASSERT(max_size_before == max_size_after);
+        CU_ASSERT(((d_before + 1) % max_size_before) == d_after);
 
     } else {
         CU_ASSERT(0);
@@ -91,10 +100,10 @@ void T1_put_non_bloccante1(void)
 void T1_put_non_bloccante2(void)
 {
 
-    if(MSG != NULL)
+    if(MSG1 != NULL)
     {
-        CU_ASSERT(BUFFER_ERROR != MSG);
-        CU_ASSERT(0 == strcmp(EXPECTED_MSG->content, MSG->content));
+        CU_ASSERT(BUFFER_ERROR != MSG1);
+        CU_ASSERT(0 == strcmp(EXPECTED_MSG1->content, MSG1->content));
     } else {
         CU_ASSERT(0);
     }
@@ -106,6 +115,8 @@ void T1_put_non_bloccante2(void)
  * 2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno
  */
 buffer_t* buffer_pieno;
+msg_t* MSG2;
+msg_t* EXPECTED_MSG2;
 
 /**
  * The suite initialization function.
@@ -114,16 +125,16 @@ buffer_t* buffer_pieno;
  */
 int init_suite2(void)
 {
-    MSG = (msg_t*) NULL;
-    EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
+    MSG2 = (msg_t*) NULL;
+    EXPECTED_MSG2 = msg_init_string(EXPECTED_MSG_STRING);
     buffer_pieno = buffer_init(1);
-    buffer_pieno->msgs = EXPECTED_MSG;
+    put_non_bloccante(buffer_pieno,EXPECTED_MSG2);
 
-    if(NULL != MSG) {
+    if(NULL != MSG2) {
         return -1;
     }
 
-    if(NULL == EXPECTED_MSG) {
+    if(NULL == EXPECTED_MSG2) {
         return -1;
     }
 
@@ -136,7 +147,6 @@ int init_suite2(void)
     }
 
     return 0;
-
 }
 
 /**
@@ -147,29 +157,27 @@ int init_suite2(void)
 int clean_suite2(void)
 {
 
-    //MSG->msg_destroy(MSG);
-    //EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
 
     if(NULL != buffer_pieno)
     {
         buffer_destroy(buffer_pieno);
     }
 
-
-    if (NULL != MSG)
+    /*    TODO: Perchè segmentation fault?
+    if (NULL != MSG2)
     {
-        MSG->msg_destroy(MSG);
-        //return -1;
-    }
-
-
-    /*
-    if (NULL != EXPECTED_MSG)
-    {
-        EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
+        MSG2->msg_destroy(MSG2);
         //return -1;
     }
      */
+
+
+    if (NULL != EXPECTED_MSG2)
+    {
+        EXPECTED_MSG2->msg_destroy(EXPECTED_MSG2);
+        //return -1;
+    }
+
 
 
     return 0;
@@ -183,11 +191,12 @@ void T2_get_non_bloccante1(void)
     if (NULL != buffer_pieno)
     {
         uint8_t size_before = *buffer_pieno->p_size;
-        MSG = get_non_bloccante(buffer_pieno);
+
+        MSG2 = get_non_bloccante(buffer_pieno);
+
         uint8_t size_after = *buffer_pieno->p_size;
 
         CU_ASSERT(size_before == size_after + 1);
-
     } else {
         CU_ASSERT(0);
     }
@@ -196,10 +205,10 @@ void T2_get_non_bloccante1(void)
 void T2_get_non_bloccante2(void)
 {
 
-    if(MSG != NULL)
+    if(MSG2 != NULL)
     {
-        CU_ASSERT(BUFFER_ERROR != MSG);
-        CU_ASSERT(0 == strcmp(EXPECTED_MSG_STRING, MSG->content));
+        CU_ASSERT(BUFFER_ERROR != MSG2);
+        CU_ASSERT(0 == strcmp(EXPECTED_MSG2->content, MSG2->content));
     }else{
         CU_ASSERT(0);
     }
