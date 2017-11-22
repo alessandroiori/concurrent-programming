@@ -190,13 +190,23 @@ void T2_get_non_bloccante1(void)
 {
     if (NULL != buffer_pieno)
     {
+        uint8_t max_size_before = *buffer_pieno->p_max_size;
         uint8_t size_before = *buffer_pieno->p_size;
+        uint8_t t_before = *buffer_pieno->p_t;
+        uint8_t d_before = *buffer_pieno->p_d;
 
         MSG2 = get_non_bloccante(buffer_pieno);
 
         uint8_t size_after = *buffer_pieno->p_size;
+        uint8_t t_after = *buffer_pieno->p_t;
+        uint8_t d_after = *buffer_pieno->p_d;
+        uint8_t max_size_after = *buffer_pieno->p_max_size;
 
         CU_ASSERT(size_before == size_after + 1);
+        CU_ASSERT((size_before - 1) == size_after);
+        CU_ASSERT(d_before == d_after);
+        CU_ASSERT(max_size_before == max_size_after);
+        CU_ASSERT(((t_before + 1) % max_size_before) == t_after);
     } else {
         CU_ASSERT(0);
     }
@@ -204,7 +214,6 @@ void T2_get_non_bloccante1(void)
 
 void T2_get_non_bloccante2(void)
 {
-
     if(MSG2 != NULL)
     {
         CU_ASSERT(BUFFER_ERROR != MSG2);
