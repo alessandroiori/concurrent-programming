@@ -5,9 +5,17 @@
 #ifndef UNTITLED_FUNCTIONS_H
 #define UNTITLED_FUNCTIONS_H
 
+#include <stdio.h>
 #include <pthread.h>
 #include "msg.h"
 #include "buffer.h"
+
+pthread_mutex_t MUTEX;
+pthread_cond_t COND_NOT_FULL;
+pthread_cond_t COND_NOT_EMPTY;
+
+/* Inizializza i il mutex e le variabili condizione */
+int init_mutex_cond(void);
 
 /* operazioni sul buffer */
 // inserimento bloccante: sospende se pieno, quindi

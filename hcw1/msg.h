@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MESSAGE_NULL  (msg_t *) NULL
+
 typedef struct msg {
     void* content;                          // generico contenuto del messaggio
     //struct msg* (*msg_init)(void*);         // creazione msg

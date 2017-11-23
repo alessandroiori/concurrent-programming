@@ -4,9 +4,32 @@
 
 #include "functions.h"
 
-pthread_mutex_t MUTEX;
-pthread_cond_t COND_NOT_FULL;
-pthread_cond_t COND_NOT_EMPTY;
+/* Inizializza i il mutex e le variabili condizione */
+int init_mutex_cond(void)
+{
+    // init mutex associate to condition var
+    if(pthread_mutex_init(&MUTEX, NULL))
+    {
+        printf("error creating mutex\t\n");
+        return -1;
+    }
+
+    // init cond var associated to flag
+    if(pthread_cond_init(&COND_NOT_EMPTY, NULL))
+    {
+        printf("error creating conditional var\t\n");
+        return -1;
+    }
+
+    // init cond var associated to flag
+    if(pthread_cond_init(&COND_NOT_FULL, NULL))
+    {
+        printf("error creating conditional var\t\n");
+        return -1;
+    }
+
+    return 0;
+}
 
 /* operazioni sul buffer */
 // inserimento bloccante: sospende se pieno, quindi
@@ -65,7 +88,7 @@ msg_t* get_non_bloccante(buffer_t* buffer)
 
         *buffer->p_size = size - 1;
         *buffer->p_t = (t + 1) % max_size;
-        return_msg = &buffer->msgs[t];
+        return_msg = msg_init_string(buffer->msgs[t].content);
     }
     pthread_mutex_unlock(&MUTEX);
 

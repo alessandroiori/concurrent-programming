@@ -8,7 +8,8 @@
 #include <stdint.h>
 #include "msg.h"
 
-#define BUFFER_ERROR  (msg_t *) NULL
+#define BUFFER_ERROR    (msg_t *) NULL
+#define BUFFER_NULL     (buffer_t*) NULL
 
 typedef struct buffer_t {
     uint8_t* p_t;
@@ -21,6 +22,8 @@ typedef struct buffer_t {
 /* allocazione / deallocazione  buffer */
 // creazione di un buffer vuoto di dim. max nota
 buffer_t* buffer_init(unsigned int maxsize);
+// creazione di un buffer pieno di dim. max nota e messaggi noti
+buffer_t* buffer_init_pieno(unsigned int maxsize, msg_t* msgs, unsigned int msgs_len);
 // deallocazione di un buffer
 void buffer_destroy(buffer_t* buffer);
 

@@ -20,6 +20,24 @@ buffer_t* buffer_init(unsigned int maxsize)
     return p_buffer;
 }
 
+// creazione di un buffer pieno di dim. max nota con messaggi noti
+buffer_t* buffer_init_pieno(unsigned int maxsize, msg_t* msgs, unsigned int msgs_len)
+{
+    buffer_t* return_buffer = BUFFER_NULL;
+    if(maxsize >= msgs_len)
+    {
+        return_buffer = buffer_init(maxsize);
+        int i;
+        for(i=0; i< msgs_len; i++)
+        {
+            return_buffer->msgs[i] = msgs[i];
+            *return_buffer->p_size = *return_buffer->p_size + 1;
+            *return_buffer->p_d = (*return_buffer->p_d + 1) % *return_buffer->p_max_size;
+        }
+    }
+    return return_buffer;
+}
+
 // deallocazione di un buffer
 void buffer_destroy(buffer_t* buffer)
 {
@@ -34,7 +52,6 @@ void buffer_destroy(buffer_t* buffer)
         current_msg.msg_destroy(&current_msg);
     }
      */
-
     free(buffer->msgs);
     free(buffer->p_max_size);
     free(buffer->p_size);
