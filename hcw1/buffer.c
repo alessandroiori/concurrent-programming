@@ -17,6 +17,7 @@ buffer_t* buffer_init(unsigned int maxsize)
     *(p_buffer->p_t) = 0;
     *(p_buffer->p_size) = 0;
     *(p_buffer->p_max_size) = maxsize;
+    p_buffer->buffer_destroy = buffer_destroy;
     return p_buffer;
 }
 

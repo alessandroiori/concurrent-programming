@@ -18,10 +18,18 @@ msg_t* msg_init_string(void* content) {
 }
 
 void msg_destroy_string(msg_t* msg) {
+    if(MESSAGE_NULL == msg)
+    {
+        return;
+    }
     free(msg->content); // free copia privata
     free(msg);          // free struct
 }
 
 msg_t* msg_copy_string(msg_t* msg) {
+    if (MESSAGE_NULL == msg)
+    {
+        return MESSAGE_NULL;
+    }
     return msg_init_string( msg->content );
 }

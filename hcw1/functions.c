@@ -31,6 +31,17 @@ int init_mutex_cond(void)
     return 0;
 }
 
+void* produttore_bloccante(void* args)
+{
+
+    return (void*) NULL;
+}
+
+void*  consumatore_bloccante(void* args)
+{
+    return (void*) NULL;
+}
+
 /* operazioni sul buffer */
 // inserimento bloccante: sospende se pieno, quindi
 // effettua l’inserimento non appena si libera dello spazio
@@ -58,8 +69,7 @@ msg_t* put_non_bloccante(buffer_t* buffer, msg_t* msg)
         *buffer->p_size = size + 1;
         *buffer->p_d = (d + 1) % max_size;
 
-        return_msg = &buffer->msgs[d];
-        //pthread_cond_wait(&COND_NOT_FULL,&MUTEX_BUFFER);
+        return_msg = msg_init_string(buffer->msgs[d].content);
     }
     pthread_mutex_unlock(&MUTEX);
 

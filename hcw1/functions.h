@@ -10,12 +10,21 @@
 #include "msg.h"
 #include "buffer.h"
 
+typedef struct buffer_msg {
+    buffer_t* buffer;
+    uint8_t* buffer_len;
+    msg_t* msgs;
+    uint8_t* msgs_len;
+} buffer_msg_t;
+
 pthread_mutex_t MUTEX;
 pthread_cond_t COND_NOT_FULL;
 pthread_cond_t COND_NOT_EMPTY;
 
 /* Inizializza i il mutex e le variabili condizione */
 int init_mutex_cond(void);
+void* produttore_bloccante(void* args);
+void* consumatore_bloccante(void* args);
 
 /* operazioni sul buffer */
 // inserimento bloccante: sospende se pieno, quindi

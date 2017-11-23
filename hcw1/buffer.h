@@ -11,12 +11,13 @@
 #define BUFFER_ERROR    (msg_t *) NULL
 #define BUFFER_NULL     (buffer_t*) NULL
 
-typedef struct buffer_t {
+typedef struct buffer {
     uint8_t* p_t;
     uint8_t* p_d;
     uint8_t* p_max_size;
     uint8_t* p_size;
     msg_t* msgs;
+    void (*buffer_destroy)(struct buffer* buffer);
 } buffer_t;
 
 /* allocazione / deallocazione  buffer */

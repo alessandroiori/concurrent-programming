@@ -4,11 +4,13 @@
 #include "functions.h"
 
 char* EXPECTED_MSG_STRING = "1";
-msg_t* MSG;
+
+/*msg_t* MSG;
+
 msg_t* EXPECTED_MSG;
 buffer_t* buffer_vuoto;
 buffer_t* buffer_pieno;
-
+*/
 
 /* Suit 0 funzioni di supporto */
 
@@ -42,7 +44,9 @@ void T01_buffer_init(void)
     CU_ASSERT(0 == *tmp_buffer->p_t);
     CU_ASSERT(0 == *tmp_buffer->p_d);
     CU_ASSERT(0 == *tmp_buffer->p_size);
-    CU_ASSERT(MESSAGE_NULL != &tmp_buffer->msgs[0]);
+    CU_ASSERT(MESSAGE_NULL != &tmp_buffer->msgs[0])
+
+    tmp_buffer->buffer_destroy(tmp_buffer);
 }
 
 /* 0.2.0 Produzione di un buzzer pieno di dimensione 1*/
@@ -59,6 +63,9 @@ void T02_buffer_init_pieno1(void)
     CU_ASSERT(MESSAGE_NULL != &tmp_buffer->msgs[0]);
 
     CU_ASSERT(0 == strcmp(EXPECTED_MSG_STRING, tmp_buffer->msgs[0].content));
+
+    tmp_msg->msg_destroy(tmp_msg);
+    tmp_buffer->buffer_destroy(tmp_buffer);
 }
 
 /* 0.2.1 Produzione di un buzzer pieno di dimensione 2 */
@@ -76,6 +83,9 @@ void T02_buffer_init_pieno2(void)
     CU_ASSERT(MESSAGE_NULL != &tmp_buffer->msgs[1]);
 
     CU_ASSERT(0 == strcmp(EXPECTED_MSG_STRING, tmp_buffer->msgs[0].content));
+
+    tmp_msg->msg_destroy(tmp_msg);
+    tmp_buffer->buffer_destroy(tmp_buffer);
 }
 
 
@@ -88,12 +98,13 @@ void T02_buffer_init_pieno2(void)
 */
 int init_suite1(void)
 {
-    MSG = (msg_t*) NULL;
-    EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
 
-    buffer_vuoto = buffer_init(1);
-    buffer_pieno = buffer_init_pieno(1, EXPECTED_MSG, 1);
+    //MSG = (msg_t*) NULL;
+    //EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
 
+    //buffer_vuoto = buffer_init(1);
+    //buffer_pieno = buffer_init_pieno(1, EXPECTED_MSG, 1);
+/*
     if(MESSAGE_NULL != MSG)
     {
         return -1;
@@ -123,9 +134,10 @@ int init_suite1(void)
     {
         return -1;
     }
+    */
+
 
     return 0;
-
 }
 
 /**
@@ -136,6 +148,7 @@ int init_suite1(void)
 int clean_suite1(void)
 {
 
+    /*
     if(MESSAGE_NULL != MSG)
     {
         MSG->msg_destroy(MSG);
@@ -162,7 +175,7 @@ int clean_suite1(void)
     } else {
         return -1;
     }
-
+*/
 
     return 0;
 }
@@ -170,7 +183,10 @@ int clean_suite1(void)
 /* 1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto */
 void T1_put_non_bloccante_buffer_vuoto(void)
 {
+    // init
     msg_t* tmp_msg = MESSAGE_NULL;
+    msg_t* EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
+    buffer_t* buffer_vuoto = buffer_init(1);
 
     // Stato del buffer prima della put
     uint8_t max_size_before = *buffer_vuoto->p_max_size;
@@ -196,11 +212,19 @@ void T1_put_non_bloccante_buffer_vuoto(void)
 
 
     CU_ASSERT(MESSAGE_NULL != tmp_msg);
-    if(MESSAGE_NULL != tmp_msg)
+    if(BUFFER_ERROR != tmp_msg)
     {
         CU_ASSERT(0 == strcmp(EXPECTED_MSG->content, tmp_msg->content));
     }else{
         CU_ASSERT(0); //error
+    }
+
+    //clean
+    buffer_vuoto->buffer_destroy(buffer_vuoto);
+    EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
+    if(BUFFER_ERROR != tmp_msg)
+    {
+        tmp_msg->msg_destroy(tmp_msg);
     }
 
 }
@@ -208,7 +232,10 @@ void T1_put_non_bloccante_buffer_vuoto(void)
 /* 2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno */
 void T2_get_non_bloccante_buffer_pieno(void)
 {
+    // init
     msg_t* tmp_msg = MESSAGE_NULL;
+    msg_t* EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
+    buffer_t* buffer_pieno = buffer_init_pieno(1, EXPECTED_MSG, 1);
 
     // Stato del buffer prima della get
     uint8_t max_size_before = *buffer_pieno->p_max_size;
@@ -231,19 +258,29 @@ void T2_get_non_bloccante_buffer_pieno(void)
     CU_ASSERT(((t_before + 1) % max_size_before) == t_after);
 
     CU_ASSERT(MESSAGE_NULL != tmp_msg);
-    if (MESSAGE_NULL != tmp_msg)
+    if (BUFFER_ERROR != tmp_msg)
     {
         CU_ASSERT(0 == strcmp(EXPECTED_MSG->content, tmp_msg->content));
     } else {
         CU_ASSERT(0); //error
     }
+
+    // clean
+    if (BUFFER_ERROR != tmp_msg)
+    {
+        tmp_msg->msg_destroy(tmp_msg);
+    }
+    EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
+    buffer_pieno->buffer_destroy(buffer_pieno);
 }
 
 /* 3. (P=1; C=0; N=1) Produzione in un buffer pieno */
 void T3_put_non_bloccante_in_buffer_pieno(void)
 {
+    // init
     msg_t* new_msg = msg_init_string("NEW");
     msg_t* tmp_msg = MESSAGE_NULL;
+    msg_t* EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
     buffer_t* buffer_pieno = buffer_init_pieno(1, EXPECTED_MSG, 1);
 
 
@@ -251,7 +288,6 @@ void T3_put_non_bloccante_in_buffer_pieno(void)
     tmp_msg = put_non_bloccante(buffer_pieno, new_msg);
 
     // Stato del buffer dopo la put
-
     uint8_t size_after = *buffer_pieno->p_size;
     uint8_t t_after = *buffer_pieno->p_t;
     uint8_t d_after = *buffer_pieno->p_d;
@@ -262,11 +298,21 @@ void T3_put_non_bloccante_in_buffer_pieno(void)
     CU_ASSERT(BUFFER_ERROR == tmp_msg);
     CU_ASSERT(0 == strcmp(EXPECTED_MSG->content, buffer_pieno->msgs[0].content));
     CU_ASSERT_FALSE(0 == strcmp(new_msg->content, buffer_pieno->msgs[0].content));
+
+    // clean
+    if(BUFFER_ERROR != tmp_msg)
+    {
+        tmp_msg->msg_destroy(tmp_msg);
+    }
+    new_msg->msg_destroy(new_msg);
+    EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
+    buffer_pieno->buffer_destroy(buffer_pieno);
 }
 
 /* 4. (P=0; C=1; N=1) Consumazione da un buffer vuoto */
 void T4_get_non_bloccante_buffer_vuoto(void)
 {
+    // init
     msg_t* tmp_msg = MESSAGE_NULL;
     buffer_t* buffer_vuoto = buffer_init(1);
 
@@ -291,7 +337,76 @@ void T4_get_non_bloccante_buffer_vuoto(void)
     CU_ASSERT(max_size_before == max_size_after);
 
     CU_ASSERT(BUFFER_ERROR == tmp_msg);
+
+    // clean
+    if(BUFFER_ERROR != tmp_msg)
+    {
+        tmp_msg->msg_destroy(tmp_msg);
+    }
+    buffer_vuoto->buffer_destroy(buffer_vuoto);
 }
+
+/* CONCORRENZA */
+/* (P=1; C=1; N=1) Consumazione e produzione concorrente di
+ * un messaggio da un buffer unitario; prima il consumatore.
+ */
+void T5_get_put_bloccante_buffer_vuoto(void)
+{
+    // init
+    uint8_t msg_da_produrre_len = 1;
+    msg_t* msg_da_produrre = msg_init_string(EXPECTED_MSG_STRING);
+    uint8_t msg_consumati_len = 1;
+    msg_t* msg_consumati = MESSAGE_NULL;
+
+    uint8_t buffer_len = 1;
+    buffer_t* buffer = buffer_init(buffer_len);
+
+
+    buffer_msg_t produttore_arg = {buffer, &buffer_len, msg_da_produrre, &msg_da_produrre_len};
+    buffer_msg_t consumatore_arg = {buffer, &buffer_len, msg_consumati, &msg_consumati_len};
+
+    pthread_t producer, consumer;
+
+    // esecuzione
+    init_mutex_cond();
+    if(pthread_create(&producer, NULL, produttore_bloccante, &produttore_arg))
+    {
+        printf("error creating producer thread\t\n");
+        exit(1);
+    }
+
+    if(pthread_create(&consumer, NULL, consumatore_bloccante, &consumatore_arg))
+    {
+        printf("error creating producer thread\t\n");
+        exit(1);
+    }
+
+    if(pthread_join(producer, NULL))
+    {
+        printf("error joining producer thread\t\n");
+        exit(1);
+    }
+
+    if(pthread_join(consumer, NULL))
+    {
+        printf("error joining consumer thread\t\n");
+        exit(1);
+    }
+
+    // clear
+    if(BUFFER_ERROR != msg_da_produrre)
+    {
+        msg_da_produrre->msg_destroy(msg_da_produrre);
+    }
+
+    if(BUFFER_ERROR != msg_consumati)
+    {
+        msg_consumati->msg_destroy(msg_consumati);
+    }
+
+    buffer->buffer_destroy(buffer);
+}
+
 
 /**
  *
