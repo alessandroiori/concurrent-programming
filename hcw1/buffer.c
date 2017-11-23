@@ -42,11 +42,9 @@ buffer_t* buffer_init_pieno(unsigned int maxsize, msg_t* msgs, unsigned int msgs
 // deallocazione di un buffer
 void buffer_destroy(buffer_t* buffer)
 {
+    /*
     int i;
     uint8_t p_buffer_size = *buffer->p_size;
-
-
-    /*
     for(i=0; i< p_buffer_size; i++)
     {
         msg_t current_msg = buffer->msgs[i];
@@ -59,4 +57,32 @@ void buffer_destroy(buffer_t* buffer)
     free(buffer->p_t);
     free(buffer->p_d);
     free(buffer);
+}
+
+// aggiunge un messaggio al buffer
+msg_t* buffer_add_msg(buffer_t* buffer, msg_t* msg)
+{
+    msg_t* return_msg = MESSAGE_NULL;
+    if(MESSAGE_NULL != msg && (*buffer->p_size < *buffer->p_max_size))
+    {
+        buffer->msgs[*buffer->p_d] = *msg;
+        *buffer->p_size = *buffer->p_size + 1;
+        *buffer->p_d = (*buffer->p_d + 1) % *buffer->p_max_size;
+        return_msg = msg;
+    }
+
+    return return_msg;
+}
+
+// rimuove un messaggio dal buffer
+msg_t* buffer_get_msg(buffer_t* buffer)
+{
+    msg_t* return_msg = MESSAGE_NULL;
+    if(*buffer->p_size > 0)
+    {
+        *return_msg = buffer->msgs[*buffer->p_t];
+        *buffer->p_size = *buffer->p_size - 1;
+        *buffer->p_t = (*buffer->p_t + 1) % *buffer->p_max_size;
+    }
+    return return_msg;
 }

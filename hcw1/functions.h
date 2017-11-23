@@ -12,7 +12,6 @@
 
 typedef struct buffer_msg {
     buffer_t* buffer;
-    uint8_t* buffer_len;
     msg_t* msgs;
     uint8_t* msgs_len;
 } buffer_msg_t;

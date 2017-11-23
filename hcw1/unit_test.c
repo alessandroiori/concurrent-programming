@@ -346,29 +346,36 @@ void T4_get_non_bloccante_buffer_vuoto(void)
     buffer_vuoto->buffer_destroy(buffer_vuoto);
 }
 
-/* CONCORRENZA */
+/*
+ * CONCORRENZA
+ *
+ */
+
 /* (P=1; C=1; N=1) Consumazione e produzione concorrente di
  * un messaggio da un buffer unitario; prima il consumatore.
+ *
+ * Buffer inizialmente vuoto.
+ *
  */
 void T5_get_put_bloccante_buffer_vuoto(void)
 {
     // init
     uint8_t msg_da_produrre_len = 1;
     msg_t* msg_da_produrre = msg_init_string(EXPECTED_MSG_STRING);
+
     uint8_t msg_consumati_len = 1;
     msg_t* msg_consumati = MESSAGE_NULL;
 
-    uint8_t buffer_len = 1;
-    buffer_t* buffer = buffer_init(buffer_len);
+    buffer_t* buffer = buffer_init(1);
 
-
-    buffer_msg_t produttore_arg = {buffer, &buffer_len, msg_da_produrre, &msg_da_produrre_len};
-    buffer_msg_t consumatore_arg = {buffer, &buffer_len, msg_consumati, &msg_consumati_len};
+    buffer_msg_t produttore_arg = {buffer, msg_da_produrre, &msg_da_produrre_len};
+    buffer_msg_t consumatore_arg = {buffer, msg_consumati, &msg_consumati_len};
 
     pthread_t producer, consumer;
 
     // esecuzione
     init_mutex_cond();
+
     if(pthread_create(&producer, NULL, produttore_bloccante, &produttore_arg))
     {
         printf("error creating producer thread\t\n");

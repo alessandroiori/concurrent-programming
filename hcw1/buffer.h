@@ -27,5 +27,9 @@ buffer_t* buffer_init(unsigned int maxsize);
 buffer_t* buffer_init_pieno(unsigned int maxsize, msg_t* msgs, unsigned int msgs_len);
 // deallocazione di un buffer
 void buffer_destroy(buffer_t* buffer);
+// aggiunge un messaggio al buffer
+msg_t* buffer_add_msg(buffer_t* buffer, msg_t* msg);
+// rimuove un messaggio dal buffer
+msg_t* buffer_get_msg(buffer_t* buffer);
 
 #endif //UNTITLED_BUFFER_H
