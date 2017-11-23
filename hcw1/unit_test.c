@@ -9,6 +9,9 @@ msg_t* EXPECTED_MSG;
 buffer_t* buffer_vuoto;
 buffer_t* buffer_pieno;
 
+
+/* Suit 0 funzioni di supporto */
+
 /**
 * Suit0
 * Returns zero on success, non-zero otherwise.
@@ -76,6 +79,8 @@ void T02_buffer_init_pieno2(void)
 }
 
 
+/* Suit 1 funzioni HWC1 */
+
 /**
 * Suit1
 * Returns zero on success, non-zero otherwise.
@@ -88,7 +93,6 @@ int init_suite1(void)
 
     buffer_vuoto = buffer_init(1);
     buffer_pieno = buffer_init_pieno(1, EXPECTED_MSG, 1);
-    //buffer_pieno->msgs[0] = *EXPECTED_MSG;
 
     if(MESSAGE_NULL != MSG)
     {
@@ -213,7 +217,6 @@ void T2_get_non_bloccante_buffer_pieno(void)
     uint8_t d_before = *buffer_pieno->p_d;
 
     init_mutex_cond();
-    //buffer_pieno->msgs[0] = *EXPECTED_MSG;
     tmp_msg = get_non_bloccante(buffer_pieno);
 
     // Stato del buffer dopo la get
@@ -236,6 +239,59 @@ void T2_get_non_bloccante_buffer_pieno(void)
     }
 }
 
+/* 3. (P=1; C=0; N=1) Produzione in un buffer pieno */
+void T3_put_non_bloccante_in_buffer_pieno(void)
+{
+    msg_t* new_msg = msg_init_string("NEW");
+    msg_t* tmp_msg = MESSAGE_NULL;
+    buffer_t* buffer_pieno = buffer_init_pieno(1, EXPECTED_MSG, 1);
+
+
+    init_mutex_cond();
+    tmp_msg = put_non_bloccante(buffer_pieno, new_msg);
+
+    // Stato del buffer dopo la put
+
+    uint8_t size_after = *buffer_pieno->p_size;
+    uint8_t t_after = *buffer_pieno->p_t;
+    uint8_t d_after = *buffer_pieno->p_d;
+    uint8_t max_size_after = *buffer_pieno->p_max_size;
+
+    CU_ASSERT(1 == size_after);
+
+    CU_ASSERT(BUFFER_ERROR == tmp_msg);
+    CU_ASSERT(0 == strcmp(EXPECTED_MSG->content, buffer_pieno->msgs[0].content));
+    CU_ASSERT_FALSE(0 == strcmp(new_msg->content, buffer_pieno->msgs[0].content));
+}
+
+/* 4. (P=0; C=1; N=1) Consumazione da un buffer vuoto */
+void T4_get_non_bloccante_buffer_vuoto(void)
+{
+    msg_t* tmp_msg = MESSAGE_NULL;
+    buffer_t* buffer_vuoto = buffer_init(1);
+
+    // Stato del buffer prima della get
+    uint8_t max_size_before = *buffer_vuoto->p_max_size;
+    uint8_t size_before = *buffer_vuoto->p_size;
+    uint8_t t_before = *buffer_vuoto->p_t;
+    uint8_t d_before = *buffer_vuoto->p_d;
+
+    init_mutex_cond();
+    tmp_msg = get_non_bloccante(buffer_vuoto);
+
+    // Stato del buffer dopo la get
+    uint8_t size_after = *buffer_vuoto->p_size;
+    uint8_t t_after = *buffer_vuoto->p_t;
+    uint8_t d_after = *buffer_vuoto->p_d;
+    uint8_t max_size_after = *buffer_vuoto->p_max_size;
+
+    CU_ASSERT(size_before == size_after);
+    CU_ASSERT(d_before == d_after);
+    CU_ASSERT(t_before == t_after);
+    CU_ASSERT(max_size_before == max_size_after);
+
+    CU_ASSERT(BUFFER_ERROR == tmp_msg);
+}
 
 /**
  *
@@ -264,7 +320,10 @@ int main()
         (NULL == CU_add_test(pSuite0, "0.2.2 Produzione di un buzzer pieno di dimensione 2: buzzer_init_pieno()", T02_buffer_init_pieno2)) ||
         (NULL == CU_add_test(pSuite1, "1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto: put_non_bloccante()", T1_put_non_bloccante_buffer_vuoto)) ||
         (NULL == CU_add_test(pSuite1, "2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno: get_non_bloccante()", T2_get_non_bloccante_buffer_pieno)) ||
-        (0))
+        (NULL == CU_add_test(pSuite1, "3. (P=1; C=0; N=1) Produzione in un buffer pieno: T3_put_non_bloccante_in_buffer_pieno()", T3_put_non_bloccante_in_buffer_pieno)) ||
+        (NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto", T4_get_non_bloccante_buffer_vuoto)) ||
+
+            (0))
     {
         CU_cleanup_registry();
         return CU_get_error();
