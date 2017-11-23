@@ -90,7 +90,6 @@ void T02_buffer_init_pieno2(void)
 
 
 /* Suit 1 funzioni HWC1 */
-
 /**
 * Suit1
 * Returns zero on success, non-zero otherwise.
@@ -98,45 +97,6 @@ void T02_buffer_init_pieno2(void)
 */
 int init_suite1(void)
 {
-
-    //MSG = (msg_t*) NULL;
-    //EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
-
-    //buffer_vuoto = buffer_init(1);
-    //buffer_pieno = buffer_init_pieno(1, EXPECTED_MSG, 1);
-/*
-    if(MESSAGE_NULL != MSG)
-    {
-        return -1;
-    }
-
-    if(MESSAGE_NULL == EXPECTED_MSG)
-    {
-        return -1;
-    }
-
-    if(NULL == EXPECTED_MSG->content)
-    {
-        return -1;
-    }
-
-    if(BUFFER_NULL == buffer_vuoto)
-    {
-        return -1;
-    }
-
-    if(BUFFER_NULL == buffer_pieno)
-    {
-        return -1;
-    }
-
-    if(MESSAGE_NULL == &buffer_pieno->msgs[0])
-    {
-        return -1;
-    }
-    */
-
-
     return 0;
 }
 
@@ -147,36 +107,6 @@ int init_suite1(void)
  */
 int clean_suite1(void)
 {
-
-    /*
-    if(MESSAGE_NULL != MSG)
-    {
-        MSG->msg_destroy(MSG);
-    }
-
-    if (MESSAGE_NULL != EXPECTED_MSG)
-    {
-        EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
-
-    } else {
-        return -1;
-    }
-
-    if(BUFFER_NULL != buffer_vuoto)
-    {
-        buffer_destroy(buffer_vuoto);
-    } else {
-        return -1;
-    }
-
-    if(BUFFER_NULL != buffer_pieno)
-    {
-        buffer_destroy(buffer_pieno);
-    } else {
-        return -1;
-    }
-*/
-
     return 0;
 }
 
@@ -351,6 +281,26 @@ void T4_get_non_bloccante_buffer_vuoto(void)
  *
  */
 
+/**
+* Suit1
+* Returns zero on success, non-zero otherwise.
+* @return
+*/
+int init_suite2(void)
+{
+    return 0;
+}
+
+/**
+ * The suite cleanup function.
+ * Returns zero on success, non-zero otherwise.
+ * @return
+ */
+int clean_suite2(void)
+{
+    return 0;
+}
+
 /* (P=1; C=1; N=1) Consumazione e produzione concorrente di
  * un messaggio da un buffer unitario; prima il consumatore.
  *
@@ -369,20 +319,23 @@ void T5_get_put_bloccante_buffer_vuoto(void)
     buffer_t* buffer = buffer_init(1);
 
     buffer_msg_t produttore_arg = {buffer, msg_da_produrre, &msg_da_produrre_len};
-    buffer_msg_t consumatore_arg = {buffer, msg_consumati, &msg_consumati_len};
+    //buffer_msg_t consumatore_arg = {buffer, msg_consumati, &msg_consumati_len};
 
     pthread_t producer, consumer;
+
 
     // esecuzione
     init_mutex_cond();
 
-    if(pthread_create(&producer, NULL, produttore_bloccante, &produttore_arg))
+    if(pthread_create(&consumer, NULL, consumatore_bloccante, buffer))
     {
         printf("error creating producer thread\t\n");
         exit(1);
     }
 
-    if(pthread_create(&consumer, NULL, consumatore_bloccante, &consumatore_arg))
+    sleep(1); // consente di far ottenere per primo il MUTEX al consumatore
+
+    if(pthread_create(&producer, NULL, produttore_bloccante, &produttore_arg))
     {
         printf("error creating producer thread\t\n");
         exit(1);
@@ -421,7 +374,7 @@ void T5_get_put_bloccante_buffer_vuoto(void)
  */
 int main()
 {
-    CU_pSuite pSuite0 = NULL, pSuite1 = NULL;
+    CU_pSuite pSuite0 = NULL, pSuite1 = NULL, pSuite2 = NULL;
 
     /* initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
@@ -430,7 +383,8 @@ int main()
     /* add a suite to the registry */
     pSuite0 = CU_add_suite("Suite_0", init_suite0, clean_suite0);
     pSuite1 = CU_add_suite("Suite_1", init_suite1, clean_suite1);
-    if (NULL == pSuite0 || pSuite1 == NULL) {
+    pSuite2 = CU_add_suite("Suite_2", init_suite2, clean_suite2);
+    if (NULL == pSuite0 || pSuite1 == NULL || pSuite2 == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -444,8 +398,8 @@ int main()
         (NULL == CU_add_test(pSuite1, "2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno: get_non_bloccante()", T2_get_non_bloccante_buffer_pieno)) ||
         (NULL == CU_add_test(pSuite1, "3. (P=1; C=0; N=1) Produzione in un buffer pieno: T3_put_non_bloccante_in_buffer_pieno()", T3_put_non_bloccante_in_buffer_pieno)) ||
         (NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto", T4_get_non_bloccante_buffer_vuoto)) ||
-
-            (0))
+        (NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto", T5_get_put_bloccante_buffer_vuoto)) ||
+        (0))
     {
         CU_cleanup_registry();
         return CU_get_error();

@@ -55,7 +55,9 @@ msg_t* put_non_bloccante(buffer_t* buffer, msg_t* msg)
 // restituisce il valore estratto non appena disponibile
 msg_t* get_bloccante(buffer_t* buffer)
 {
+
     msg_t* r_msg = MESSAGE_NULL;
+    /*
     pthread_mutex_lock(&MUTEX);
     while(buffer->p_size <= 0)
     {
@@ -64,8 +66,9 @@ msg_t* get_bloccante(buffer_t* buffer)
     r_msg = buffer_get_msg(buffer);
     pthread_cond_signal(&COND_NOT_FULL);
     pthread_mutex_unlock(&MUTEX);
-
+*/
     return r_msg;
+
 }
 
 // estrazione non bloccante: restituisce BUFFER_ERROR se vuoto
@@ -132,16 +135,16 @@ void* produttore_bloccante(void* args)
     //uint8_t msgs_len = *bm->msgs_len;
     msg_t* msgs = bm->msgs;
 
-    return put_bloccante(buffer,msgs);
+    return (void*)put_bloccante(buffer,msgs);
 }
 
 /* Codice di un consumatore bloccante, richiama la funzione get_bloccante() */
-void*  consumatore_bloccante(void* args)
+void* consumatore_bloccante(void* args)
 {
-    buffer_msg_t * bm = (buffer_msg_t*) args;
-    buffer_t* buffer = bm->buffer;
-    //uint8_t msgs_len = *bm->msgs_len;
-    msg_t* msgs = bm->msgs;
 
-    return get_bloccante(buffer);
+    //uffer_msg_t * bm = (buffer_msg_t*) args;
+    buffer_t* buffer = (buffer_t*) args;
+    //uint8_t msgs_len = *bm->msgs_len;
+    //msg_t* msgs = bm->msgs;
+    return (void*)get_bloccante(buffer);
 }
