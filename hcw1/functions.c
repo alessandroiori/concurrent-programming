@@ -138,7 +138,7 @@ void init_msg_input(void)
 /* Distrugge il messaggio aspettato*/
 void distruggi_msg_input(void)
 {
-    INPUT_MSG->msg_destroy(INPUT_MSG);
+    if(INPUT_MSG != MESSAGE_NULL) INPUT_MSG->msg_destroy(INPUT_MSG);
 }
 
 /* Inizializza il messaggio di output con NULL */
@@ -150,7 +150,7 @@ void init_msg_output(void)
 /* Distrugge il messaggio output*/
 void distruggi_msg_output(void)
 {
-    OUTPUT_MSG->msg_destroy(OUTPUT_MSG);
+    if(OUTPUT_MSG != MESSAGE_NULL) OUTPUT_MSG->msg_destroy(OUTPUT_MSG);
 }
 
 /* Distrugge il buffer */
@@ -168,7 +168,7 @@ void init_buffer_vuoto_unitario(void)
 /* Inizializza il buffer pieno di dimensione unitaria */
 void init_buffer_pieno_unitario(void)
 {
-    msg_t* msg = msg_init_string(EXPECTED_MSG_CONTENT);
+    msg_t* msg = msg_init_string(BUFFER_PIENO_UNITARIO_MSG_CONTENT);
     BUFFER = buffer_init_pieno(1, msg, 1);
 }
 

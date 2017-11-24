@@ -18,6 +18,7 @@ typedef struct buffer_msg {
 } buffer_msg_t;
 
 #define EXPECTED_MSG_CONTENT "content"
+#define BUFFER_PIENO_UNITARIO_MSG_CONTENT "pieno unitario content"
 
 msg_t* INPUT_MSG;
 msg_t* OUTPUT_MSG;
