@@ -93,12 +93,73 @@ msg_t* get_non_bloccante(buffer_t* buffer)
     return return_msg;
 }
 
+/*
+*
+* FUNZIONI DI SUPPORTO per FUNZIONI DA TESTARE
+*
+*/
 
+void esegui_put_non_bloccante(void)
+{
+    OUTPUT_MSG = put_non_bloccante(BUFFER, INPUT_MSG);
+}
 /*
  *
- * FUNZIONI DI SUPPORTO
+ * FUNZIONI DI SUPPORTO BUFFER e MSG
  *
  */
+
+msg_t* get_msg_input()
+{
+    return INPUT_MSG;
+}
+
+msg_t* get_msg_output()
+{
+    return OUTPUT_MSG;
+}
+
+buffer_t* get_buffer()
+{
+    return BUFFER;
+}
+
+/* Inizializza il messaggio di input con MSG_CONTENT */
+void init_msg_input(void)
+{
+    INPUT_MSG = msg_init_string(EXPECTED_MSG_CONTENT);
+}
+
+/* Distrugge il messaggio aspettato*/
+void distruggi_msg_input(void)
+{
+    INPUT_MSG->msg_destroy(INPUT_MSG);
+}
+
+/* Inizializza il messaggio di output con NULL */
+void init_msg_output(void)
+{
+    OUTPUT_MSG = MESSAGE_NULL;
+}
+
+/* Distrugge il messaggio output*/
+void distruggi_msg_output(void)
+{
+    OUTPUT_MSG->msg_destroy(OUTPUT_MSG);
+}
+
+/* Distrugge il buffer */
+void distruggi_buffer(void)
+{
+    BUFFER->buffer_destroy(BUFFER);
+}
+
+/* Inizializza il buffer vuoto di dimensione unitaria */
+void init_buffer_vuoto_unitario(void)
+{
+    BUFFER = buffer_init(1);
+}
+
 
 /* Inizializza i il mutex e le variabili condizione */
 int init_mutex_cond(void)

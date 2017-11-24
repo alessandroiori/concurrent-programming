@@ -10,11 +10,18 @@
 #include "msg.h"
 #include "buffer.h"
 
+//TODO: REMOVE
 typedef struct buffer_msg {
     buffer_t* buffer;
     msg_t* msgs;
     uint8_t* msgs_len;
 } buffer_msg_t;
+
+#define EXPECTED_MSG_CONTENT "content"
+
+msg_t* INPUT_MSG;
+msg_t* OUTPUT_MSG;
+buffer_t* BUFFER;
 
 pthread_mutex_t MUTEX;
 pthread_cond_t COND_NOT_FULL;
@@ -40,5 +47,34 @@ msg_t* get_bloccante(buffer_t* buffer);
 // estrazione non bloccante: restituisce BUFFER_ERROR se vuoto
 // ed il valore estratto in caso contrario
 msg_t* get_non_bloccante(buffer_t* buffer);
+
+/*
+*
+* FUNZIONI DI SUPPORTO per FUNZIONI DA TESTARE
+*
+*/
+void esegui_put_non_bloccante(void);
+
+/*
+ *
+ * FUNZIONI DI SUPPORTO BUFFER e MSG
+ *
+ */
+msg_t* get_msg_input();
+msg_t* get_msg_output();
+buffer_t* get_buffer();
+/* Inizializza il messaggio di input con MSG_CONTENT */
+void init_msg_input(void);
+/* Distrugge il messaggio aspettato*/
+void distruggi_msg_input(void);
+/* Inizializza il messaggio di output con NULL */
+void init_msg_output(void);
+/* Distrugge il messaggio output*/
+void distruggi_msg_output(void);
+/* Distrugge il buffer */
+void distruggi_buffer(void);
+/* Inizializza il buffer vuoto di dimensione unitaria */
+void init_buffer_vuoto_unitario(void);
+
 
 #endif //UNTITLED_PROD_CONS_H

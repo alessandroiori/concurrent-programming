@@ -111,52 +111,24 @@ int clean_suite1(void)
 }
 
 /* 1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto */
-void T1_put_non_bloccante_buffer_vuoto(void)
+void T1_put_non_bloccante_buffer_vuoto_unitario(void)
 {
-    // init
-    msg_t* tmp_msg = MESSAGE_NULL;
-    msg_t* EXPECTED_MSG = msg_init_string(EXPECTED_MSG_STRING);
-    buffer_t* buffer_vuoto = buffer_init(1);
-
-    // Stato del buffer prima della put
-    uint8_t max_size_before = *buffer_vuoto->p_max_size;
-    uint8_t size_before = *buffer_vuoto->p_size;
-    uint8_t t_before = *buffer_vuoto->p_t;
-    uint8_t d_before = *buffer_vuoto->p_d;
+    init_msg_input();
+    init_msg_output();
+    init_buffer_vuoto_unitario();
 
     init_mutex_cond();
-    tmp_msg = put_non_bloccante(buffer_vuoto, EXPECTED_MSG);
+    esegui_put_non_bloccante();
 
-    // Stato del buffer dopo la put
+    CU_ASSERT(1 == *get_buffer()->p_max_size);
+    CU_ASSERT(1 == *get_buffer()->p_size);
+    CU_ASSERT(0 == *get_buffer()->p_d); //( 0 + 1 ) % 1 = 0
+    CU_ASSERT(0 == *get_buffer()->p_t);
+    CU_ASSERT(0 == strcmp(get_msg_input()->content, get_msg_output()->content));
 
-    uint8_t size_after = *buffer_vuoto->p_size;
-    uint8_t t_after = *buffer_vuoto->p_t;
-    uint8_t d_after = *buffer_vuoto->p_d;
-    uint8_t max_size_after = *buffer_vuoto->p_max_size;
-
-    CU_ASSERT(0 == size_before);
-    CU_ASSERT((size_before + 1) == size_after);
-    CU_ASSERT(t_before == t_after);
-    CU_ASSERT(max_size_before == max_size_after);
-    CU_ASSERT(((d_before + 1) % max_size_before) == d_after);
-
-
-    CU_ASSERT(MESSAGE_NULL != tmp_msg);
-    if(BUFFER_ERROR != tmp_msg)
-    {
-        CU_ASSERT(0 == strcmp(EXPECTED_MSG->content, tmp_msg->content));
-    }else{
-        CU_ASSERT(0); //error
-    }
-
-    //clean
-    buffer_vuoto->buffer_destroy(buffer_vuoto);
-    EXPECTED_MSG->msg_destroy(EXPECTED_MSG);
-    if(BUFFER_ERROR != tmp_msg)
-    {
-        tmp_msg->msg_destroy(tmp_msg);
-    }
-
+    distruggi_buffer();
+    distruggi_msg_input();
+    distruggi_msg_output();
 }
 
 /* 2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno */
@@ -391,14 +363,14 @@ int main()
 
     /* add the tests to the suite */
     /* NOTE - ORDER IS IMPORTANT */
-    if ((NULL == CU_add_test(pSuite0, "0.1. Produzione di un buzzer vuoto di dimensione 1: buzzer_init()", T01_buffer_init)) ||
-        (NULL == CU_add_test(pSuite0, "0.2.1 Produzione di un buzzer pieno di dimensione 1: buzzer_init_pieno()", T02_buffer_init_pieno1)) ||
-        (NULL == CU_add_test(pSuite0, "0.2.2 Produzione di un buzzer pieno di dimensione 2: buzzer_init_pieno()", T02_buffer_init_pieno2)) ||
-        (NULL == CU_add_test(pSuite1, "1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto: put_non_bloccante()", T1_put_non_bloccante_buffer_vuoto)) ||
-        (NULL == CU_add_test(pSuite1, "2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno: get_non_bloccante()", T2_get_non_bloccante_buffer_pieno)) ||
-        (NULL == CU_add_test(pSuite1, "3. (P=1; C=0; N=1) Produzione in un buffer pieno: T3_put_non_bloccante_in_buffer_pieno()", T3_put_non_bloccante_in_buffer_pieno)) ||
-        (NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto", T4_get_non_bloccante_buffer_vuoto)) ||
-        (NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto", T5_get_put_bloccante_buffer_vuoto)) ||
+    if (//(NULL == CU_add_test(pSuite0, "0.1. Produzione di un buzzer vuoto di dimensione 1: buzzer_init()", T01_buffer_init)) ||
+        // (NULL == CU_add_test(pSuite0, "0.2.1 Produzione di un buzzer pieno di dimensione 1: buzzer_init_pieno()", T02_buffer_init_pieno1)) ||
+        //(NULL == CU_add_test(pSuite0, "0.2.2 Produzione di un buzzer pieno di dimensione 2: buzzer_init_pieno()", T02_buffer_init_pieno2)) ||
+        (NULL == CU_add_test(pSuite1, "1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto: T1_put_non_bloccante_buffer_vuoto_unitario()", T1_put_non_bloccante_buffer_vuoto_unitario)) ||
+        //(NULL == CU_add_test(pSuite1, "2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno: get_non_bloccante()", T2_get_non_bloccante_buffer_pieno)) ||
+        //(NULL == CU_add_test(pSuite1, "3. (P=1; C=0; N=1) Produzione in un buffer pieno: T3_put_non_bloccante_in_buffer_pieno()", T3_put_non_bloccante_in_buffer_pieno)) ||
+        //(NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto", T4_get_non_bloccante_buffer_vuoto)) ||
+        //(NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto", T5_get_put_bloccante_buffer_vuoto)) ||
         (0))
     {
         CU_cleanup_registry();
