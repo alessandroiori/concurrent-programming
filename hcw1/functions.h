@@ -54,6 +54,7 @@ msg_t* get_non_bloccante(buffer_t* buffer);
 *
 */
 void esegui_put_non_bloccante(void);
+void esegui_get_non_bloccante(void);
 
 /*
  *
@@ -75,6 +76,8 @@ void distruggi_msg_output(void);
 void distruggi_buffer(void);
 /* Inizializza il buffer vuoto di dimensione unitaria */
 void init_buffer_vuoto_unitario(void);
+/* Inizializza il buffer pieno di dimensione unitaria */
+void init_buffer_pieno_unitario(void);
 
 
 #endif //UNTITLED_PROD_CONS_H

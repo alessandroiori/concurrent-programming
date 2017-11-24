@@ -34,7 +34,7 @@ msg_t* put_non_bloccante(buffer_t* buffer, msg_t* msg)
     msg_t* return_msg = BUFFER_ERROR;
     if(MESSAGE_NULL != msg)
     {
-        pthread_mutex_lock(&MUTEX);
+        pthread_mutex_trylock(&MUTEX);
         if (*buffer->p_size < *buffer->p_max_size) {
             uint8_t d = *buffer->p_d;
             uint8_t max_size = *buffer->p_max_size;
@@ -77,7 +77,7 @@ msg_t* get_non_bloccante(buffer_t* buffer)
 {
     msg_t* return_msg = BUFFER_ERROR;
 
-    pthread_mutex_lock(&MUTEX);
+    pthread_mutex_trylock(&MUTEX);
     if(*buffer->p_size > 0)
     {
         uint8_t t = *buffer->p_t;
@@ -102,6 +102,11 @@ msg_t* get_non_bloccante(buffer_t* buffer)
 void esegui_put_non_bloccante(void)
 {
     OUTPUT_MSG = put_non_bloccante(BUFFER, INPUT_MSG);
+}
+
+void esegui_get_non_bloccante(void)
+{
+    OUTPUT_MSG = get_non_bloccante(BUFFER);
 }
 /*
  *
@@ -158,6 +163,13 @@ void distruggi_buffer(void)
 void init_buffer_vuoto_unitario(void)
 {
     BUFFER = buffer_init(1);
+}
+
+/* Inizializza il buffer pieno di dimensione unitaria */
+void init_buffer_pieno_unitario(void)
+{
+    msg_t* msg = msg_init_string(EXPECTED_MSG_CONTENT);
+    BUFFER = buffer_init_pieno(1, msg, 1);
 }
 
 
