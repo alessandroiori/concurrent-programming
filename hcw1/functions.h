@@ -21,17 +21,17 @@ typedef struct buffer_msg {
 #define BUFFER_PIENO_UNITARIO_MSG_CONTENT "pieno unitario content"
 
 msg_t* INPUT_MSG;
+msg_t* C_BLOCCANTE_INPUT_MSG;
 msg_t* OUTPUT_MSG;
+msg_t* P_BLOCCANTE_OUTPUT_MSG;
+
 buffer_t* BUFFER;
+
+pthread_t PRODUTTORE, CONSUMATORE;
 
 pthread_mutex_t MUTEX;
 pthread_cond_t COND_NOT_FULL;
 pthread_cond_t COND_NOT_EMPTY;
-
-/* Inizializza i il mutex e le variabili condizione */
-int init_mutex_cond(void);
-void* produttore_bloccante(void* args);
-void* consumatore_bloccante(void* args);
 
 /* operazioni sul buffer */
 // inserimento bloccante: sospende se pieno, quindi
@@ -56,6 +56,8 @@ msg_t* get_non_bloccante(buffer_t* buffer);
 */
 void esegui_put_non_bloccante(void);
 void esegui_get_non_bloccante(void);
+void esegui_put_bloccante(void);
+void esegui_get_bloccante(void);
 
 /*
  *
@@ -79,6 +81,23 @@ void distruggi_buffer(void);
 void init_buffer_vuoto_unitario(void);
 /* Inizializza il buffer pieno di dimensione unitaria */
 void init_buffer_pieno_unitario(void);
+
+/*
+ *
+ * FUNZIONI DI SUPPORTO PER PRODUTTORE CONSUMATORE
+ *
+ */
+
+/* Inizializza i il mutex e le variabili condizione */
+int init_mutex_cond(void);
+void* funzione_produttore_bloccante(void* args);
+void* funzione_consumatore_bloccante(void* args);
+
+void esegui_consumatore_bloccante(void);
+void esegui_produttore_bloccante(void);
+void esegui_join_consumatore(void);
+void esegui_join_produttore(void);
+
 
 
 #endif //UNTITLED_PROD_CONS_H

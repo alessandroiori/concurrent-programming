@@ -221,9 +221,9 @@ int clean_suite2(void)
  * Buffer inizialmente vuoto.
  *
  */
-void T5_get_put_bloccante_buffer_vuoto(void)
+void T5_get_put_bloccante_buffer_vuoto_unitario(void)
 {
-    // init
+    /*// init
     uint8_t msg_da_produrre_len = 1;
     msg_t* msg_da_produrre = msg_init_string(EXPECTED_MSG_STRING);
 
@@ -234,9 +234,19 @@ void T5_get_put_bloccante_buffer_vuoto(void)
 
     buffer_msg_t produttore_arg = {buffer, msg_da_produrre, &msg_da_produrre_len};
     //buffer_msg_t consumatore_arg = {buffer, msg_consumati, &msg_consumati_len};
+*/
+    init_msg_output();
+    init_msg_input();
+    init_buffer_vuoto_unitario();
+    init_mutex_cond();
 
-    pthread_t producer, consumer;
+    esegui_consumatore_bloccante();
+    //sleep(1); // consente di far ottenere per primo il MUTEX al consumatore
+    //esegui_produttore_bloccante();
+    esegui_join_consumatore();
+    //esegui_join_produttore();
 
+    /*pthread_t producer, consumer;
 
     // esecuzione
     init_mutex_cond();
@@ -277,8 +287,12 @@ void T5_get_put_bloccante_buffer_vuoto(void)
     {
         msg_consumati->msg_destroy(msg_consumati);
     }
+     */
 
-    buffer->buffer_destroy(buffer);
+    //buffer->buffer_destroy(buffer);
+    distruggi_msg_output();
+    distruggi_msg_input();
+    distruggi_buffer();
 }
 
 
@@ -312,7 +326,7 @@ int main()
         (NULL == CU_add_test(pSuite1, "2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno: T2_get_non_bloccante_buffer_pieno_unitario()", T2_get_non_bloccante_buffer_pieno_unitario)) ||
         (NULL == CU_add_test(pSuite1, "3. (P=1; C=0; N=1) Produzione in un buffer pieno: T3_put_non_bloccante_in_buffer_pieno_unitario()", T3_put_non_bloccante_in_buffer_pieno_unitario)) ||
         (NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto_unitario", T4_get_non_bloccante_buffer_vuoto_unitario)) ||
-        //(NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto", T5_get_put_bloccante_buffer_vuoto)) ||
+        (NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto_unitario", T5_get_put_bloccante_buffer_vuoto_unitario)) ||
         (0))
     {
         CU_cleanup_registry();

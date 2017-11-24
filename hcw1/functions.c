@@ -55,9 +55,7 @@ msg_t* put_non_bloccante(buffer_t* buffer, msg_t* msg)
 // restituisce il valore estratto non appena disponibile
 msg_t* get_bloccante(buffer_t* buffer)
 {
-
     msg_t* r_msg = MESSAGE_NULL;
-    /*
     pthread_mutex_lock(&MUTEX);
     while(buffer->p_size <= 0)
     {
@@ -66,9 +64,8 @@ msg_t* get_bloccante(buffer_t* buffer)
     r_msg = buffer_get_msg(buffer);
     pthread_cond_signal(&COND_NOT_FULL);
     pthread_mutex_unlock(&MUTEX);
-*/
-    return r_msg;
 
+    return r_msg;
 }
 
 // estrazione non bloccante: restituisce BUFFER_ERROR se vuoto
@@ -107,6 +104,16 @@ void esegui_put_non_bloccante(void)
 void esegui_get_non_bloccante(void)
 {
     OUTPUT_MSG = get_non_bloccante(BUFFER);
+}
+
+void esegui_put_bloccante(void)
+{
+    OUTPUT_MSG = put_bloccante(BUFFER, INPUT_MSG);
+}
+
+void esegui_get_bloccante(void)
+{
+    OUTPUT_MSG = get_bloccante(BUFFER);
 }
 /*
  *
@@ -172,6 +179,11 @@ void init_buffer_pieno_unitario(void)
     BUFFER = buffer_init_pieno(1, msg, 1);
 }
 
+/*
+ *
+ * FUNZIONI DI SUPPORTO PER PRODUTTORE CONSUMATORE
+ *
+ */
 
 /* Inizializza i il mutex e le variabili condizione */
 int init_mutex_cond(void)
@@ -201,23 +213,65 @@ int init_mutex_cond(void)
 }
 
 /* Codice di un produttore bloccante, richiama la funzione put_bloccante() */
-void* produttore_bloccante(void* args)
+void* funzione_produttore_bloccante(void* args)
 {
+    /*
     buffer_msg_t * bm = (buffer_msg_t*) args;
     buffer_t* buffer = bm->buffer;
     //uint8_t msgs_len = *bm->msgs_len;
     msg_t* msgs = bm->msgs;
 
     return (void*)put_bloccante(buffer,msgs);
+     */
+    esegui_put_bloccante();
+    return (void*) NULL;
 }
 
 /* Codice di un consumatore bloccante, richiama la funzione get_bloccante() */
-void* consumatore_bloccante(void* args)
+void* funzione_consumatore_bloccante(void* args)
 {
 
     //uffer_msg_t * bm = (buffer_msg_t*) args;
-    buffer_t* buffer = (buffer_t*) args;
+    //buffer_t* buffer = (buffer_t*) args;
     //uint8_t msgs_len = *bm->msgs_len;
     //msg_t* msgs = bm->msgs;
-    return (void*)get_bloccante(buffer);
+    //return (void*)get_bloccante(buffer);
+    esegui_get_bloccante();
+    return (void*) NULL;
+}
+
+void esegui_produttore_bloccante(void)
+{
+    if(pthread_create(&PRODUTTORE, NULL, funzione_produttore_bloccante, NULL))
+    {
+        printf("error creating producer thread\t\n");
+        exit(1);
+    }
+}
+
+void esegui_consumatore_bloccante(void)
+{
+    if(pthread_create(&CONSUMATORE, NULL, funzione_consumatore_bloccante, NULL))
+    {
+        printf("error creating consumer thread\t\n");
+        exit(2);
+    }
+}
+
+void esegui_join_produttore(void)
+{
+    if(pthread_join(PRODUTTORE, NULL))
+    {
+        printf("error joining producer thread\t\n");
+        exit(3);
+    }
+}
+
+void esegui_join_consumatore(void)
+{
+    if(pthread_join(CONSUMATORE, NULL))
+    {
+        printf("error joining consumer thread\t\n");
+        exit(4);
+    }
 }
