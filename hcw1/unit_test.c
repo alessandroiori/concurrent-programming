@@ -164,6 +164,7 @@ void T3_put_non_bloccante_in_buffer_pieno_unitario(void)
     CU_ASSERT(0 == *get_buffer()->p_d);
     CU_ASSERT_FALSE(0 == strcmp(get_msg_input()->content, get_buffer()->msgs[0].content))
     CU_ASSERT(0 == strcmp(BUFFER_PIENO_UNITARIO_MSG_CONTENT, get_buffer()->msgs[0].content));
+    CU_ASSERT(MESSAGE_NULL == get_msg_output());
 
     distruggi_msg_input();
     distruggi_msg_output();
@@ -171,40 +172,22 @@ void T3_put_non_bloccante_in_buffer_pieno_unitario(void)
 }
 
 /* 4. (P=0; C=1; N=1) Consumazione da un buffer vuoto */
-void T4_get_non_bloccante_buffer_vuoto(void)
+void T4_get_non_bloccante_buffer_vuoto_unitario(void)
 {
-    // init
-    msg_t* tmp_msg = MESSAGE_NULL;
-    buffer_t* buffer_vuoto = buffer_init(1);
-
-    // Stato del buffer prima della get
-    uint8_t max_size_before = *buffer_vuoto->p_max_size;
-    uint8_t size_before = *buffer_vuoto->p_size;
-    uint8_t t_before = *buffer_vuoto->p_t;
-    uint8_t d_before = *buffer_vuoto->p_d;
-
+    init_msg_output();
+    init_buffer_vuoto_unitario();
     init_mutex_cond();
-    tmp_msg = get_non_bloccante(buffer_vuoto);
 
-    // Stato del buffer dopo la get
-    uint8_t size_after = *buffer_vuoto->p_size;
-    uint8_t t_after = *buffer_vuoto->p_t;
-    uint8_t d_after = *buffer_vuoto->p_d;
-    uint8_t max_size_after = *buffer_vuoto->p_max_size;
+    esegui_get_non_bloccante();
 
-    CU_ASSERT(size_before == size_after);
-    CU_ASSERT(d_before == d_after);
-    CU_ASSERT(t_before == t_after);
-    CU_ASSERT(max_size_before == max_size_after);
+    CU_ASSERT(1 == *get_buffer()->p_max_size);
+    CU_ASSERT(0 == *get_buffer()->p_size);
+    CU_ASSERT(0 == *get_buffer()->p_t);
+    CU_ASSERT(0 == *get_buffer()->p_d);
+    CU_ASSERT(MESSAGE_NULL == get_msg_output());
 
-    CU_ASSERT(BUFFER_ERROR == tmp_msg);
-
-    // clean
-    if(BUFFER_ERROR != tmp_msg)
-    {
-        tmp_msg->msg_destroy(tmp_msg);
-    }
-    buffer_vuoto->buffer_destroy(buffer_vuoto);
+    distruggi_msg_output();
+    distruggi_buffer();
 }
 
 /*
@@ -328,7 +311,7 @@ int main()
         (NULL == CU_add_test(pSuite1, "1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto: T1_put_non_bloccante_buffer_vuoto_unitario()", T1_put_non_bloccante_buffer_vuoto_unitario)) ||
         (NULL == CU_add_test(pSuite1, "2. (P=0; C=1; N=1) Consumazione di un solo messaggio da un buffer pieno: T2_get_non_bloccante_buffer_pieno_unitario()", T2_get_non_bloccante_buffer_pieno_unitario)) ||
         (NULL == CU_add_test(pSuite1, "3. (P=1; C=0; N=1) Produzione in un buffer pieno: T3_put_non_bloccante_in_buffer_pieno_unitario()", T3_put_non_bloccante_in_buffer_pieno_unitario)) ||
-        //(NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto", T4_get_non_bloccante_buffer_vuoto)) ||
+        (NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto_unitario", T4_get_non_bloccante_buffer_vuoto_unitario)) ||
         //(NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto", T5_get_put_bloccante_buffer_vuoto)) ||
         (0))
     {
