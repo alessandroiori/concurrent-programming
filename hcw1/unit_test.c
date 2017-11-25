@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "CUnit/Basic.h"
 #include "buffer.h"
 #include "msg.h"
@@ -235,16 +236,30 @@ void T5_get_put_bloccante_buffer_vuoto_unitario(void)
     buffer_msg_t produttore_arg = {buffer, msg_da_produrre, &msg_da_produrre_len};
     //buffer_msg_t consumatore_arg = {buffer, msg_consumati, &msg_consumati_len};
 */
-    init_msg_output();
-    init_msg_input();
+    init_consumatore_msg_output();
+    init_produttore_msg_input();
+    init_produttore_msg_output();
     init_buffer_vuoto_unitario();
+    //init_buffer_pieno_unitario();
     init_mutex_cond();
 
+    CU_ASSERT(0 == *get_buffer()->p_size);
+    //sleep(1);
+    //CU_ASSERT(1 == *get_buffer()->p_size);
+    esegui_produttore_bloccante();
+    sleep(2); // consente di far ottenere per primo il MUTEX al consumatore
     esegui_consumatore_bloccante();
-    //sleep(1); // consente di far ottenere per primo il MUTEX al consumatore
-    //esegui_produttore_bloccante();
+
+
     esegui_join_consumatore();
-    //esegui_join_produttore();
+    esegui_join_produttore();
+
+
+    //CU_ASSERT(0 == *get_buffer()->p_size);
+    //CU_ASSERT(0 == strcmp(get_buffer()->msgs[0].content, PRODUTTORE_OUTPUT_MSG->content));
+    //CU_ASSERT(0 == strcmp(BUFFER_PIENO_UNITARIO_MSG_CONTENT, CONSUMATORE_OUTPUT_MSG->content));
+    //CU_ASSERT(0 == *get_buffer()->p_d);
+    //CU_ASSERT(0 == *get_buffer()->p_t);
 
     /*pthread_t producer, consumer;
 
@@ -290,8 +305,9 @@ void T5_get_put_bloccante_buffer_vuoto_unitario(void)
      */
 
     //buffer->buffer_destroy(buffer);
-    distruggi_msg_output();
-    distruggi_msg_input();
+    distruggi_consumatore_msg_output();
+    distruggi_produttore_msg_input();
+    distruggi_produttore_msg_output();
     distruggi_buffer();
 }
 

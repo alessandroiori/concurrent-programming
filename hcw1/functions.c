@@ -57,7 +57,7 @@ msg_t* get_bloccante(buffer_t* buffer)
 {
     msg_t* r_msg = MESSAGE_NULL;
     pthread_mutex_lock(&MUTEX);
-    while(buffer->p_size <= 0)
+    while(*buffer->p_size == 0)
     {
         pthread_cond_wait(&COND_NOT_EMPTY, &MUTEX);
     }
@@ -108,12 +108,12 @@ void esegui_get_non_bloccante(void)
 
 void esegui_put_bloccante(void)
 {
-    OUTPUT_MSG = put_bloccante(BUFFER, INPUT_MSG);
+    PRODUTTORE_OUTPUT_MSG = put_bloccante(BUFFER, PRODUTTORE_INPUT_MSG);
 }
 
 void esegui_get_bloccante(void)
 {
-    OUTPUT_MSG = get_bloccante(BUFFER);
+    CONSUMATORE_OUTPUT_MSG = get_bloccante(BUFFER);
 }
 /*
  *
@@ -158,6 +158,45 @@ void init_msg_output(void)
 void distruggi_msg_output(void)
 {
     if(OUTPUT_MSG != MESSAGE_NULL) OUTPUT_MSG->msg_destroy(OUTPUT_MSG);
+}
+
+void init_produttore_msg_input(void)
+{
+    PRODUTTORE_INPUT_MSG = msg_init_string(PRODUTTORE_MSG_CONTENT);
+}
+
+void distruggi_produttore_msg_input(void)
+{
+    if(PRODUTTORE_INPUT_MSG != MESSAGE_NULL)
+    {
+        PRODUTTORE_INPUT_MSG->msg_destroy(PRODUTTORE_INPUT_MSG);
+    }
+}
+
+void init_produttore_msg_output(void)
+{
+    PRODUTTORE_OUTPUT_MSG = MESSAGE_NULL;
+}
+
+void distruggi_produttore_msg_output(void)
+{
+    if(PRODUTTORE_OUTPUT_MSG != MESSAGE_NULL)
+    {
+        PRODUTTORE_OUTPUT_MSG->msg_destroy(PRODUTTORE_OUTPUT_MSG);
+    }
+}
+
+void init_consumatore_msg_output(void)
+{
+    CONSUMATORE_OUTPUT_MSG = MESSAGE_NULL;
+}
+
+void distruggi_consumatore_msg_output(void)
+{
+    if(CONSUMATORE_OUTPUT_MSG != MESSAGE_NULL)
+    {
+        CONSUMATORE_OUTPUT_MSG->msg_destroy(CONSUMATORE_OUTPUT_MSG);
+    }
 }
 
 /* Distrugge il buffer */
@@ -230,12 +269,6 @@ void* funzione_produttore_bloccante(void* args)
 /* Codice di un consumatore bloccante, richiama la funzione get_bloccante() */
 void* funzione_consumatore_bloccante(void* args)
 {
-
-    //uffer_msg_t * bm = (buffer_msg_t*) args;
-    //buffer_t* buffer = (buffer_t*) args;
-    //uint8_t msgs_len = *bm->msgs_len;
-    //msg_t* msgs = bm->msgs;
-    //return (void*)get_bloccante(buffer);
     esegui_get_bloccante();
     return (void*) NULL;
 }

@@ -19,11 +19,13 @@ typedef struct buffer_msg {
 
 #define EXPECTED_MSG_CONTENT "content"
 #define BUFFER_PIENO_UNITARIO_MSG_CONTENT "pieno unitario content"
+#define PRODUTTORE_MSG_CONTENT "produttore"
 
 msg_t* INPUT_MSG;
-msg_t* C_BLOCCANTE_INPUT_MSG;
 msg_t* OUTPUT_MSG;
-msg_t* P_BLOCCANTE_OUTPUT_MSG;
+msg_t* PRODUTTORE_INPUT_MSG;
+msg_t* PRODUTTORE_OUTPUT_MSG;
+msg_t* CONSUMATORE_OUTPUT_MSG;
 
 buffer_t* BUFFER;
 
@@ -75,6 +77,14 @@ void distruggi_msg_input(void);
 void init_msg_output(void);
 /* Distrugge il messaggio output*/
 void distruggi_msg_output(void);
+
+void init_produttore_msg_input(void);
+void distruggi_produttore_msg_input(void);
+void init_produttore_msg_output(void);
+void distruggi_produttore_msg_output(void);
+void init_consumatore_msg_output(void);
+void distruggi_consumatore_msg_output(void);
+
 /* Distrugge il buffer */
 void distruggi_buffer(void);
 /* Inizializza il buffer vuoto di dimensione unitaria */
