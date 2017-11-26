@@ -448,19 +448,20 @@ void esegui_molteplici_consumatori_bloccanti(int n)
 
     for(i=0; i < n; i++)
     {
-        printf("creato %d\r\n", i);
+        //printf("creato %d\r\n", i);
         if(pthread_create(&(A_CONSUMATORI[i]), NULL, funzione_consumatore_bloccante, NULL))
         {
             printf("error creating consumer thread\t\n");
             exit(1);
         }
-        printf("end creato %d\r\n", i);
+        //printf("end creato %d\r\n", i);
     }
 }
 
 void esegui_molteplici_join_consumatore(int n)
 {
     int i;
+
     for(i=0; i < n; i++)
     {
         printf("join %d\r\n", i);
@@ -472,6 +473,7 @@ void esegui_molteplici_join_consumatore(int n)
         printf("end join %d\r\n", i);
     }
 }
+
 /*
  *
  * PUT BLOCCANTE A TEMPO
