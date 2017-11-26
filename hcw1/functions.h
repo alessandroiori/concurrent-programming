@@ -19,9 +19,10 @@ typedef struct buffer_msg {
 
 #define EXPECTED_MSG_CONTENT "content"
 #define BUFFER_PIENO_UNITARIO_MSG_CONTENT "pieno unitario content"
+#define BUFFER_PIENO_DIMENSIONE_M_MSG_CONTENT "pieno dimensione m content"
 #define PRODUTTORE_MSG_CONTENT "produttore"
 
-int EXIT_FROM_COND_WAIT_WHILE; //consente funzionamento dei fake produttori consumatori
+int* EXIT_FROM_COND_WAIT_WHILE; //consente funzionamento dei fake produttori consumatori
 msg_t* INPUT_MSG;
 msg_t* OUTPUT_MSG;
 msg_t* PRODUTTORE_INPUT_MSG;
@@ -98,6 +99,7 @@ void distruggi_buffer(void);
 void init_buffer_vuoto_unitario(void);
 /* Inizializza il buffer pieno di dimensione unitaria */
 void init_buffer_pieno_unitario(void);
+void init_buffer_pieno_dimensione_M(int m);
 
 /*
  *
@@ -106,7 +108,8 @@ void init_buffer_pieno_unitario(void);
  */
 
 /* Inizializza i il mutex e le variabili condizione */
-int init_mutex_cond(void);
+int init_mutex_cond(int ew);
+void distruggi_mutex_cond(void);
 void* funzione_produttore_bloccante(void* args);
 void* funzione_consumatore_bloccante(void* args);
 

@@ -20,9 +20,9 @@ msg_t* put_bloccante(buffer_t* buffer, msg_t* msg)
             //printf("nel while, exit = %d\r\n", exit);
             pthread_cond_wait(&COND_NOT_FULL, &MUTEX);
 
-            if(EXIT_FROM_COND_WAIT_WHILE == 1)
+            if(EXIT_FROM_COND_WAIT_WHILE != 0)
             {
-                exit = 1;
+                exit = *EXIT_FROM_COND_WAIT_WHILE;
             }
         }
         if(exit == 0)
@@ -245,6 +245,18 @@ void init_buffer_pieno_unitario(void)
     BUFFER = buffer_init_pieno(1, msg, 1);
 }
 
+void init_buffer_pieno_dimensione_M(int m)
+{
+    msg_t* msgs = (msg_t*) malloc(sizeof(msg_t) * m);
+    msg_t* msg = msg_init_string(BUFFER_PIENO_DIMENSIONE_M_MSG_CONTENT);
+    int i;
+    for(i=0; i<m; i++)
+    {
+        msgs[i] = *msg;
+    }
+    BUFFER = buffer_init_pieno(m, msg, m);
+}
+
 /*
  *
  * FUNZIONI DI SUPPORTO PER PRODUTTORE CONSUMATORE
@@ -252,8 +264,11 @@ void init_buffer_pieno_unitario(void)
  */
 
 /* Inizializza i il mutex e le variabili condizione */
-int init_mutex_cond(void)
+int init_mutex_cond(int ew)
 {
+    EXIT_FROM_COND_WAIT_WHILE = (int*) malloc(sizeof(int));
+    *EXIT_FROM_COND_WAIT_WHILE = ew;
+
     // init mutex associate to condition var
     if(pthread_mutex_init(&MUTEX, NULL))
     {
@@ -276,6 +291,11 @@ int init_mutex_cond(void)
     }
 
     return 0;
+}
+
+void distruggi_mutex_cond()
+{
+    free(EXIT_FROM_COND_WAIT_WHILE);
 }
 
 void eseguit_molteplici_fake_consumatori(int n)

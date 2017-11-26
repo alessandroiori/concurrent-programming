@@ -117,7 +117,7 @@ void T1_put_non_bloccante_buffer_vuoto_unitario(void)
     init_msg_input();
     init_msg_output();
     init_buffer_vuoto_unitario();
-    init_mutex_cond();
+    init_mutex_cond(0);
 
     esegui_put_non_bloccante();
 
@@ -127,6 +127,7 @@ void T1_put_non_bloccante_buffer_vuoto_unitario(void)
     CU_ASSERT(0 == *get_buffer()->p_t);
     CU_ASSERT(0 == strcmp(get_msg_input()->content, get_msg_output()->content));
 
+    distruggi_mutex_cond();
     distruggi_buffer();
     distruggi_msg_input();
     distruggi_msg_output();
@@ -137,7 +138,7 @@ void T2_get_non_bloccante_buffer_pieno_unitario(void)
 {
     init_msg_output();
     init_buffer_pieno_unitario();
-    init_mutex_cond();
+    init_mutex_cond(0);
 
     esegui_get_non_bloccante();
 
@@ -147,6 +148,7 @@ void T2_get_non_bloccante_buffer_pieno_unitario(void)
     CU_ASSERT(0 == *get_buffer()->p_t);
     CU_ASSERT(0 == strcmp(BUFFER_PIENO_UNITARIO_MSG_CONTENT, get_msg_output()->content));
 
+    distruggi_mutex_cond();
     distruggi_msg_output();
     distruggi_buffer();
 }
@@ -157,7 +159,7 @@ void T3_put_non_bloccante_in_buffer_pieno_unitario(void)
     init_msg_input();
     init_msg_output();
     init_buffer_pieno_unitario();
-    init_mutex_cond();
+    init_mutex_cond(0);
 
     CU_ASSERT(1 == *get_buffer()->p_max_size);
     CU_ASSERT(1 == *get_buffer()->p_size);
@@ -167,6 +169,7 @@ void T3_put_non_bloccante_in_buffer_pieno_unitario(void)
     CU_ASSERT(0 == strcmp(BUFFER_PIENO_UNITARIO_MSG_CONTENT, get_buffer()->msgs[0].content));
     CU_ASSERT(MESSAGE_NULL == get_msg_output());
 
+    distruggi_mutex_cond();
     distruggi_msg_input();
     distruggi_msg_output();
     distruggi_buffer();
@@ -177,7 +180,7 @@ void T4_get_non_bloccante_buffer_vuoto_unitario(void)
 {
     init_msg_output();
     init_buffer_vuoto_unitario();
-    init_mutex_cond();
+    init_mutex_cond(0);
 
     esegui_get_non_bloccante();
 
@@ -187,6 +190,7 @@ void T4_get_non_bloccante_buffer_vuoto_unitario(void)
     CU_ASSERT(0 == *get_buffer()->p_d);
     CU_ASSERT(MESSAGE_NULL == get_msg_output());
 
+    distruggi_mutex_cond();
     distruggi_msg_output();
     distruggi_buffer();
 }
@@ -229,7 +233,7 @@ void T5_get_put_bloccante_buffer_vuoto_unitario(void)
     init_produttore_msg_output();
     init_buffer_vuoto_unitario();
     //init_buffer_pieno_unitario();
-    init_mutex_cond();
+    init_mutex_cond(0);
 
     esegui_consumatore_bloccante();
     sleep(1); // consente di far ottenere per primo il MUTEX al consumatore
@@ -242,6 +246,7 @@ void T5_get_put_bloccante_buffer_vuoto_unitario(void)
     CU_ASSERT(0 == *get_buffer()->p_d);
     CU_ASSERT(0 == *get_buffer()->p_t);
 
+    distruggi_mutex_cond();
     distruggi_consumatore_msg_output();
     distruggi_produttore_msg_input();
     distruggi_produttore_msg_output();
@@ -260,7 +265,7 @@ void T6_put_get_bloccante_buffer_vuoto_unitario(void)
     init_produttore_msg_output();
     init_buffer_vuoto_unitario();
     //init_buffer_pieno_unitario();
-    init_mutex_cond();
+    init_mutex_cond(0);
 
     esegui_produttore_bloccante();
     sleep(1); // consente di far ottenere per primo il MUTEX al produttore
@@ -273,6 +278,7 @@ void T6_put_get_bloccante_buffer_vuoto_unitario(void)
     CU_ASSERT(0 == *get_buffer()->p_d);
     CU_ASSERT(0 == *get_buffer()->p_t);
 
+    distruggi_mutex_cond();
     distruggi_consumatore_msg_output();
     distruggi_produttore_msg_input();
     distruggi_produttore_msg_output();
@@ -293,8 +299,8 @@ void T7_N_put_bloccanti_buffer_vuoto_unitario(void)
     init_buffer_vuoto_unitario();
     //init_buffer_pieno_unitario();
     init_molteplici_produttori(N);
-    init_mutex_cond();
-    EXIT_FROM_COND_WAIT_WHILE = 1;
+    //init_while_wait_cond_to_exit();
+    init_mutex_cond(1);
 
     esegui_molteplici_produttori_bloccante(N);
     sleep(2); // consente di far ottenere per primo il MUTEX ai produttori
@@ -304,7 +310,33 @@ void T7_N_put_bloccanti_buffer_vuoto_unitario(void)
     CU_ASSERT(1 == *get_buffer()->p_size);
     CU_ASSERT(0 == strcmp(PRODUTTORE_INPUT_MSG->content, get_buffer()->msgs[0].content))
 
-    EXIT_FROM_COND_WAIT_WHILE = 0;
+    //*EXIT_FROM_COND_WAIT_WHILE = 0;
+    //free(EXIT_FROM_COND_WAIT_WHILE);
+    distruggi_mutex_cond();
+    distruggi_molteplici_produttori(N);
+    distruggi_produttore_msg_input();
+    distruggi_produttore_msg_output();
+    distruggi_buffer();
+}
+
+/* 9. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer pieno;
+ * il buffer `e gia` saturo
+ * */
+void T9_N_put_bloccanti_buffer_pieno_dimensione_M(void)
+{
+    int M = 2, N = 3;
+    init_produttore_msg_input();
+    init_produttore_msg_output();
+    init_buffer_pieno_dimensione_M(M);
+    init_molteplici_produttori(N);
+    init_mutex_cond(1);
+
+    esegui_molteplici_produttori_bloccante(N);
+    sleep(2); // consente di far ottenere per primo il MUTEX ai produttori
+    eseguit_molteplici_fake_consumatori(N-1);
+    esegui_molteplici_join_produttore(N);
+
+    distruggi_mutex_cond();
     distruggi_molteplici_produttori(N);
     distruggi_produttore_msg_input();
     distruggi_produttore_msg_output();
@@ -344,6 +376,8 @@ int main()
         (NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto_unitario", T5_get_put_bloccante_buffer_vuoto_unitario)) ||
         (NULL == CU_add_test(pSuite2, "6. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il produttore: T6_put_get_bloccante_buffer_vuoto_unitario", T6_put_get_bloccante_buffer_vuoto_unitario)) ||
         (NULL == CU_add_test(pSuite2, "7. (P>1; C=0; N=1) Produzione concorrente di molteplici messaggi in un buffer unitario vuoto;\n\tT7_N_put_bloccanti_buffer_vuoto_unitario", T7_N_put_bloccanti_buffer_vuoto_unitario)) ||
+        (0) ||
+        //(NULL == CU_add_test(pSuite2, "9. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer pieno;\nil buffer `e gia` saturo\n\tT9_N_put_bloccanti_buffer_pieno_dimensione_M", T9_N_put_bloccanti_buffer_pieno_dimensione_M)) ||
         (0))
     {
         CU_cleanup_registry();
