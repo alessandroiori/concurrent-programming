@@ -464,13 +464,13 @@ void esegui_molteplici_join_consumatore(int n)
 
     for(i=0; i < n; i++)
     {
-        printf("join %d\r\n", i);
+        //printf("join %d\r\n", i);
         if(pthread_join(A_CONSUMATORI[i],NULL))
         {
             printf("error joining consumer thread\t\n");
             exit(1);
         }
-        printf("end join %d\r\n", i);
+       //printf("end join %d\r\n", i);
     }
 }
 
