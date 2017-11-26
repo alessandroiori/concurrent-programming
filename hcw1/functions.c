@@ -136,6 +136,16 @@ buffer_t* get_buffer()
     return BUFFER;
 }
 
+void init_molteplici_produttori(int n)
+{
+    A_PRODUTTORI = (pthread_t*) malloc(sizeof(pthread_t) * n);
+}
+
+void distruggi_molteplici_produttori(int n)
+{
+    free(A_PRODUTTORI);
+}
+
 /* Inizializza il messaggio di input con MSG_CONTENT */
 void init_msg_input(void)
 {
@@ -298,5 +308,35 @@ void esegui_join_consumatore(void)
     {
         printf("error joining consumer thread\t\n");
         exit(4);
+    }
+}
+
+void esegui_molteplici_produttori_bloccante(int n)
+{
+    int i;
+
+    for(i=0; i < n; i++)
+    {
+        printf("creato %d\r\n", i);
+        if(pthread_create(&(A_PRODUTTORI[i]), NULL, funzione_produttore_bloccante, NULL))
+        {
+            printf("error creating producer thread\t\n");
+            exit(1);
+        }
+    }
+
+}
+
+void esegui_molteplici_join_produttore(int n)
+{
+    int i;
+    for(i=0; i < n; i++)
+    {
+        printf("join %d\r\n", i);
+        if(pthread_join(A_PRODUTTORI[i],NULL))
+        {
+            printf("error joining producer thread\t\n");
+            exit(1);
+        }
     }
 }
