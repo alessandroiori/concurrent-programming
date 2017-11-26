@@ -377,6 +377,23 @@ void T11_N_put_bloccanti_buffer_mezzo_pieno(void)
     distruggi_buffer();
 }
 
+/*
+ * 12. (P=0; C>1; N>1) Consumazione concorrente di molteplici messaggi da un bu↵er pieno
+ */
+
+/*
+void T12_N_get_bloccanti_buffer_pieno(void)
+{
+    int N = 2; //numero consumatori
+    int M = 2; // numero messaggi e dimensione buffer
+
+    init_consumatore_msg_output();
+    init_buffer_pieno_dimensione_M(M);
+    init_molteplici_consumatori(N);
+    init_mutex_cond(1);
+}
+*/
+
 /**
  *
  * @return
@@ -412,7 +429,7 @@ int main()
         (NULL == CU_add_test(pSuite2, "7. (P>1; C=0; N=1) Produzione concorrente di molteplici messaggi in un buffer unitario vuoto;\n\tT7_N_put_bloccanti_buffer_vuoto_unitario", T7_N_put_bloccanti_buffer_vuoto_unitario)) ||
         (0) ||
         (NULL == CU_add_test(pSuite2, "10. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer pieno;\n\til buffer `e gia` saturo.\n\tT10_N_put_bloccanti_buffer_pieno_dimensione_M", T10_N_put_bloccanti_buffer_pieno_dimensione_M)) ||
-        (NULL == CU_add_test(pSuite2, "11. 11. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer vuoto;\n\til buffer si satura in corso.\n\tT11_N_put_bloccanti_buffer_mezzo_pieno", T11_N_put_bloccanti_buffer_mezzo_pieno)) ||
+        (NULL == CU_add_test(pSuite2, "11. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer vuoto;\n\til buffer si satura in corso.\n\tT11_N_put_bloccanti_buffer_mezzo_pieno", T11_N_put_bloccanti_buffer_mezzo_pieno)) ||
         (0))
     {
         CU_cleanup_registry();

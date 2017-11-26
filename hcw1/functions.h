@@ -101,6 +101,7 @@ void init_buffer_vuoto_unitario(void);
 /* Inizializza il buffer pieno di dimensione unitaria */
 void init_buffer_pieno_unitario(void);
 void init_buffer_pieno_dimensione_M(int m);
+void init_buffer_mezzo_pieno_con_M_messaggi(int m);
 
 /*
  *
