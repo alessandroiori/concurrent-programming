@@ -291,7 +291,7 @@ void init_buffer_mezzo_pieno_con_M_messaggi(int m)
     {
         msgs[i] = *msg;
     }
-    BUFFER = buffer_init_pieno(m*2, msg, m);
+    BUFFER = buffer_init_pieno(m*2, msgs, m);
 }
 
 /*
