@@ -287,17 +287,24 @@ void T6_put_get_bloccante_buffer_vuoto_unitario(void)
 
 void T7_N_put_bloccanti_buffer_vuoto_unitario(void)
 {
-    int N = 1; //numero di produttori
+    int N = 10; //numero di produttori
     init_produttore_msg_input();
-    //init_produttore_msg_output();
+    init_produttore_msg_output();
     init_buffer_vuoto_unitario();
-    init_buffer_pieno_unitario();
+    //init_buffer_pieno_unitario();
     init_molteplici_produttori(N);
     init_mutex_cond();
+    EXIT_FROM_COND_WAIT_WHILE = 1;
 
     esegui_molteplici_produttori_bloccante(N);
+    sleep(2); // consente di far ottenere per primo il MUTEX ai produttori
+    eseguit_molteplici_fake_consumatori(N-1);
     esegui_molteplici_join_produttore(N);
 
+    CU_ASSERT(1 == *get_buffer()->p_size);
+    CU_ASSERT(0 == strcmp(PRODUTTORE_INPUT_MSG->content, get_buffer()->msgs[0].content))
+
+    EXIT_FROM_COND_WAIT_WHILE = 0;
     distruggi_molteplici_produttori(N);
     distruggi_produttore_msg_input();
     distruggi_produttore_msg_output();
@@ -336,7 +343,7 @@ int main()
         (NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto_unitario", T4_get_non_bloccante_buffer_vuoto_unitario)) ||
         (NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto_unitario", T5_get_put_bloccante_buffer_vuoto_unitario)) ||
         (NULL == CU_add_test(pSuite2, "6. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il produttore: T6_put_get_bloccante_buffer_vuoto_unitario", T6_put_get_bloccante_buffer_vuoto_unitario)) ||
-        (NULL == CU_add_test(pSuite2, "7. (P>1; C=0; N=1) Produzione concorrente di molteplici messaggi in un buffer unitario vuoto;\n\tT7_N_put_non_bloccante_buffer_vuoto_unitario", T7_N_put_bloccanti_buffer_vuoto_unitario)) ||
+        (NULL == CU_add_test(pSuite2, "7. (P>1; C=0; N=1) Produzione concorrente di molteplici messaggi in un buffer unitario vuoto;\n\tT7_N_put_bloccanti_buffer_vuoto_unitario", T7_N_put_bloccanti_buffer_vuoto_unitario)) ||
         (0))
     {
         CU_cleanup_registry();

@@ -13,13 +13,23 @@ msg_t* put_bloccante(buffer_t* buffer, msg_t* msg)
     msg_t* r_msg = MESSAGE_NULL;
     if(MESSAGE_NULL != msg)
     {
+        int exit = 0;
         pthread_mutex_lock(&MUTEX);
-        while(*buffer->p_size >= *buffer->p_max_size)
+        while(*buffer->p_size >= *buffer->p_max_size && exit == 0)
         {
+            //printf("nel while, exit = %d\r\n", exit);
             pthread_cond_wait(&COND_NOT_FULL, &MUTEX);
+
+            if(EXIT_FROM_COND_WAIT_WHILE == 1)
+            {
+                exit = 1;
+            }
         }
-        r_msg = buffer_add_msg(buffer,msg);
-        pthread_cond_signal(&COND_NOT_EMPTY);
+        if(exit == 0)
+        {
+            r_msg = buffer_add_msg(buffer,msg);
+            pthread_cond_signal(&COND_NOT_EMPTY);
+        }
         pthread_mutex_unlock(&MUTEX);
     }
 
@@ -88,6 +98,13 @@ msg_t* get_non_bloccante(buffer_t* buffer)
     pthread_mutex_unlock(&MUTEX);
 
     return return_msg;
+}
+
+void get_fake(void)
+{
+    pthread_mutex_trylock(&MUTEX);
+    pthread_cond_signal(&COND_NOT_FULL);
+    pthread_mutex_unlock(&MUTEX);
 }
 
 /*
@@ -261,6 +278,16 @@ int init_mutex_cond(void)
     return 0;
 }
 
+void eseguit_molteplici_fake_consumatori(int n)
+{
+    int i;
+    for(i=0; i<n; i++)
+    {
+        //printf("eseguo fake consumatore\r\n");
+        get_fake();
+    }
+}
+
 /* Codice di un produttore bloccante, richiama la funzione put_bloccante() */
 void* funzione_produttore_bloccante(void* args)
 {
@@ -317,12 +344,13 @@ void esegui_molteplici_produttori_bloccante(int n)
 
     for(i=0; i < n; i++)
     {
-        printf("creato %d\r\n", i);
+        //printf("creato %d\r\n", i);
         if(pthread_create(&(A_PRODUTTORI[i]), NULL, funzione_produttore_bloccante, NULL))
         {
             printf("error creating producer thread\t\n");
             exit(1);
         }
+        //printf("end creato %d\r\n", i);
     }
 
 }
@@ -332,11 +360,48 @@ void esegui_molteplici_join_produttore(int n)
     int i;
     for(i=0; i < n; i++)
     {
-        printf("join %d\r\n", i);
+        //printf("join %d\r\n", i);
         if(pthread_join(A_PRODUTTORI[i],NULL))
         {
             printf("error joining producer thread\t\n");
             exit(1);
         }
+        //printf("end join %d\r\n", i);
     }
 }
+
+/*
+ *
+ * PUT BLOCCANTE A TEMPO
+msg_t* put_bloccante(buffer_t* buffer, msg_t* msg)
+{
+    msg_t* r_msg = MESSAGE_NULL;
+
+    if(MESSAGE_NULL != msg)
+    {
+        int rc = 0;
+        int cnt = 3;
+
+        struct timespec ts;
+        clock_gettime(CLOCK_REALTIME, &ts);
+        ts.tv_sec += 2;
+
+        pthread_mutex_lock(&MUTEX);
+        while(*buffer->p_size >= *buffer->p_max_size && cnt > 0)
+        {
+            printf("AAAAA\n\t");
+            cnt--;
+            rc = pthread_cond_timedwait(&COND_NOT_FULL, &MUTEX, &ts);
+        }
+        if(rc == 0)
+        {
+            printf("YESSS\n\t");
+            r_msg = buffer_add_msg(buffer,msg);
+            pthread_cond_signal(&COND_NOT_EMPTY);
+            pthread_mutex_unlock(&MUTEX);
+        }
+    }
+
+    return r_msg;
+}
+ */

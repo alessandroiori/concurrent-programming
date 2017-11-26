@@ -21,6 +21,7 @@ typedef struct buffer_msg {
 #define BUFFER_PIENO_UNITARIO_MSG_CONTENT "pieno unitario content"
 #define PRODUTTORE_MSG_CONTENT "produttore"
 
+int EXIT_FROM_COND_WAIT_WHILE; //consente funzionamento dei fake produttori consumatori
 msg_t* INPUT_MSG;
 msg_t* OUTPUT_MSG;
 msg_t* PRODUTTORE_INPUT_MSG;
@@ -51,6 +52,9 @@ msg_t* get_bloccante(buffer_t* buffer);
 // estrazione non bloccante: restituisce BUFFER_ERROR se vuoto
 // ed il valore estratto in caso contrario
 msg_t* get_non_bloccante(buffer_t* buffer);
+
+/* support*/
+void get_fake(void);
 
 /*
 *
@@ -113,6 +117,7 @@ void esegui_join_produttore(void);
 
 void esegui_molteplici_produttori_bloccante(int n);
 void esegui_molteplici_join_produttore(int n);
+void eseguit_molteplici_fake_consumatori(int n);
 
 
 
