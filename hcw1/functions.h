@@ -20,6 +20,7 @@ typedef struct buffer_msg {
 #define EXPECTED_MSG_CONTENT "content"
 #define BUFFER_PIENO_UNITARIO_MSG_CONTENT "pieno unitario content"
 #define BUFFER_PIENO_DIMENSIONE_M_MSG_CONTENT "pieno dimensione m content"
+#define BUFFER_MEZZO_PIENO_MSG_CONTENT "mezzo pieno"
 #define PRODUTTORE_MSG_CONTENT "produttore"
 
 int* EXIT_FROM_COND_WAIT_WHILE; //consente funzionamento dei fake produttori consumatori

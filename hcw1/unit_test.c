@@ -319,13 +319,12 @@ void T7_N_put_bloccanti_buffer_vuoto_unitario(void)
     distruggi_buffer();
 }
 
-/* 9. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer pieno;
+/* 10. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer pieno;
  * il buffer `e gia` saturo
  * */
-void T9_N_put_bloccanti_buffer_pieno_dimensione_M(void)
+void T10_N_put_bloccanti_buffer_pieno_dimensione_M(void)
 {
-    int M = 2;
-
+    int M = 2; //dimensione e messaggi nel buffer
     int N = 2; //numero di produttori
     init_produttore_msg_input();
     init_produttore_msg_output();
@@ -341,6 +340,35 @@ void T9_N_put_bloccanti_buffer_pieno_dimensione_M(void)
 
     CU_ASSERT(M == *get_buffer()->p_size);
     CU_ASSERT(0 == strcmp(BUFFER_PIENO_DIMENSIONE_M_MSG_CONTENT, get_buffer()->msgs[0].content));
+
+    distruggi_mutex_cond();
+    distruggi_molteplici_produttori();
+    distruggi_produttore_msg_input();
+    distruggi_produttore_msg_output();
+    distruggi_buffer();
+}
+
+/*
+ * 11. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer vuoto;
+ * il buffer si satura in corso
+ *
+ */
+void T11_N_put_bloccanti_buffer_mezzo_pieno(void)
+{
+    int M = 2; //numero messaggi
+    int N = 4; //numero produttori
+    init_produttore_msg_input();
+    init_produttore_msg_output();
+    init_buffer_mezzo_pieno_con_M_messaggi(M);
+    init_molteplici_produttori(N);
+    init_mutex_cond(1);
+
+    esegui_molteplici_produttori_bloccante(N);
+    sleep(3); // consente di far ottenere per primo il MUTEX ai produttori
+    eseguit_molteplici_fake_consumatori(N);
+    esegui_molteplici_join_produttore(N);
+
+    CU_ASSERT(*get_buffer()->p_max_size == *get_buffer()->p_size);
 
     distruggi_mutex_cond();
     distruggi_molteplici_produttori();
@@ -383,7 +411,8 @@ int main()
         (NULL == CU_add_test(pSuite2, "6. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il produttore: T6_put_get_bloccante_buffer_vuoto_unitario", T6_put_get_bloccante_buffer_vuoto_unitario)) ||
         (NULL == CU_add_test(pSuite2, "7. (P>1; C=0; N=1) Produzione concorrente di molteplici messaggi in un buffer unitario vuoto;\n\tT7_N_put_bloccanti_buffer_vuoto_unitario", T7_N_put_bloccanti_buffer_vuoto_unitario)) ||
         (0) ||
-        (NULL == CU_add_test(pSuite2, "9. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer pieno;\n\til buffer `e gia` saturo.\n\tT9_N_put_bloccanti_buffer_pieno_dimensione_M", T9_N_put_bloccanti_buffer_pieno_dimensione_M)) ||
+        (NULL == CU_add_test(pSuite2, "10. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer pieno;\n\til buffer `e gia` saturo.\n\tT10_N_put_bloccanti_buffer_pieno_dimensione_M", T10_N_put_bloccanti_buffer_pieno_dimensione_M)) ||
+        (NULL == CU_add_test(pSuite2, "11. 11. (P>1; C=0; N>1) Produzione concorrente di molteplici messaggi in un buffer vuoto;\n\til buffer si satura in corso.\n\tT11_N_put_bloccanti_buffer_mezzo_pieno", T11_N_put_bloccanti_buffer_mezzo_pieno)) ||
         (0))
     {
         CU_cleanup_registry();

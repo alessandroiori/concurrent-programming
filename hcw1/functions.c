@@ -257,6 +257,18 @@ void init_buffer_pieno_dimensione_M(int m)
     BUFFER = buffer_init_pieno(m, msg, m);
 }
 
+void init_buffer_mezzo_pieno_con_M_messaggi(int m)
+{
+    msg_t* msgs = (msg_t*) malloc(sizeof(msg_t) * m);
+    msg_t* msg = msg_init_string(BUFFER_MEZZO_PIENO_MSG_CONTENT);
+    int i;
+    for(i=0; i<m; i++)
+    {
+        msgs[i] = *msg;
+    }
+    BUFFER = buffer_init_pieno(m*2, msg, m);
+}
+
 /*
  *
  * FUNZIONI DI SUPPORTO PER PRODUTTORE CONSUMATORE
