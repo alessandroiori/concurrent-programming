@@ -115,12 +115,12 @@ void esegui_get_bloccante(void)
 {
     CONSUMATORE_OUTPUT_MSG = get_bloccante(BUFFER);
 }
+
 /*
  *
  * FUNZIONI DI SUPPORTO BUFFER e MSG
  *
  */
-
 msg_t* get_msg_input()
 {
     return INPUT_MSG;
@@ -254,14 +254,6 @@ int init_mutex_cond(void)
 /* Codice di un produttore bloccante, richiama la funzione put_bloccante() */
 void* funzione_produttore_bloccante(void* args)
 {
-    /*
-    buffer_msg_t * bm = (buffer_msg_t*) args;
-    buffer_t* buffer = bm->buffer;
-    //uint8_t msgs_len = *bm->msgs_len;
-    msg_t* msgs = bm->msgs;
-
-    return (void*)put_bloccante(buffer,msgs);
-     */
     esegui_put_bloccante();
     return (void*) NULL;
 }

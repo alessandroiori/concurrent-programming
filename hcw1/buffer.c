@@ -66,22 +66,11 @@ msg_t* buffer_add_msg(buffer_t* buffer, msg_t* msg)
 
     if(MESSAGE_NULL != msg && (*buffer->p_size < *buffer->p_max_size))
     {
-        //msg_t * new_msgs = (msg_t*) malloc(sizeof(msg_t)*(*buffer->p_size + 1));
         //aggiorna la dimensione del buffer
         *buffer->p_size = *buffer->p_size + 1;
-        // inserisce il nuovo messaggio in testa
-        //new_msgs[0] = *msg;
-        //int i;
-        // inserisce i messaggi del buffer nel nuovo array di messaggi
-        //for(i=1; i < *buffer->p_size; i++)
-        //{
-        //    new_msgs[i] = buffer->msgs[i];
-        //}
-        //assegna il nuovo array di messaggi al buffer
         msg_t* new_msg = msg_init_string(msg->content);
         buffer->msgs[*buffer->p_d] = *new_msg;
         *buffer->p_d = (*buffer->p_d + 1) % *buffer->p_max_size;
-        //msg_init_string(new_msgs[0].content);
         return_msg = msg_init_string(buffer->msgs[0].content);
      }
     return return_msg;
@@ -93,9 +82,9 @@ msg_t* buffer_get_msg(buffer_t* buffer)
     msg_t* return_msg = MESSAGE_NULL;
     if(*buffer->p_size > 0)
     {
-        return_msg = msg_init_string(buffer->msgs[*buffer->p_t].content);
-        free(&buffer->msgs[*buffer->p_t]);
-
+        msg_t* tmp_msg = &buffer->msgs[*buffer->p_t];
+        return_msg = msg_init_string(tmp_msg->content);
+        //free(&buffer->msgs[*buffer->p_t]);
         *buffer->p_size = *buffer->p_size - 1;
         *buffer->p_t = (*buffer->p_t + 1) % *buffer->p_max_size;
     }

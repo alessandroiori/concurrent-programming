@@ -224,18 +224,6 @@ int clean_suite2(void)
  */
 void T5_get_put_bloccante_buffer_vuoto_unitario(void)
 {
-    /*// init
-    uint8_t msg_da_produrre_len = 1;
-    msg_t* msg_da_produrre = msg_init_string(EXPECTED_MSG_STRING);
-
-    uint8_t msg_consumati_len = 1;
-    msg_t* msg_consumati = MESSAGE_NULL;
-
-    buffer_t* buffer = buffer_init(1);
-
-    buffer_msg_t produttore_arg = {buffer, msg_da_produrre, &msg_da_produrre_len};
-    //buffer_msg_t consumatore_arg = {buffer, msg_consumati, &msg_consumati_len};
-*/
     init_consumatore_msg_output();
     init_produttore_msg_input();
     init_produttore_msg_output();
@@ -243,68 +231,17 @@ void T5_get_put_bloccante_buffer_vuoto_unitario(void)
     //init_buffer_pieno_unitario();
     init_mutex_cond();
 
-    CU_ASSERT(0 == *get_buffer()->p_size);
-    //sleep(1);
-    //CU_ASSERT(1 == *get_buffer()->p_size);
-    esegui_produttore_bloccante();
-    sleep(2); // consente di far ottenere per primo il MUTEX al consumatore
     esegui_consumatore_bloccante();
-
-
+    sleep(1); // consente di far ottenere per primo il MUTEX al consumatore
+    esegui_produttore_bloccante();
     esegui_join_consumatore();
     esegui_join_produttore();
 
+    CU_ASSERT(0 == *get_buffer()->p_size);
+    CU_ASSERT(0 == strcmp(PRODUTTORE_INPUT_MSG->content, CONSUMATORE_OUTPUT_MSG->content));
+    CU_ASSERT(0 == *get_buffer()->p_d);
+    CU_ASSERT(0 == *get_buffer()->p_t);
 
-    //CU_ASSERT(0 == *get_buffer()->p_size);
-    //CU_ASSERT(0 == strcmp(get_buffer()->msgs[0].content, PRODUTTORE_OUTPUT_MSG->content));
-    //CU_ASSERT(0 == strcmp(BUFFER_PIENO_UNITARIO_MSG_CONTENT, CONSUMATORE_OUTPUT_MSG->content));
-    //CU_ASSERT(0 == *get_buffer()->p_d);
-    //CU_ASSERT(0 == *get_buffer()->p_t);
-
-    /*pthread_t producer, consumer;
-
-    // esecuzione
-    init_mutex_cond();
-
-    if(pthread_create(&consumer, NULL, consumatore_bloccante, buffer))
-    {
-        printf("error creating producer thread\t\n");
-        exit(1);
-    }
-
-    sleep(1); // consente di far ottenere per primo il MUTEX al consumatore
-
-    if(pthread_create(&producer, NULL, produttore_bloccante, &produttore_arg))
-    {
-        printf("error creating producer thread\t\n");
-        exit(1);
-    }
-
-    if(pthread_join(producer, NULL))
-    {
-        printf("error joining producer thread\t\n");
-        exit(1);
-    }
-
-    if(pthread_join(consumer, NULL))
-    {
-        printf("error joining consumer thread\t\n");
-        exit(1);
-    }
-
-    // clear
-    if(BUFFER_ERROR != msg_da_produrre)
-    {
-        msg_da_produrre->msg_destroy(msg_da_produrre);
-    }
-
-    if(BUFFER_ERROR != msg_consumati)
-    {
-        msg_consumati->msg_destroy(msg_consumati);
-    }
-     */
-
-    //buffer->buffer_destroy(buffer);
     distruggi_consumatore_msg_output();
     distruggi_produttore_msg_input();
     distruggi_produttore_msg_output();
