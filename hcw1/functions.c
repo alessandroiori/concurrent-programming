@@ -66,13 +66,21 @@ msg_t* put_non_bloccante(buffer_t* buffer, msg_t* msg)
 msg_t* get_bloccante(buffer_t* buffer)
 {
     msg_t* r_msg = MESSAGE_NULL;
+    int exit = 0;
     pthread_mutex_lock(&MUTEX);
-    while(*buffer->p_size == 0)
+    while(*buffer->p_size == 0 && exit == 0)
     {
         pthread_cond_wait(&COND_NOT_EMPTY, &MUTEX);
+        if(EXIT_FROM_COND_WAIT_WHILE != 0)
+        {
+            exit = *EXIT_FROM_COND_WAIT_WHILE;
+        }
     }
-    r_msg = buffer_get_msg(buffer);
-    pthread_cond_signal(&COND_NOT_FULL);
+    if(exit == 0)
+    {
+        r_msg = buffer_get_msg(buffer);
+        pthread_cond_signal(&COND_NOT_FULL);
+    }
     pthread_mutex_unlock(&MUTEX);
 
     return r_msg;
@@ -98,6 +106,13 @@ msg_t* get_non_bloccante(buffer_t* buffer)
     pthread_mutex_unlock(&MUTEX);
 
     return return_msg;
+}
+
+void put_fake(void)
+{
+    pthread_mutex_trylock(&MUTEX);
+    pthread_cond_signal(&COND_NOT_EMPTY);
+    pthread_mutex_unlock(&MUTEX);
 }
 
 void get_fake(void)
@@ -161,6 +176,16 @@ void init_molteplici_produttori(int n)
 void distruggi_molteplici_produttori()
 {
     free(A_PRODUTTORI);
+}
+
+void init_molteplici_consumatori(int n)
+{
+    A_CONSUMATORI = (pthread_t*) malloc(sizeof(pthread_t) * n);
+}
+
+void distruggi_molteplici_consumatori(void)
+{
+    free(A_CONSUMATORI);
 }
 
 /* Inizializza il messaggio di input con MSG_CONTENT */
@@ -314,6 +339,16 @@ void distruggi_mutex_cond()
     free(EXIT_FROM_COND_WAIT_WHILE);
 }
 
+void eseguit_molteplici_fake_produttori(int n)
+{
+    int i;
+    for(i=0; i<n; i++)
+    {
+        //printf("eseguo fake produttori\r\n");
+        put_fake();
+    }
+}
+
 void eseguit_molteplici_fake_consumatori(int n)
 {
     int i;
@@ -406,6 +441,37 @@ void esegui_molteplici_join_produttore(int n)
     }
 }
 
+
+void esegui_molteplici_consumatori_bloccanti(int n)
+{
+    int i;
+
+    for(i=0; i < n; i++)
+    {
+        printf("creato %d\r\n", i);
+        if(pthread_create(&(A_CONSUMATORI[i]), NULL, funzione_consumatore_bloccante, NULL))
+        {
+            printf("error creating consumer thread\t\n");
+            exit(1);
+        }
+        printf("end creato %d\r\n", i);
+    }
+}
+
+void esegui_molteplici_join_consumatore(int n)
+{
+    int i;
+    for(i=0; i < n; i++)
+    {
+        printf("join %d\r\n", i);
+        if(pthread_join(A_CONSUMATORI[i],NULL))
+        {
+            printf("error joining consumer thread\t\n");
+            exit(1);
+        }
+        printf("end join %d\r\n", i);
+    }
+}
 /*
  *
  * PUT BLOCCANTE A TEMPO

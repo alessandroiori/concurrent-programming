@@ -32,7 +32,7 @@ msg_t* CONSUMATORE_OUTPUT_MSG;
 
 buffer_t* BUFFER;
 
-pthread_t* A_PRODUTTORI;
+pthread_t *A_PRODUTTORI, *A_CONSUMATORI;
 pthread_t PRODUTTORE, CONSUMATORE;
 
 pthread_mutex_t MUTEX;
@@ -57,6 +57,7 @@ msg_t* get_non_bloccante(buffer_t* buffer);
 
 /* support*/
 void get_fake(void);
+void put_fake(void);
 
 /*
 *
@@ -78,6 +79,8 @@ msg_t* get_msg_output();
 buffer_t* get_buffer();
 void init_molteplici_produttori(int n);
 void distruggi_molteplici_produttori();
+void init_molteplici_consumatori(int n);
+void distruggi_molteplici_consumatori();
 /* Inizializza il messaggio di input con MSG_CONTENT */
 void init_msg_input(void);
 /* Distrugge il messaggio aspettato*/
@@ -122,7 +125,11 @@ void esegui_join_produttore(void);
 
 void esegui_molteplici_produttori_bloccante(int n);
 void esegui_molteplici_join_produttore(int n);
+void esegui_molteplici_consumatori_bloccanti(int n);
+void esegui_molteplici_join_consumatore(int n);
+
 void eseguit_molteplici_fake_consumatori(int n);
+void eseguit_molteplici_fake_produttori(int n);
 
 
 
