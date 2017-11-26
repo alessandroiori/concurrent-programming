@@ -279,7 +279,7 @@ void init_buffer_pieno_dimensione_M(int m)
     {
         msgs[i] = *msg;
     }
-    BUFFER = buffer_init_pieno(m, msg, m);
+    BUFFER = buffer_init_pieno(m, msgs, m);
 }
 
 void init_buffer_mezzo_pieno_con_M_messaggi(int m)
