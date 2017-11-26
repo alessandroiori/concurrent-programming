@@ -76,7 +76,7 @@ msg_t* get_msg_input();
 msg_t* get_msg_output();
 buffer_t* get_buffer();
 void init_molteplici_produttori(int n);
-void distruggi_molteplici_produttori(int n);
+void distruggi_molteplici_produttori();
 /* Inizializza il messaggio di input con MSG_CONTENT */
 void init_msg_input(void);
 /* Distrugge il messaggio aspettato*/

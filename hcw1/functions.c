@@ -158,7 +158,7 @@ void init_molteplici_produttori(int n)
     A_PRODUTTORI = (pthread_t*) malloc(sizeof(pthread_t) * n);
 }
 
-void distruggi_molteplici_produttori(int n)
+void distruggi_molteplici_produttori()
 {
     free(A_PRODUTTORI);
 }
@@ -267,7 +267,11 @@ void init_buffer_pieno_dimensione_M(int m)
 int init_mutex_cond(int ew)
 {
     EXIT_FROM_COND_WAIT_WHILE = (int*) malloc(sizeof(int));
-    *EXIT_FROM_COND_WAIT_WHILE = ew;
+    if(ew == 1)
+    {
+        *EXIT_FROM_COND_WAIT_WHILE = ew;
+    }
+
 
     // init mutex associate to condition var
     if(pthread_mutex_init(&MUTEX, NULL))
