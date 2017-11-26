@@ -248,6 +248,36 @@ void T5_get_put_bloccante_buffer_vuoto_unitario(void)
     distruggi_buffer();
 }
 
+/*
+ * (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio
+ *  in un buffer unitario; prima il produttore
+ */
+
+void T6_put_get_bloccante_buffer_vuoto_unitario(void)
+{
+    init_consumatore_msg_output();
+    init_produttore_msg_input();
+    init_produttore_msg_output();
+    init_buffer_vuoto_unitario();
+    //init_buffer_pieno_unitario();
+    init_mutex_cond();
+
+    esegui_produttore_bloccante();
+    sleep(1); // consente di far ottenere per primo il MUTEX al consumatore
+    esegui_consumatore_bloccante();
+    esegui_join_consumatore();
+    esegui_join_produttore();
+
+    CU_ASSERT(0 == *get_buffer()->p_size);
+    CU_ASSERT(0 == strcmp(PRODUTTORE_INPUT_MSG->content, CONSUMATORE_OUTPUT_MSG->content));
+    CU_ASSERT(0 == *get_buffer()->p_d);
+    CU_ASSERT(0 == *get_buffer()->p_t);
+
+    distruggi_consumatore_msg_output();
+    distruggi_produttore_msg_input();
+    distruggi_produttore_msg_output();
+    distruggi_buffer();
+}
 
 /**
  *
@@ -280,6 +310,7 @@ int main()
         (NULL == CU_add_test(pSuite1, "3. (P=1; C=0; N=1) Produzione in un buffer pieno: T3_put_non_bloccante_in_buffer_pieno_unitario()", T3_put_non_bloccante_in_buffer_pieno_unitario)) ||
         (NULL == CU_add_test(pSuite1, "4. (P=0; C=1; N=1) Consumazione da un buffer vuoto: T4_get_non_bloccante_buffer_vuoto_unitario", T4_get_non_bloccante_buffer_vuoto_unitario)) ||
         (NULL == CU_add_test(pSuite2, "5. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il consumatore: T5_get_put_bloccante_buffer_vuoto_unitario", T5_get_put_bloccante_buffer_vuoto_unitario)) ||
+        (NULL == CU_add_test(pSuite2, "6. (P=1; C=1; N=1) Consumazione e produzione concorrente di un messaggio da un buffer unitario;\n\tprima il produttore: T6_put_get_bloccante_buffer_vuoto_unitario", T6_put_get_bloccante_buffer_vuoto_unitario)) ||
         (0))
     {
         CU_cleanup_registry();
