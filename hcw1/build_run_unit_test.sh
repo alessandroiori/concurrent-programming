@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "building"
-gcc -lcunit unit_test.c functions.c msg.c buffer.c -o unit_test
+gcc -lcunit test.c functions.c msg.c buffer.c -o test
 
 echo "running"
-./unit_test
+./test
