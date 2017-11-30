@@ -270,6 +270,11 @@ void init_buffer_pieno_unitario(void)
     BUFFER = buffer_init_pieno(1, msg, 1);
 }
 
+void init_buffer_vuoto_dimensione_M(int m)
+{
+    BUFFER = buffer_init(m);
+}
+
 void init_buffer_pieno_dimensione_M(int m)
 {
     msg_t* msgs = (msg_t*) malloc(sizeof(msg_t) * m);
