@@ -10,13 +10,6 @@
 #include "msg.h"
 #include "buffer.h"
 
-//TODO: REMOVE
-typedef struct buffer_msg {
-    buffer_t* buffer;
-    msg_t* msgs;
-    uint8_t* msgs_len;
-} buffer_msg_t;
-
 #define EXPECTED_MSG_CONTENT "content"
 #define BUFFER_PIENO_UNITARIO_MSG_CONTENT "pieno unitario content"
 #define BUFFER_PIENO_DIMENSIONE_M_MSG_CONTENT "pieno dimensione m content"
@@ -55,13 +48,10 @@ msg_t* get_bloccante(buffer_t* buffer);
 // ed il valore estratto in caso contrario
 msg_t* get_non_bloccante(buffer_t* buffer);
 
-/* support*/
-void get_fake(void);
-void put_fake(void);
 
 /*
 *
-* FUNZIONI DI SUPPORTO per FUNZIONI DA TESTARE
+* FUNZIONI DI SUPPORTO
 *
 */
 void esegui_put_non_bloccante(void);
@@ -71,12 +61,13 @@ void esegui_get_bloccante(void);
 
 /*
  *
- * FUNZIONI DI SUPPORTO BUFFER e MSG
+ *  BUFFER e MSG
  *
  */
 msg_t* get_msg_input();
 msg_t* get_msg_output();
 buffer_t* get_buffer();
+
 void init_molteplici_produttori(int n);
 void distruggi_molteplici_produttori();
 void init_molteplici_consumatori(int n);
@@ -113,6 +104,9 @@ void init_buffer_mezzo_pieno_con_M_messaggi(int m);
  *
  */
 
+void get_fake(void);
+void put_fake(void);
+
 /* Inizializza i il mutex e le variabili condizione */
 int init_mutex_cond(int ew);
 void distruggi_mutex_cond(void);
@@ -131,7 +125,5 @@ void esegui_molteplici_join_consumatore(int n);
 
 void eseguit_molteplici_fake_consumatori(int n);
 void eseguit_molteplici_fake_produttori(int n);
-
-
 
 #endif //UNTITLED_PROD_CONS_H

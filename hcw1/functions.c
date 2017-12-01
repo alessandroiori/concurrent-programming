@@ -478,39 +478,3 @@ void esegui_molteplici_join_consumatore(int n)
        //printf("end join %d\r\n", i);
     }
 }
-
-/*
- *
- * PUT BLOCCANTE A TEMPO
-msg_t* put_bloccante(buffer_t* buffer, msg_t* msg)
-{
-    msg_t* r_msg = MESSAGE_NULL;
-
-    if(MESSAGE_NULL != msg)
-    {
-        int rc = 0;
-        int cnt = 3;
-
-        struct timespec ts;
-        clock_gettime(CLOCK_REALTIME, &ts);
-        ts.tv_sec += 2;
-
-        pthread_mutex_lock(&MUTEX);
-        while(*buffer->p_size >= *buffer->p_max_size && cnt > 0)
-        {
-            printf("AAAAA\n\t");
-            cnt--;
-            rc = pthread_cond_timedwait(&COND_NOT_FULL, &MUTEX, &ts);
-        }
-        if(rc == 0)
-        {
-            printf("YESSS\n\t");
-            r_msg = buffer_add_msg(buffer,msg);
-            pthread_cond_signal(&COND_NOT_EMPTY);
-            pthread_mutex_unlock(&MUTEX);
-        }
-    }
-
-    return r_msg;
-}
- */

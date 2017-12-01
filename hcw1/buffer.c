@@ -42,15 +42,6 @@ buffer_t* buffer_init_pieno(unsigned int maxsize, msg_t* msgs, unsigned int msgs
 // deallocazione di un buffer
 void buffer_destroy(buffer_t* buffer)
 {
-    /*
-    int i;
-    uint8_t p_buffer_size = *buffer->p_size;
-    for(i=0; i< p_buffer_size; i++)
-    {
-        msg_t current_msg = buffer->msgs[i];
-        current_msg.msg_destroy(&current_msg);
-    }
-     */
     free(buffer->msgs);
     free(buffer->p_max_size);
     free(buffer->p_size);
