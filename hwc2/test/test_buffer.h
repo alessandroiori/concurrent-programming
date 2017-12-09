@@ -5,13 +5,19 @@
 #ifndef UNTITLED_TEST_HWC2_H
 #define UNTITLED_TEST_HWC2_H
 
+#include <unistd.h>
 #include "CUnit/Basic.h"
 #include "../hwc1/buffer.h"
 
 int buffer_before(void);
 int buffer_after(void);
 
-void test_buffer_init(void);
-void test_buffer_destroy(void);
+void test_buffer_init_buffer_unitario(void);
+void test_buffer_init_buffer_non_unitario(void);
+void test_buffer_destroy_buffer_unitario_vuoto(void);
+void test_buffer_destroy_buffer_non_unitario_vuoto(void);
+void test_buffer_add_msg_buffer_unitario_vuoto(void);
+void test_buffer_riempimento_buffer_non_unitario(void);
+void test_buffer_riempimento_mezzo_buffer_non_unitario(void);
 
 #endif //UNTITLED_TEST_HWC2_H

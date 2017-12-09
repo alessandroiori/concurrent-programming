@@ -30,7 +30,14 @@ int main()
 
     /* add the tests to the suite */
     /* NOTE - ORDER IS IMPORTANT */
-    if((NULL == CU_add_test(pSuite1, "Creazione buffer\n\t", test_buffer_init)) ||
+    if((NULL == CU_add_test(pSuite1, "Creazione buffer unitario\n\t", test_buffer_init_buffer_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Creazione buffer non unitario\n\t", test_buffer_init_buffer_non_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Distruzione buffer unitario vuoto\n\t", test_buffer_destroy_buffer_unitario_vuoto)) ||
+            (NULL == CU_add_test(pSuite1, "Distruzione buffer non unitario vuoto\n\t", test_buffer_destroy_buffer_non_unitario_vuoto)) ||
+            (NULL == CU_add_test(pSuite1, "Aggiungi msg nel buffer unitario vuoto\n\t", test_buffer_add_msg_buffer_unitario_vuoto)) ||
+            (NULL == CU_add_test(pSuite1, "Riempimpimento buffer non unitario\n\t", test_buffer_riempimento_buffer_non_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Riempimento mezzo buffer non unitario\n\t", test_buffer_riempimento_mezzo_buffer_non_unitario)) ||
+
        (0))
     {
         CU_cleanup_registry();
