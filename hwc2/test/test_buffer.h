@@ -21,5 +21,11 @@ void test_buffer_destroy_buffer_non_unitario_vuoto(void);
 void test_buffer_add_msg_buffer_unitario_vuoto(void);
 void test_buffer_riempimento_buffer_non_unitario(void);
 void test_buffer_riempimento_mezzo_buffer_non_unitario(void);
+void test_buffer_add_msg_buffer_pineo_unitario(void);
+void test_buffer_add_msg_buffer_pineo_non_unitario(void);
+void test_buffer_get_msg_buffer_pineo_non_unitario(void);
+void test_buffer_get_msg_buffer_vuoto_non_unitario(void);
+void test_buffer_get_msg_buffer_pineo_unitario(void);
+void test_buffer_get_msg_buffer_vuoto_unitario(void);
 
 #endif //UNTITLED_TEST_HWC2_H

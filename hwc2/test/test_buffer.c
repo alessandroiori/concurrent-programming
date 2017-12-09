@@ -174,3 +174,125 @@ void test_buffer_riempimento_mezzo_buffer_non_unitario(void)
     free(msg);
     free(buffer);
 }
+
+void test_buffer_add_msg_buffer_pineo_unitario(void)
+{
+    char content[] = "content";
+    char new_content[] = "content_new";
+    msg_t* msg = msg_init_string(content);
+    msg_t* new_msg = msg_init_string(new_content);
+    buffer_t* buffer = buffer_init_pieno(1, msg, 1);
+
+    buffer_add_msg(buffer,new_msg);
+
+    CU_ASSERT(1 == *buffer->p_max_size);
+    CU_ASSERT(1 == *buffer->p_size);
+    CU_ASSERT(0 == *buffer->p_t);
+    CU_ASSERT(0 == *buffer->p_d);
+    CU_ASSERT(0 == strcmp(buffer->msgs->content, content));
+    CU_ASSERT(0 == strcmp(buffer->msgs->content, content));
+    CU_ASSERT(0 != strcmp(buffer->msgs->content, new_content));
+
+    free(msg);
+    free(buffer);
+}
+
+void test_buffer_add_msg_buffer_pineo_non_unitario(void)
+{
+    char content[] = "content";
+    char new_content[] = "content_new";
+    msg_t* msg = msg_init_string(content);
+    msg_t* new_msg = msg_init_string(new_content);
+    msg_t msgs[10];
+    int i;
+    for(i=0; i<10; i++)
+    {
+        msgs[i] = *msg;
+    }
+    buffer_t* buffer = buffer_init_pieno(10, msgs, 10);
+
+    buffer_add_msg(buffer,new_msg);
+
+    CU_ASSERT(10 == *buffer->p_max_size);
+    CU_ASSERT(10 == *buffer->p_size);
+    CU_ASSERT(0 == *buffer->p_t);
+    CU_ASSERT(0 == *buffer->p_d);
+    for(i=0; i<10; i++)
+    {
+        CU_ASSERT(0 == strcmp(buffer->msgs[i].content, content));
+        CU_ASSERT(0 != strcmp(buffer->msgs[i].content, new_content));
+    }
+
+    free(msg);
+    free(new_msg);
+    free(buffer);
+}
+
+void test_buffer_get_msg_buffer_pineo_non_unitario(void)
+{
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    msg_t msgs[10];
+    int i=0;
+    for(i=0; i<10; i++)
+    {
+        msgs[i] = *msg;
+    }
+    buffer_t* buffer = buffer_init_pieno(10, msgs, 10);
+
+    msg_t* get_msg = buffer_get_msg(buffer);
+
+    CU_ASSERT(10 == *buffer->p_max_size);
+    CU_ASSERT(9 == *buffer->p_size);
+    CU_ASSERT(0 == strcmp(get_msg->content, content));
+
+
+    free(get_msg);
+    free(msg);
+    free(buffer);
+}
+
+void test_buffer_get_msg_buffer_vuoto_non_unitario(void)
+{
+    buffer_t* buffer = buffer_init(10);
+
+    msg_t* get_msg = buffer_get_msg(buffer);
+
+    CU_ASSERT(10 == *buffer->p_max_size);
+    CU_ASSERT(0 == *buffer->p_size);
+    CU_ASSERT_PTR_NULL(get_msg);
+
+    free(get_msg);
+    free(buffer);
+}
+
+void test_buffer_get_msg_buffer_pineo_unitario(void)
+{
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    buffer_t* buffer = buffer_init_pieno(1, msg, 1);
+
+    msg_t* get_msg = buffer_get_msg(buffer);
+
+    CU_ASSERT(1 == *buffer->p_max_size);
+    CU_ASSERT(0 == *buffer->p_size);
+    CU_ASSERT(0 == strcmp(get_msg->content, content));
+
+    free(get_msg);
+    free(msg);
+    free(buffer);
+}
+
+void test_buffer_get_msg_buffer_vuoto_unitario(void)
+{
+    buffer_t* buffer = buffer_init(1);
+
+    msg_t* get_msg = buffer_get_msg(buffer);
+
+    CU_ASSERT(1 == *buffer->p_max_size);
+    CU_ASSERT(0 == *buffer->p_size);
+    CU_ASSERT_PTR_NULL(get_msg);
+
+    free(get_msg);
+    free(buffer);
+}

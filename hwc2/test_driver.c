@@ -39,6 +39,12 @@ int main()
             (NULL == CU_add_test(pSuite1, "Aggiungi msg nel buffer unitario vuoto\n\t", test_buffer_add_msg_buffer_unitario_vuoto)) ||
             (NULL == CU_add_test(pSuite1, "Riempimpimento buffer non unitario\n\t", test_buffer_riempimento_buffer_non_unitario)) ||
             (NULL == CU_add_test(pSuite1, "Riempimento mezzo buffer non unitario\n\t", test_buffer_riempimento_mezzo_buffer_non_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Add msg buffer pieno unitario\n\t", test_buffer_add_msg_buffer_pineo_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Add msg buffer pieno non unitario\n\t", test_buffer_add_msg_buffer_pineo_non_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Get msg buffer pieno non unitario\n\t", test_buffer_get_msg_buffer_pineo_non_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Get msg buffer vuoto non unitario\n\t", test_buffer_get_msg_buffer_vuoto_non_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Get msg buffer pieno unitario\n\t", test_buffer_get_msg_buffer_pineo_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Get msg buffer vuoto unitario\n\t", test_buffer_get_msg_buffer_vuoto_unitario)) ||
 
        (0))
     {
