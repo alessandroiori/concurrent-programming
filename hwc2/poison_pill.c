@@ -6,7 +6,7 @@
 
 const msg_t POISON_PILL_MSG = {
         NULL,
-        msg_init_pill,
+        //msg_init_pill,
         msg_destroy_pill,
         msg_copy_pill
 };
