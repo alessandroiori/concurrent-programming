@@ -45,6 +45,58 @@ void test_buffer_init_buffer_non_unitario(void)
     free(buffer);
 }
 
+void test_buffer_init_buffer_pieno_unitario(void)
+{
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    buffer_t* buffer = buffer_init_pieno(1, msg, 1);
+    CU_ASSERT_PTR_NOT_NULL(buffer);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_size);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_max_size);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_t);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_d);
+    CU_ASSERT_PTR_NOT_NULL(buffer->msgs);
+    CU_ASSERT(1 == *buffer->p_max_size);
+    CU_ASSERT(1 == *buffer->p_size);
+    CU_ASSERT(0 == *buffer->p_t);
+    CU_ASSERT(0 == *buffer->p_d);
+    CU_ASSERT(0 == strcmp(buffer->msgs->content, content));
+
+    free(msg);
+    free(buffer);
+}
+
+void test_buffer_init_buffer_pieno_non_unitario(void)
+{
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    msg_t msgs[10];
+    int i=0;
+    for(i=0; i<10; i++)
+    {
+        msgs[i] = *msg;
+    }
+    buffer_t* buffer = buffer_init_pieno(10, msgs, 10);
+
+    CU_ASSERT_PTR_NOT_NULL(buffer);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_size);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_max_size);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_t);
+    CU_ASSERT_PTR_NOT_NULL(buffer->p_d);
+    CU_ASSERT_PTR_NOT_NULL(buffer->msgs);
+    CU_ASSERT(10 == *buffer->p_max_size);
+    CU_ASSERT(10 == *buffer->p_size);
+    CU_ASSERT(0 == *buffer->p_t);
+    CU_ASSERT(0 == *buffer->p_d);
+    for(i=0; i<10; i++)
+    {
+        CU_ASSERT(0 == strcmp(buffer->msgs[i].content, content));
+    }
+
+    free(msg);
+    free(buffer);
+}
+
 void test_buffer_destroy_buffer_unitario_vuoto(void)
 {
     buffer_t* buffer = buffer_init(1);

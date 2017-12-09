@@ -32,6 +32,8 @@ int main()
     /* NOTE - ORDER IS IMPORTANT */
     if((NULL == CU_add_test(pSuite1, "Creazione buffer unitario\n\t", test_buffer_init_buffer_unitario)) ||
             (NULL == CU_add_test(pSuite1, "Creazione buffer non unitario\n\t", test_buffer_init_buffer_non_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Creazione buffer unitario pieno\n\t", test_buffer_init_buffer_pieno_unitario)) ||
+            (NULL == CU_add_test(pSuite1, "Creazione buffer non unitario pieno\n\t", test_buffer_init_buffer_pieno_non_unitario)) ||
             (NULL == CU_add_test(pSuite1, "Distruzione buffer unitario vuoto\n\t", test_buffer_destroy_buffer_unitario_vuoto)) ||
             (NULL == CU_add_test(pSuite1, "Distruzione buffer non unitario vuoto\n\t", test_buffer_destroy_buffer_non_unitario_vuoto)) ||
             (NULL == CU_add_test(pSuite1, "Aggiungi msg nel buffer unitario vuoto\n\t", test_buffer_add_msg_buffer_unitario_vuoto)) ||

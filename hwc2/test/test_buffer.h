@@ -14,6 +14,8 @@ int buffer_after(void);
 
 void test_buffer_init_buffer_unitario(void);
 void test_buffer_init_buffer_non_unitario(void);
+void test_buffer_init_buffer_pieno_unitario(void);
+void test_buffer_init_buffer_pieno_non_unitario(void);
 void test_buffer_destroy_buffer_unitario_vuoto(void);
 void test_buffer_destroy_buffer_non_unitario_vuoto(void);
 void test_buffer_add_msg_buffer_unitario_vuoto(void);
