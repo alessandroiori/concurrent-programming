@@ -161,3 +161,25 @@ void test_provider_2_msg_spediti_buffer_dim_1(void)
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
 }
+
+void test_provider_10_msg_spediti_buffer_dim_5(void)
+{
+    char content[] = "content";
+    int* msg_len = (int*) malloc(sizeof(int));
+    *msg_len = 10;
+    msg_t* msg = msg_init_string(content);
+    msg_t msgs[] = {*msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg};
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(5);
+    provider_t *provider = provider_init(c_buffer, msgs, msg_len);
+    test_support_provider_cond_wait_while_init();
+
+    provider_start_thread();
+    test_support_provider_fake_dispatcher(c_buffer, 10+1); // 10 msg + poison
+    provider_join_thread();
+    test_support_provider_join_fake_dispatcher();
+
+    test_support_provider_cond_wait_while_destroy();
+    provider->provider_destroy(provider);
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+    msg->msg_destroy(msg);
+}

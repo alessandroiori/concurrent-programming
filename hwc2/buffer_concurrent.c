@@ -18,7 +18,7 @@ msg_t* put_bloccante(buffer_concurrent_t* c_buffer, msg_t* msg)
         pthread_mutex_lock(MUTEX);
         while(*buffer->p_size >= *buffer->p_max_size && exit == 0)
         {
-            printf("nel while, exit = %d\r\n", exit);
+            //printf("nel while, exit = %d\r\n", exit);
             pthread_cond_wait(COND_NOT_FULL, MUTEX);
 
             if(EXIT_FROM_COND_WAIT_WHILE != 0)

@@ -17,6 +17,7 @@ void test_provider_destroy(void);
 void test_provider_1_msg_spediti_buffer_dim_2(void);
 void test_provider_2_msg_spediti_buffer_dim_4(void);
 void test_provider_2_msg_spediti_buffer_dim_1(void);
+void test_provider_10_msg_spediti_buffer_dim_5(void);
 
 /* support */
 void test_support_provider_cond_wait_while_init(void);
