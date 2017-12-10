@@ -43,7 +43,7 @@ void test_provider_destroy(void)
     // basta che il test termini correttamente: no asserzioni!
 }
 
-void test_provider_2_msg_spediti_buffer_dim_2(void)
+void test_provider_1_msg_spediti_buffer_dim_2(void)
 {
     char content[] = "content";
     int* msg_len = (int*) malloc(sizeof(int));
@@ -60,8 +60,31 @@ void test_provider_2_msg_spediti_buffer_dim_2(void)
     //TODO: replace NULL with correct POISON message
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[1].content, POISON_PILL->content));
 
+    provider->provider_destroy(provider);
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+    msg->msg_destroy(msg);
+}
+
+void test_provider_2_msg_spediti_buffer_dim_4(void)
+{
+    /*
+    char content[] = "content";
+    int* msg_len = (int*) malloc(sizeof(int));
+    *msg_len = 2;
+    msg_t *msg = msg_init_string(content);
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(2+1); //msg + poison_pill
+    provider_t *provider = provider_init(c_buffer, msg, msg_len);
+
+    provider_start_thread();
+    provider_join_thread();
+
+    CU_ASSERT(2 == *c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[0].content, content));
+    //TODO: replace NULL with correct POISON message
+    CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[1].content, POISON_PILL->content));
+
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
     free(msg_len);
-
+     */
 }

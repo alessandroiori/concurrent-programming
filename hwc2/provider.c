@@ -35,7 +35,6 @@ void* provider_thread_function(void* args)
     {
         buffer_concurrent_add_msg(PROVIDER.c_buffer, &PROVIDER.msgs[i]);
     }
-
     msg_t* msg_poison = msg_init_string("POISON_PILL");
     buffer_concurrent_add_msg(PROVIDER.c_buffer, msg_poison);//POISON_PILL);//&PROVIDER.msgs[0]);
     return (void*) NULL;
@@ -58,7 +57,4 @@ void provider_join_thread(void)
         printf("error joining provider thread\t\n");
         exit(1);
     }
-/*
-    PROVIDER.provider_destroy(&PROVIDER);
-    */
 }
