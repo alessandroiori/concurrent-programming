@@ -7,7 +7,10 @@
 
 #include "hwc1/msg.h"
 
-#define POISON_PILL ( (msg_t*)&POISON_PILL_MSG )
+//#define POISON_PILL ( (msg_t*)&POISON_PILL_MSG )
+
+#define POISON_PILL_STR "POISON_PILL"
+#define POISON_PILL ((msg_t*)msg_init_string(POISON_PILL_STR))
 
 msg_t* msg_init_pill(void *);
 msg_t* msg_copy_pill(msg_t *);
