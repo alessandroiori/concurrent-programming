@@ -9,12 +9,15 @@
 #include "hwc1/buffer.h"
 #include "monitor_buffer.h"
 
+int* EXIT_FROM_COND_WAIT_WHILE; //consente funzionamento dei fake produttori consumatori
+
 typedef struct buffer_concurrent {
     buffer_t* buffer;
     monitor_buffer_t* monitor;
     void (*buffer_concurrent_destroy)(struct buffer_concurrent* buffer);
 } buffer_concurrent_t;
 
+/* */
 buffer_concurrent_t* buffer_concurrent_init(unsigned int maxsize);
 void buffer_concurrent_destroy(buffer_concurrent_t* buffer);
 // aggiunge un messaggio al buffer

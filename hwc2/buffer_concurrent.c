@@ -21,12 +21,10 @@ msg_t* put_bloccante(buffer_concurrent_t* c_buffer, msg_t* msg)
             //printf("nel while, exit = %d\r\n", exit);
             pthread_cond_wait(COND_NOT_FULL, MUTEX);
 
-            /*
             if(EXIT_FROM_COND_WAIT_WHILE != 0)
             {
                 exit = *EXIT_FROM_COND_WAIT_WHILE;
             }
-            */
         }
         if(exit == 0)
         {
@@ -82,12 +80,11 @@ msg_t* get_bloccante(buffer_concurrent_t* c_buffer)
     while(*buffer->p_size == 0 && exit == 0)
     {
         pthread_cond_wait(COND_NOT_EMPTY, MUTEX);
-        /*
+
         if(EXIT_FROM_COND_WAIT_WHILE != 0)
         {
             exit = *EXIT_FROM_COND_WAIT_WHILE;
         }
-        */
     }
     if(exit == 0)
     {

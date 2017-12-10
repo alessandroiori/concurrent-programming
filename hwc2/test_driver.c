@@ -59,9 +59,9 @@ int main()
             (NULL == CU_add_test(pSuite2, "2.6 Distruzione buffer concorrente non unitario vuoto\n\t", test_buffer_concorrente_destroy_buffer_non_unitario_vuoto)) ||
             (NULL == CU_add_test(pSuite2, "2.7 Aggiungi msg nel buffer concorrente unitario vuoto\n\t", test_buffer_concorrente_add_msg_buffer_unitario_vuoto)) ||
             (NULL == CU_add_test(pSuite2, "2.8 Riempimpimento buffer concorrente non unitario\n\t", test_buffer_concorrente_riempimento_buffer_non_unitario)) ||
-/*
-            (NULL == CU_add_test(pSuite1, "1.9 Riempimento mezzo buffer non unitario\n\t", test_buffer_riempimento_mezzo_buffer_non_unitario)) ||
-            (NULL == CU_add_test(pSuite1, "1.10Add msg buffer pieno unitario\n\t", test_buffer_add_msg_buffer_pineo_unitario)) ||
+            (NULL == CU_add_test(pSuite2, "2.9 Riempimento mezzo buffer concorrente non unitario\n\t", test_buffer_concorrente_riempimento_mezzo_buffer_non_unitario)) ||
+            (NULL == CU_add_test(pSuite2, "2.10 Add msg buffer concurrente pieno unitario\n\t", test_buffer_concorrente_add_msg_buffer_pineo_unitario)) ||
+            /*
             (NULL == CU_add_test(pSuite1, "1.11 Add msg buffer pieno non unitario\n\t", test_buffer_add_msg_buffer_pineo_non_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.12 Get msg buffer pieno non unitario\n\t", test_buffer_get_msg_buffer_pineo_non_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.13 Get msg buffer vuoto non unitario\n\t", test_buffer_get_msg_buffer_vuoto_non_unitario)) ||
