@@ -71,7 +71,7 @@ int main()
             (NULL == CU_add_test(pSuite3, "3.1 Creazione provider\n\t", test_provider_init)) ||
             (NULL == CU_add_test(pSuite3, "3.2 Distruzione provider\n\t", test_provider_destroy)) ||
             (NULL == CU_add_test(pSuite3, "3.3 Provider spedisce 1 msg nel buffer size 2\n\t", test_provider_1_msg_spediti_buffer_dim_2)) ||
-           // (NULL == CU_add_test(pSuite3, "3.4 Provider spedisce 1 msg nel buffer size 4\n\t", test_provider_1_msg_spediti_buffer_dim_4)) ||
+            (NULL == CU_add_test(pSuite3, "3.4 Provider spedisce 2 msg nel buffer size 4\n\t", test_provider_2_msg_spediti_buffer_dim_4)) ||
             (0))
     {
         CU_cleanup_registry();
