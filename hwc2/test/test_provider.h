@@ -14,6 +14,6 @@ int provider_after(void);
 void test_provider_init(void);
 void test_provider_destroy(void);
 
-void test_provider_1_msg_spedito_buffer_dim_2(void);
+void test_provider_2_msg_spediti_buffer_dim_2(void);
 
 #endif //UNTITLED_TEST_PROVIDER_H

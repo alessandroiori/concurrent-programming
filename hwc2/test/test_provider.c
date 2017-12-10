@@ -43,7 +43,7 @@ void test_provider_destroy(void)
     // basta che il test termini correttamente: no asserzioni!
 }
 
-void test_provider_1_msg_spedito_buffer_dim_2(void)
+void test_provider_2_msg_spediti_buffer_dim_2(void)
 {
     char content[] = "content";
     int* msg_len = (int*) malloc(sizeof(int));
