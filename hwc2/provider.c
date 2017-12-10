@@ -51,7 +51,6 @@ void provider_start_thread(void)
 
 void provider_join_thread(void)
 {
-
     if(pthread_join(PROVIDER_THREAD, NULL))
     {
         printf("error joining provider thread\t\n");
