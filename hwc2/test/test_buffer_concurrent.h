@@ -6,11 +6,20 @@
 #define UNTITLED_TEST_BUFFER_CONCURRENT_H
 
 #include <unistd.h>
+#include <pthread.h>
 #include "CUnit/Basic.h"
 #include "../buffer_concurrent.h"
 
 /* supporto per i test */
+/* suppor */
+void test_support_buffer_concurrent_cond_wait_while_init(void);
+void test_support_buffer_concurrent_cond_wait_while_destroy(void);
 
+//produzzione
+void test_support_buffer_concurrent_fake_concumatore(monitor_buffer_t* monitor);
+void* test_support_buffer_concurrent_thread_function(void* args);
+void test_support_buffer_concurrent_produttore(buffer_concurrent_t* c_buffer, msg_t* new_msg);
+void test_support_buffer_concurrent_join_produttore();
 
 /* test */
 int cbuffer_before(void);
