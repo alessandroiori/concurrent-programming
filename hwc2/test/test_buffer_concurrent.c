@@ -7,7 +7,7 @@
 /* suppor */
 buffer_concurrent_t* TMP_C_BUFFER;
 msg_t* TMP_MSG;
-pthread_t TMP_PRODUTTORE;
+pthread_t TMP_PRODUTTORE, TMP_CONSUMATORE;
 
 void test_support_buffer_concurrent_cond_wait_while_init(void)
 {
@@ -25,10 +25,22 @@ void test_support_buffer_concurrent_fake_concumatore(monitor_buffer_t* monitor)
     pthread_cond_signal(monitor->COND_NOT_FULL);
 }
 
-void* test_support_buffer_concurrent_thread_function(void* args)
+void test_support_buffer_concurrent_fake_produttore(monitor_buffer_t* monitor)
+{
+    pthread_cond_signal(monitor->COND_NOT_EMPTY);
+}
+
+void* test_support_buffer_concurrent_produttore_function(void* args)
 {
     buffer_concurrent_add_msg(TMP_C_BUFFER, TMP_MSG);
     TMP_MSG = (msg_t*) NULL;
+    TMP_C_BUFFER = (buffer_concurrent_t*) NULL;
+    return (void*) NULL;
+}
+
+void* test_support_buffer_concurrent_consumatore_function(void* args)
+{
+    buffer_concurrent_get_msg(TMP_C_BUFFER);
     TMP_C_BUFFER = (buffer_concurrent_t*) NULL;
     return (void*) NULL;
 }
@@ -38,7 +50,7 @@ void test_support_buffer_concurrent_produttore(buffer_concurrent_t* c_buffer, ms
     TMP_C_BUFFER = c_buffer;
     TMP_MSG = new_msg;
 
-    if(pthread_create(&TMP_PRODUTTORE, NULL, test_support_buffer_concurrent_thread_function, NULL))
+    if(pthread_create(&TMP_PRODUTTORE, NULL, test_support_buffer_concurrent_produttore_function, NULL))
     {
         printf("error creating produttore thread\t\n");
         exit(1);
@@ -46,11 +58,31 @@ void test_support_buffer_concurrent_produttore(buffer_concurrent_t* c_buffer, ms
 
 }
 
-void test_support_buffer_concurrent_join_produttore()
+void test_support_buffer_concurrent_consumatore(buffer_concurrent_t* c_buffer)
+{
+    TMP_C_BUFFER = c_buffer;
+
+    if(pthread_create(&TMP_CONSUMATORE, NULL, test_support_buffer_concurrent_consumatore_function, NULL))
+    {
+        printf("error creating cosumatore thread\t\n");
+        exit(1);
+    }
+}
+
+void test_support_buffer_concurrent_join_produttore(void)
 {
     if(pthread_join(TMP_PRODUTTORE, NULL))
     {
         printf("error joining ptoduttore thread\t\n");
+        exit(1);
+    }
+}
+
+void test_support_buffer_concurrent_join_consumatore(void)
+{
+    if(pthread_join(TMP_CONSUMATORE, NULL))
+    {
+        printf("error joining consumatore thread\t\n");
         exit(1);
     }
 }
@@ -300,5 +332,44 @@ void test_buffer_concorrente_get_msg_buffer_pieno_non_unitario(void)
     CU_ASSERT(9 == *c_buffer->buffer->p_size);
     CU_ASSERT(0 == strcmp(out_msg->content, content));
 
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+}
+
+void test_buffer_concorrente_get_msg_buffer_vuoto_unitario(void)
+{
+
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(10);
+    test_support_buffer_concurrent_cond_wait_while_init();
+
+    test_support_buffer_concurrent_consumatore(c_buffer);
+    sleep(3);
+    test_support_buffer_concurrent_fake_produttore(c_buffer->monitor);
+    test_support_buffer_concurrent_join_consumatore();
+
+    CU_ASSERT(10 == *c_buffer->buffer->p_max_size);
+    CU_ASSERT(0 == *c_buffer->buffer->p_size);
+    CU_ASSERT(0 == *c_buffer->buffer->p_t);
+    CU_ASSERT(0 == *c_buffer->buffer->p_d);
+
+    test_support_buffer_concurrent_cond_wait_while_destroy();
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+}
+
+void test_buffer_concorrente_get_msg_buffer_vuoto_non_unitario(void)
+{
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(10);
+    test_support_buffer_concurrent_cond_wait_while_init();
+
+    test_support_buffer_concurrent_consumatore(c_buffer);
+    sleep(3);
+    test_support_buffer_concurrent_fake_produttore(c_buffer->monitor);
+    test_support_buffer_concurrent_join_consumatore();
+
+    CU_ASSERT(10 == *c_buffer->buffer->p_max_size);
+    CU_ASSERT(0 == *c_buffer->buffer->p_size);
+    CU_ASSERT(0 == *c_buffer->buffer->p_t);
+    CU_ASSERT(0 == *c_buffer->buffer->p_d);
+
+    test_support_buffer_concurrent_cond_wait_while_destroy();
     c_buffer->buffer_concurrent_destroy(c_buffer);
 }

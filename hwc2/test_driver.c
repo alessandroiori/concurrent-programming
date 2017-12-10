@@ -64,10 +64,9 @@ int main()
             (NULL == CU_add_test(pSuite2, "2.11 Add msg buffer concorrente pieno non unitario\n\t", test_buffer_concorrente_add_msg_buffer_pineo_non_unitario)) ||
             (NULL == CU_add_test(pSuite2, "2.12 Get msg buffer concorrente pieno unitario\n\t", test_buffer_concorrente_get_msg_buffer_pineo_non_unitario)) ||
             (NULL == CU_add_test(pSuite2, "2.13 Get msg buffer concorrente pieno non unitario\n\t", test_buffer_concorrente_get_msg_buffer_pieno_non_unitario)) ||
-            /*
-            (NULL == CU_add_test(pSuite1, "1.14 Get msg buffer vuoto non unitario\n\t", test_buffer_get_msg_buffer_pineo_unitario)) ||
-            (NULL == CU_add_test(pSuite1, "1.15 Get msg buffer vuoto unitario\n\t", test_buffer_get_msg_buffer_vuoto_unitario)) ||
-            */
+            (NULL == CU_add_test(pSuite2, "2.14 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_unitario)) ||
+            (NULL == CU_add_test(pSuite2, "2.15 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_non_unitario)) ||
+
        (0))
     {
         CU_cleanup_registry();
