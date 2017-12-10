@@ -34,5 +34,8 @@ void test_buffer_concorrente_add_msg_buffer_unitario_vuoto(void);
 void test_buffer_concorrente_riempimento_buffer_non_unitario(void);
 void test_buffer_concorrente_riempimento_mezzo_buffer_non_unitario(void);
 void test_buffer_concorrente_add_msg_buffer_pineo_unitario(void);
+void test_buffer_concorrente_add_msg_buffer_pineo_non_unitario(void);
+void test_buffer_concorrente_get_msg_buffer_pineo_non_unitario(void);
+void test_buffer_concorrente_get_msg_buffer_pieno_non_unitario(void);
 
 #endif //UNTITLED_TEST_BUFFER_CONCURRENT_H

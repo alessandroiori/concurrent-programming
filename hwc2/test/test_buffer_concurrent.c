@@ -4,12 +4,11 @@
 
 #include "test_buffer_concurrent.h"
 
+/* suppor */
 buffer_concurrent_t* TMP_C_BUFFER;
 msg_t* TMP_MSG;
-
 pthread_t TMP_PRODUTTORE;
 
-/* suppor */
 void test_support_buffer_concurrent_cond_wait_while_init(void)
 {
     EXIT_FROM_COND_WAIT_WHILE = (int*) malloc(sizeof(int));
@@ -213,7 +212,6 @@ void test_buffer_concorrente_add_msg_buffer_pineo_unitario(void)
     test_support_buffer_concurrent_cond_wait_while_init();
 
     //buffer_concurrent_add_msg(c_buffer, new_msg);
-
     test_support_buffer_concurrent_produttore(c_buffer, new_msg);
     sleep(3);
     test_support_buffer_concurrent_fake_concumatore(c_buffer->monitor);
@@ -228,5 +226,79 @@ void test_buffer_concorrente_add_msg_buffer_pineo_unitario(void)
     CU_ASSERT(0 != strcmp(c_buffer->buffer->msgs->content, new_content));
 
     test_support_buffer_concurrent_cond_wait_while_destroy();
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+}
+
+void test_buffer_concorrente_add_msg_buffer_pineo_non_unitario(void)
+{
+    char content[] = "content";
+    char new_content[] = "content_new";
+    msg_t* msg = msg_init_string(content);
+    msg_t* new_msg = msg_init_string(new_content);
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(10);
+    int i;
+    for(i=0; i<10; i++)
+    {
+        buffer_concurrent_add_msg(c_buffer, msg);
+    }
+    test_support_buffer_concurrent_cond_wait_while_init();
+
+    //buffer_concurrent_add_msg(c_buffer, new_msg);
+    test_support_buffer_concurrent_produttore(c_buffer, new_msg);
+    sleep(3);
+    test_support_buffer_concurrent_fake_concumatore(c_buffer->monitor);
+    test_support_buffer_concurrent_join_produttore();
+
+    CU_ASSERT(10 == *c_buffer->buffer->p_max_size);
+    CU_ASSERT(10 == *c_buffer->buffer->p_size);
+    CU_ASSERT(0 == *c_buffer->buffer->p_t);
+    CU_ASSERT(0 == *c_buffer->buffer->p_d);
+
+    for(i=0; i<10; i++)
+    {
+        CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[i].content, content));
+        CU_ASSERT(0 != strcmp(c_buffer->buffer->msgs[i].content, new_content));
+    }
+
+    test_support_buffer_concurrent_cond_wait_while_destroy();
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+}
+
+
+void test_buffer_concorrente_get_msg_buffer_pineo_non_unitario(void)
+{
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    msg_t* out_msg;
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(1);
+    buffer_concurrent_add_msg(c_buffer, msg);
+
+    out_msg = buffer_concurrent_get_msg(c_buffer);
+
+    CU_ASSERT(1 == *c_buffer->buffer->p_max_size);
+    CU_ASSERT(0 == *c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(out_msg->content, content));
+
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+}
+
+void test_buffer_concorrente_get_msg_buffer_pieno_non_unitario(void)
+{
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    msg_t* out_msg;
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(10);
+    int i;
+    for(i=0; i<10; i++)
+    {
+        buffer_concurrent_add_msg(c_buffer, msg);
+    }
+
+    out_msg = buffer_concurrent_get_msg(c_buffer);
+
+    CU_ASSERT(10 == *c_buffer->buffer->p_max_size);
+    CU_ASSERT(9 == *c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(out_msg->content, content));
+
     c_buffer->buffer_concurrent_destroy(c_buffer);
 }
