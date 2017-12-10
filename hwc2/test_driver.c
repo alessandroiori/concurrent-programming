@@ -13,11 +13,13 @@
 
 #include "test/test_buffer.h"
 #include "test/test_buffer_concurrent.h"
+#include "test/test_provider.h"
 
 int main()
 {
     CU_pSuite pSuite1 = NULL;
-    CU_pSuite pSuite2 = NULL;
+    CU_pSuite pSuite2 = NULL; //buffer_concurrent
+    CU_pSuite pSuite3 = NULL; //provider
 
     /* initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
@@ -25,8 +27,9 @@ int main()
 
     /* add a suite to the registry */
     pSuite1 = CU_add_suite("Suite Buffer", buffer_before, buffer_after);
-    pSuite2 = CU_add_suite("Suite Cncurrent Buffer", cbuffer_before, cbuffer_after);
-    if (pSuite1 == NULL || pSuite2 == NULL) {
+    pSuite2 = CU_add_suite("Suite Cocurrent Buffer", cbuffer_before, cbuffer_after);
+    pSuite3 = CU_add_suite("Suite Provider", provider_before, provider_after);
+    if (pSuite1 == NULL || pSuite2 == NULL || pSuite3 == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -67,6 +70,7 @@ int main()
             (NULL == CU_add_test(pSuite2, "2.14 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_unitario)) ||
             (NULL == CU_add_test(pSuite2, "2.15 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_non_unitario)) ||
 
+            (NULL == CU_add_test(pSuite3, "3.1 Creazione provider\n\t", test_provider_init)) ||
        (0))
     {
         CU_cleanup_registry();

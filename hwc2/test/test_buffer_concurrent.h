@@ -15,7 +15,7 @@
 void test_support_buffer_concurrent_cond_wait_while_init(void);
 void test_support_buffer_concurrent_cond_wait_while_destroy(void);
 
-//produzzione
+//produzzione, consumazione
 void test_support_buffer_concurrent_fake_concumatore(monitor_buffer_t* monitor);
 void test_support_buffer_concurrent_fake_produttore(monitor_buffer_t* monitor);
 void* test_support_buffer_concurrent_produttore_function(void* args);
