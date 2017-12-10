@@ -4,7 +4,7 @@
 
 #include "provider.h"
 
-
+/*
 
 void provider_init(msg_t* msgs)
 {
@@ -26,3 +26,4 @@ void provider_start_activity(void)
         exit(2);
     }
 }
+*/

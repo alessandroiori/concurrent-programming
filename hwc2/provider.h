@@ -7,21 +7,16 @@
 
 #include <stdio.h>
 #include <pthread.h>
-#include "monitor.h"
-#include "hwc1/buffer.h"
-#include "hwc1/functions.h"
+#include "buffer_concurrent.h"
+//#include "monitor_buffer.h"
+//#include "hwc1/buffer.h"
+//#include "hwc1/functions.h"
 
 #define PROVIDER_BUFFER_MAX_SIZE 10
 
-typedef struct provider {
-    buffer_monitor_t* monitor;
-    buffer_t* buffer;
-    pt
-} provider_t;
+/*
 
-pthread_t           PROVIDER;
-buffer_t*           PROVIDER_BUFFER;
-msg_t*              PROVIDER_MSGS;
-buffer_monitor_t*   PROVIDER_MONITOR;
-
+pthread_t PROVIDER;
+buffer_concurrent_t* C_BUFFER;
+*/
 #endif //UNTITLED_PROVIDER_H
