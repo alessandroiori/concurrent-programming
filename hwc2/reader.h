@@ -18,6 +18,8 @@ typedef struct reader {
     void (*reader_destroy)(struct reader* r);
 } reader_t;
 
+msg_t* READER_LAST_MSG;
+
 reader_t* reader_init(int velocity);
 void reader_destroy(reader_t* r);
 

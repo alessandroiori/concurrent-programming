@@ -48,6 +48,7 @@ void test_reader_1_msg_letto_buffer_dim_5(void)
     sleep(3);
 
     CU_ASSERT(0 == *reader->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
 
     reader->reader_destroy(reader);
     m->msg_destroy(m);

@@ -25,6 +25,10 @@ void reader_destroy(reader_t* r)
     buffer_concurrent_t* b = r->c_buffer;
     b->buffer_concurrent_destroy(b);
     free(r->velocity);
+    if(READER_LAST_MSG != (msg_t*)NULL)
+    {
+        READER_LAST_MSG->msg_destroy(READER_LAST_MSG);
+    }
 }
 
 void* reader_thread_function(void* args)
@@ -35,13 +39,13 @@ void* reader_thread_function(void* args)
     int exit = 0;
     while(!exit)
     {
-        m = (msg_t*) NULL;
-        m = buffer_concurrent_get_msg(reader->c_buffer);
-        if(0 == strcmp(m->content, POISON_PILL->content))
+        READER_LAST_MSG = (msg_t*) NULL;
+        READER_LAST_MSG = buffer_concurrent_get_msg(reader->c_buffer);
+        if(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content))
         {
             exit = 1;
         }
-        m->msg_destroy(m);
+        //READER_LAST_MSG->msg_destroy(READER_LAST_MSG);
         sleep(*reader->velocity);
     }
 
