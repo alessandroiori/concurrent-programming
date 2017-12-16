@@ -6,6 +6,7 @@
 #define UNTITLED_READER_H
 
 #include <unistd.h>
+#include "poison_pill.h"
 #include "buffer_concurrent.h"
 
 #define READER_DEFAUL_VELOCITY 1
@@ -19,5 +20,9 @@ typedef struct reader {
 
 reader_t* reader_init(void);
 void reader_destroy(reader_t* r);
+
+void reader_destroy(reader_t* r);
+void* reader_thread_function(void* args);
+void reader_start_thread(reader_t* r);
 
 #endif //UNTITLED_READER_H

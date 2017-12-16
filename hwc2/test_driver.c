@@ -80,6 +80,7 @@ int main()
 */
             (NULL == CU_add_test(pSuite4, "4.1 Reader creazione\n\t", test_reader_init)) ||
             (NULL == CU_add_test(pSuite4, "4.2 Reader distruzione\n\t", test_reader_init)) ||
+            (NULL == CU_add_test(pSuite4, "4.2 Reader legge 1 msg da buffer size 5\n\t", test_reader_1_msg_letto_buffer_dim_5)) ||
 
             (0))
     {

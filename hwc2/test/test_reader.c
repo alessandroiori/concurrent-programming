@@ -35,3 +35,20 @@ void test_reader_destroy(void)
     reader->reader_destroy(reader);
     // basta che il test termini correttamente: no asserzioni!
 }
+
+void test_reader_1_msg_letto_buffer_dim_5(void)
+{
+    char content[] = "content";
+    msg_t* m = msg_init_string(content);
+    msg_t ms[] = {*m, *POISON_PILL};
+    reader_t* reader = reader_init();
+    buffer_concurrent_add_msg(reader->c_buffer, ms);
+
+    reader_start_thread(reader);
+    sleep(3);
+
+    CU_ASSERT(0 == *reader->c_buffer->buffer->p_size);
+
+    reader->reader_destroy(reader);
+    m->msg_destroy(m);
+}
