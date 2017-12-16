@@ -40,9 +40,9 @@ void test_reader_1_msg_letto_buffer_dim_5(void)
 {
     char content[] = "content";
     msg_t* m = msg_init_string(content);
-    msg_t ms[] = {*m, *POISON_PILL};
     reader_t* reader = reader_init();
-    buffer_concurrent_add_msg(reader->c_buffer, ms);
+    buffer_concurrent_add_msg(reader->c_buffer, m);
+    buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
 
     reader_start_thread(reader);
     sleep(3);

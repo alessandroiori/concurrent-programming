@@ -37,7 +37,6 @@ void* reader_thread_function(void* args)
     {
         m = (msg_t*) NULL;
         m = buffer_concurrent_get_msg(reader->c_buffer);
-
         if(0 == strcmp(m->content, POISON_PILL->content))
         {
             exit = 1;
