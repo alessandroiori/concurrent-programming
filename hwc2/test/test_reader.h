@@ -15,6 +15,8 @@ int reader_after(void);
 void test_reader_init(void);
 void test_reader_destroy(void);
 
+void test_reader_0_msg_letti_buffer_dim_5(void);
 void test_reader_1_msg_letto_buffer_dim_5(void);
+void test_reader_4_msg_letti_buffer_dim_5(void);
 
 #endif //UNTITLED_TEST_READER_H

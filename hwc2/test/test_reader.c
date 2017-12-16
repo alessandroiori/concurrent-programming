@@ -36,6 +36,23 @@ void test_reader_destroy(void)
     // basta che il test termini correttamente: no asserzioni!
 }
 
+void test_reader_0_msg_letti_buffer_dim_5(void)
+{
+    char content[] = "content";
+    msg_t* m = msg_init_string(content);
+    reader_t* reader = reader_init(1);
+    buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
+
+    reader_start_thread(reader);
+    sleep(5);
+
+    CU_ASSERT(0 == *reader->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
+
+    reader->reader_destroy(reader);
+    m->msg_destroy(m);
+}
+
 void test_reader_1_msg_letto_buffer_dim_5(void)
 {
     char content[] = "content";
@@ -45,7 +62,28 @@ void test_reader_1_msg_letto_buffer_dim_5(void)
     buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
 
     reader_start_thread(reader);
-    sleep(3);
+    sleep(5);
+
+    CU_ASSERT(0 == *reader->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
+
+    reader->reader_destroy(reader);
+    m->msg_destroy(m);
+}
+
+void test_reader_4_msg_letti_buffer_dim_5(void)
+{
+    char content[] = "content";
+    msg_t* m = msg_init_string(content);
+    reader_t* reader = reader_init(1);
+    buffer_concurrent_add_msg(reader->c_buffer, m);
+    buffer_concurrent_add_msg(reader->c_buffer, m);
+    buffer_concurrent_add_msg(reader->c_buffer, m);
+    buffer_concurrent_add_msg(reader->c_buffer, m);
+    buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
+
+    reader_start_thread(reader);
+    sleep(5);
 
     CU_ASSERT(0 == *reader->c_buffer->buffer->p_size);
     CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
