@@ -17,14 +17,11 @@ typedef struct provider {
     void (*provider_destroy)(struct provider* p);
 } provider_t;
 
-provider_t PROVIDER;
-pthread_t PROVIDER_THREAD;
 
 provider_t* provider_init(buffer_concurrent_t* buffer, msg_t* msgs, int* msgs_len);
 void provider_destroy(provider_t* provider);
 
 void* provider_thread_function(void* args);
 void provider_start_thread();
-void provider_join_thread(void);
 
 #endif //UNTITLED_PROVIDER_H

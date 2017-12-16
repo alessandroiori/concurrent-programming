@@ -17,7 +17,6 @@ provider_t* provider_init(buffer_concurrent_t* c_buffer, msg_t* msgs, int* msgs_
         provider->provider_destroy = provider_destroy;
     }
 
-    PROVIDER = *provider;
     return provider;
 }
 
@@ -29,33 +28,31 @@ void provider_destroy(provider_t* provider)
 
 void* provider_thread_function(void* args)
 {
+    provider_t* provider = (provider_t*) args;
 
     int i;
-    for(i=0; i<*PROVIDER.msg_len; i++)
+    for(i=0; i<*provider->msg_len; i++)
     {
-        buffer_concurrent_add_msg(PROVIDER.c_buffer, &PROVIDER.msgs[i]);
+        buffer_concurrent_add_msg(provider->c_buffer, &provider->msgs[i]);
     }
-    //msg_t* msg_poison = msg_init_string("POISON_PILL");
-    buffer_concurrent_add_msg(PROVIDER.c_buffer, POISON_PILL);//POISON_PILL);//&PROVIDER.msgs[0]);
+    buffer_concurrent_add_msg(provider->c_buffer, POISON_PILL);
+
     return (void*) NULL;
 }
 
-void provider_start_thread(void)
+void provider_start_thread(provider_t* p)
 {
-    if(pthread_create(&PROVIDER_THREAD, NULL, provider_thread_function, NULL))
+    pthread_t      tid;  // thread ID
+    pthread_attr_t attr; // thread attribute
+
+    // set thread detachstate attribute to DETACHED
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
+    if(pthread_create(&tid, &attr, provider_thread_function, p))
     {
         printf("error creating provider thread\t\n");
         exit(1);
     }
-
-    //TODO: aggiungere terminazione spontanea
 }
 
-void provider_join_thread(void)
-{
-    if(pthread_join(PROVIDER_THREAD, NULL))
-    {
-        printf("error joining provider thread\t\n");
-        exit(1);
-    }
-}

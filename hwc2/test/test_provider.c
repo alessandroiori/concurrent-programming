@@ -102,12 +102,12 @@ void test_provider_1_msg_spediti_buffer_dim_2(void)
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(1+1); //msg + poison_pill
     provider_t *provider = provider_init(c_buffer, msg, msg_len);
 
-    provider_start_thread();
-    provider_join_thread();
+    provider_start_thread(provider);
+    sleep(3);
+    //provider_join_thread();
 
     CU_ASSERT(2 == *c_buffer->buffer->p_size);
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[0].content, content));
-    //TODO: replace NULL with correct POISON message
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[1].content, POISON_PILL->content));
 
     provider->provider_destroy(provider);
@@ -125,13 +125,13 @@ void test_provider_2_msg_spediti_buffer_dim_4(void)
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(4);
     provider_t *provider = provider_init(c_buffer, msgs, msg_len);
 
-    provider_start_thread();
-    provider_join_thread();
+    provider_start_thread(provider);
+    sleep(3);
+    //provider_join_thread();
 
     CU_ASSERT(2+1 == *c_buffer->buffer->p_size); //msg + poison_pill
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[0].content, content));
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[1].content, content));
-    //TODO: replace NULL with correct POISON message
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[2].content, POISON_PILL->content));
     CU_ASSERT_PTR_NULL(c_buffer->buffer->msgs[3].content);
 
@@ -151,9 +151,10 @@ void test_provider_2_msg_spediti_buffer_dim_1(void)
     provider_t *provider = provider_init(c_buffer, msgs, msg_len);
     test_support_provider_cond_wait_while_init();
 
-    provider_start_thread();
+    provider_start_thread(provider);
     test_support_provider_fake_dispatcher(c_buffer, 2+1); // 2 msg + poison
-    provider_join_thread();
+    //provider_join_thread();
+    sleep(3);
     test_support_provider_join_fake_dispatcher();
 
     CU_ASSERT(0 == *c_buffer->buffer->p_size);
@@ -175,9 +176,10 @@ void test_provider_10_msg_spediti_buffer_dim_5(void)
     provider_t *provider = provider_init(c_buffer, msgs, msg_len);
     test_support_provider_cond_wait_while_init();
 
-    provider_start_thread();
+    provider_start_thread(provider);
     test_support_provider_fake_dispatcher(c_buffer, 10+1); // 10 msg + poison
-    provider_join_thread();
+    //provider_join_thread();
+    sleep(3);
     test_support_provider_join_fake_dispatcher();
 
     CU_ASSERT(0 == *c_buffer->buffer->p_size);
