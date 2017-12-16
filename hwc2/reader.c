@@ -4,13 +4,13 @@
 
 #include "reader.h"
 
-reader_t* reader_init(void)
+reader_t* reader_init(int velocity)
 {
     reader_t* reader = (reader_t*) malloc(sizeof(reader_t));
     int* v = (int*) malloc(sizeof(int));
     buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) malloc(sizeof(buffer_concurrent_t));
 
-    *v = READER_DEFAUL_VELOCITY;
+    *v = velocity;
     c_buffer = buffer_concurrent_init(READER_BUFFER_SIZE);
 
     reader->velocity = v;
@@ -42,6 +42,7 @@ void* reader_thread_function(void* args)
             exit = 1;
         }
         m->msg_destroy(m);
+        sleep(*reader->velocity);
     }
 
     return (void*) NULL;

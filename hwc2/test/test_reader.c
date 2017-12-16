@@ -16,12 +16,12 @@ int reader_after(void)
 }
 
 void test_reader_init(void) {
-    reader_t* reader = reader_init();
+    reader_t* reader = reader_init(1);
 
     CU_ASSERT_PTR_NOT_NULL(reader);
     CU_ASSERT_PTR_NOT_NULL(reader->c_buffer);
     CU_ASSERT_PTR_NOT_NULL(reader->velocity);
-    CU_ASSERT(READER_DEFAUL_VELOCITY == *reader->velocity);
+    CU_ASSERT(1 == *reader->velocity);
     CU_ASSERT(READER_BUFFER_SIZE == *reader->c_buffer->buffer->p_max_size);
 
     reader->c_buffer->buffer_concurrent_destroy(reader->c_buffer);
@@ -31,7 +31,7 @@ void test_reader_init(void) {
 
 void test_reader_destroy(void)
 {
-    reader_t* reader = reader_init();
+    reader_t* reader = reader_init(1);
     reader->reader_destroy(reader);
     // basta che il test termini correttamente: no asserzioni!
 }
@@ -40,7 +40,7 @@ void test_reader_1_msg_letto_buffer_dim_5(void)
 {
     char content[] = "content";
     msg_t* m = msg_init_string(content);
-    reader_t* reader = reader_init();
+    reader_t* reader = reader_init(1);
     buffer_concurrent_add_msg(reader->c_buffer, m);
     buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
 
