@@ -55,4 +55,3 @@ void provider_start_thread(provider_t* p)
         exit(1);
     }
 }
-

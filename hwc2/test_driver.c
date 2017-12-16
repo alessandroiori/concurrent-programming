@@ -14,12 +14,14 @@
 #include "test/test_buffer.h"
 #include "test/test_buffer_concurrent.h"
 #include "test/test_provider.h"
+#include "test/test_reader.h"
 
 int main()
 {
     CU_pSuite pSuite1 = NULL;
     CU_pSuite pSuite2 = NULL; //buffer_concurrent
     CU_pSuite pSuite3 = NULL; //provider
+    CU_pSuite pSuite4 = NULL; //provider
 
     /* initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
@@ -29,7 +31,8 @@ int main()
     pSuite1 = CU_add_suite("Suite Buffer", buffer_before, buffer_after);
     pSuite2 = CU_add_suite("Suite Cocurrent Buffer", cbuffer_before, cbuffer_after);
     pSuite3 = CU_add_suite("Suite Provider", provider_before, provider_after);
-    if (pSuite1 == NULL || pSuite2 == NULL || pSuite3 == NULL) {
+    pSuite4 = CU_add_suite("Suite Reader", reader_before, reader_after);
+    if (pSuite1 == NULL || pSuite2 == NULL || pSuite3 == NULL || pSuite4 == NULL) {
         CU_cleanup_registry();
         return CU_get_error();
     }
@@ -67,13 +70,17 @@ int main()
             (NULL == CU_add_test(pSuite2, "2.13 Get msg buffer concorrente pieno non unitario\n\t", test_buffer_concorrente_get_msg_buffer_pieno_non_unitario)) ||
             (NULL == CU_add_test(pSuite2, "2.14 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_unitario)) ||
             (NULL == CU_add_test(pSuite2, "2.15 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_non_unitario)) ||
-*/
+
             (NULL == CU_add_test(pSuite3, "3.1 Creazione provider\n\t", test_provider_init)) ||
             (NULL == CU_add_test(pSuite3, "3.2 Distruzione provider\n\t", test_provider_destroy)) ||
             (NULL == CU_add_test(pSuite3, "3.3 Provider spedisce 1 msg nel buffer size 2\n\t", test_provider_1_msg_spediti_buffer_dim_2)) ||
             (NULL == CU_add_test(pSuite3, "3.4 Provider spedisce 2 msg nel buffer size 4\n\t", test_provider_2_msg_spediti_buffer_dim_4)) ||
             (NULL == CU_add_test(pSuite3, "3.5 Provider spedisce 2 msg nel buffer size 1\n\t", test_provider_2_msg_spediti_buffer_dim_1)) ||
             (NULL == CU_add_test(pSuite3, "3.6 Provider spedisce 10 msg nel buffer size 5\n\t", test_provider_10_msg_spediti_buffer_dim_5)) ||
+*/
+            (NULL == CU_add_test(pSuite4, "4.1 Reader creazione\n\t", test_reader_init)) ||
+            (NULL == CU_add_test(pSuite4, "4.2 Reader distruzione\n\t", test_reader_init)) ||
+
             (0))
     {
         CU_cleanup_registry();

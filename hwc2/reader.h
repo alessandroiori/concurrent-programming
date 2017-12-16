@@ -5,6 +5,19 @@
 #ifndef UNTITLED_READER_H
 #define UNTITLED_READER_H
 
+#include <unistd.h>
+#include "buffer_concurrent.h"
 
+#define READER_DEFAUL_VELOCITY 1
+#define READER_BUFFER_SIZE     5
+
+typedef struct reader {
+    int* velocity;
+    buffer_concurrent_t* c_buffer;
+    void (*reader_destroy)(struct reader* r);
+} reader_t;
+
+reader_t* reader_init(void);
+void reader_destroy(reader_t* r);
 
 #endif //UNTITLED_READER_H
