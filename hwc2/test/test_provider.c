@@ -156,6 +156,8 @@ void test_provider_2_msg_spediti_buffer_dim_1(void)
     provider_join_thread();
     test_support_provider_join_fake_dispatcher();
 
+    CU_ASSERT(0 == *c_buffer->buffer->p_size);
+
     test_support_provider_cond_wait_while_destroy();
     provider->provider_destroy(provider);
     c_buffer->buffer_concurrent_destroy(c_buffer);
@@ -178,8 +180,19 @@ void test_provider_10_msg_spediti_buffer_dim_5(void)
     provider_join_thread();
     test_support_provider_join_fake_dispatcher();
 
+    CU_ASSERT(0 == *c_buffer->buffer->p_size);
+
     test_support_provider_cond_wait_while_destroy();
     provider->provider_destroy(provider);
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
 }
+
+/*
+ * (NULL == CU_add_test(pSuite1, "1.11 Add msg buffer pieno non unitario\n\t", test_buffer_add_msg_buffer_pineo_non_unitario)) ||
+    (NULL == CU_add_test(pSuite1, "1.12 Get msg buffer pieno non unitario\n\t", test_buffer_get_msg_buffer_pineo_non_unitario)) ||
+    (NULL == CU_add_test(pSuite1, "1.13 Get msg buffer vuoto non unitario\n\t", test_buffer_get_msg_buffer_vuoto_non_unitario)) ||
+    (NULL == CU_add_test(pSuite1, "1.14 Get msg buffer pieno unitario\n\t", test_buffer_get_msg_buffer_pineo_unitario)) ||
+    (NULL == CU_add_test(pSuite1, "1.15 Get msg buffer vuoto unitario\n\t", test_buffer_get_msg_buffer_vuoto_unitario)) ||
+
+ */
