@@ -20,15 +20,15 @@ typedef struct accepter {
 } accepter_t;
 
 msg_t* ACCEPTER_LAST_MSG;
+buffer_concurrent_t* ACCEPTER_BUFFER;
 
 accepter_t* accepter_init(list_concurrent_t* c_list);
 void accepter_destroy(accepter_t* a);
 
-
 void* accepter_thread_function(void* args);
 void accepter_start_thread(accepter_t* a);
 
-/*
-void submitRequest(buffer_concurrent_t *requests, char name[]);
-*/
+void* accepter_submit_request_function(void* args);
+void accepter_submit_request(buffer_t *requests, char name[]);
+
 #endif //UNTITLED_ACCEPTER_H

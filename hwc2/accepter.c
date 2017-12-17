@@ -4,6 +4,53 @@
 
 #include "accepter.h"
 
+void* accepter_submit_request_function(void* args)
+{
+    buffer_t* requests = (buffer_t*) args;
+
+    msg_t* tmp;
+    int exit = 0;
+    while(!exit)
+    {
+        tmp = (msg_t*) NULL;
+        if(*requests->p_size == 0)
+        {
+            exit = 1;
+        }
+        else
+        {
+            tmp = buffer_get_msg(requests);
+            buffer_concurrent_add_msg(ACCEPTER_BUFFER, tmp);
+        }
+    }
+    buffer_concurrent_add_msg(ACCEPTER_BUFFER, POISON_PILL);
+
+    return (void*) NULL;
+}
+
+
+void accepter_submit_request(buffer_t* requests, char name[])
+{
+    if(ACCEPTER_BUFFER == (buffer_concurrent_t*) NULL)
+    {
+        exit(1);
+    }
+
+    pthread_t      tid;  // thread ID
+    pthread_attr_t attr; // thread attribute
+
+    // set thread detachstate attribute to DETACHED
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
+    if(pthread_create(&tid, &attr, accepter_submit_request_function, requests))
+    {
+        printf("error creating accepter thread\t\n");
+        exit(1);
+    }
+
+}
+
 accepter_t* accepter_init(list_concurrent_t* c_list)
 {
     /*
@@ -16,6 +63,8 @@ accepter_t* accepter_init(list_concurrent_t* c_list)
     accepter_t* return_accepter = (accepter_t*) malloc(sizeof(accepter_t));
     buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) malloc(sizeof(buffer_concurrent_t));
     c_buffer = buffer_concurrent_init(ACCEPTER_BUFFER_SIZE);
+
+    ACCEPTER_BUFFER = c_buffer;
 
     return_accepter->c_list = c_list;
     return_accepter->c_buffer = c_buffer;
@@ -38,6 +87,8 @@ void accepter_destroy(accepter_t* a)
     {
         ACCEPTER_LAST_MSG->msg_destroy(ACCEPTER_LAST_MSG);
     }
+
+    ACCEPTER_BUFFER = (buffer_concurrent_t*) NULL;
 }
 
 
@@ -80,8 +131,3 @@ void accepter_start_thread(accepter_t* a)
         exit(1);
     }
 }
-
-
-/*
-void submitRequest(buffer_concurrent_t *requests, char name[]);
- */

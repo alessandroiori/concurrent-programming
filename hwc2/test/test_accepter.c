@@ -199,3 +199,54 @@ void test_accepter_6_richiesta_buffer_dim_5(void)
     READERS_LIST->list_concurrent_destroy(READERS_LIST);
     accepter->accepter_destroy(accepter);
 }
+
+void test_accepter_submit_singola_request(void)
+{
+    char content[] = "content";
+    msg_t* m = msg_init_string(content);
+    buffer_t* request = buffer_init(1);
+    buffer_add_msg(request,m);
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    accepter_t* accepter = accepter_init(READERS_LIST);
+
+    accepter_submit_request(request, "");
+    sleep(5);
+
+    CU_ASSERT(2 == *accepter->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(buffer_concurrent_get_msg(accepter->c_buffer)->content, content));
+    CU_ASSERT(0 == strcmp(buffer_concurrent_get_msg(accepter->c_buffer)->content, POISON_PILL->content));
+
+    m->msg_destroy(m);
+    request->buffer_destroy(request);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    //accepter->accepter_destroy(accepter);
+}
+
+void test_accepter_submit_3_request(void)
+{
+    char content[] = "content";
+    msg_t* m = msg_init_string(content);
+    buffer_t* request = buffer_init(3);
+    buffer_add_msg(request,m);
+    buffer_add_msg(request,m);
+    buffer_add_msg(request,m);
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    accepter_t* accepter = accepter_init(READERS_LIST);
+
+    accepter_submit_request(request, "");
+    sleep(5);
+
+    CU_ASSERT(4 == *accepter->c_buffer->buffer->p_size); // 3 + poison
+    CU_ASSERT(0 == strcmp(buffer_concurrent_get_msg(accepter->c_buffer)->content, content));
+    CU_ASSERT(0 == strcmp(buffer_concurrent_get_msg(accepter->c_buffer)->content, content));
+    CU_ASSERT(0 == strcmp(buffer_concurrent_get_msg(accepter->c_buffer)->content, content));
+    CU_ASSERT(0 == strcmp(buffer_concurrent_get_msg(accepter->c_buffer)->content, POISON_PILL->content));
+
+    //m->msg_destroy(m);
+    request->buffer_destroy(request);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    accepter->accepter_destroy(accepter);
+}
+
+
+void test_accepter_buffer_dim_5_e_accepter_submit_function_1_request(void);
