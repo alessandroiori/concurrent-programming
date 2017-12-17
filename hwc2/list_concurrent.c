@@ -30,6 +30,7 @@ list_concurrent_t* list_concurrent_init() {
 
     result->MUTEX = p_mutex;
     result->list = list;
+    result->list_concurrent_destroy = list_concurrent_destroy;
 
     return result;
 }
@@ -95,6 +96,8 @@ iterator_concurrent_t* iterator_concurrent_init(list_concurrent_t* c_list)
 
     c_iterator->c_list = c_list;
     c_iterator->currentNode = iterator->currentNode;
+    c_iterator->iterator_concurrent_destroy = iterator_concurrent_destroy;
+
     return c_iterator;
 }
 

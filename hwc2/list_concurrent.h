@@ -13,11 +13,13 @@
 typedef struct list_concurrent {
     pthread_mutex_t* MUTEX;
     list_t* list;
+    void (*list_concurrent_destroy)(struct list_concurrent* l);
 } list_concurrent_t;
 
-typedef struct {
+typedef struct iterator_concurrent{
     list_concurrent_t* c_list;
     list_node_t* currentNode;
+    void (*iterator_concurrent_destroy)(struct iterator_concurrent* i);
 } iterator_concurrent_t;
 
 list_concurrent_t* list_concurrent_init();             // crea una lista vuota
