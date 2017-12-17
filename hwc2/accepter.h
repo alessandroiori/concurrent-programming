@@ -5,6 +5,8 @@
 #ifndef UNTITLED_ACCEPTER_H
 #define UNTITLED_ACCEPTER_H
 
+#include <stdio.h>
+#include <unistd.h>
 #include "buffer_concurrent.h"
 #include "list_concurrent.h"
 #include "reader.h"
@@ -17,13 +19,15 @@ typedef struct accepter {
     void (*accepter_destroy)(struct accepter* a);
 } accepter_t;
 
+msg_t* ACCEPTER_LAST_MSG;
+
 accepter_t* accepter_init(list_concurrent_t* c_list);
 void accepter_destroy(accepter_t* a);
 
-/*
+
 void* accepter_thread_function(void* args);
 void accepter_start_thread(accepter_t* a);
-*/
+
 /*
 void submitRequest(buffer_concurrent_t *requests, char name[]);
 */

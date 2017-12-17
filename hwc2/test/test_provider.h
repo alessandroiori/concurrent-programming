@@ -5,6 +5,7 @@
 #ifndef UNTITLED_TEST_PROVIDER_H
 #define UNTITLED_TEST_PROVIDER_H
 
+#include <stdio.h>
 #include <unistd.h>
 #include "CUnit/Basic.h"
 #include "../provider.h"

@@ -126,7 +126,7 @@ void test_provider_2_msg_spediti_buffer_dim_4(void)
     provider_t *provider = provider_init(c_buffer, msgs, msg_len);
 
     provider_start_thread(provider);
-    sleep(3);
+    sleep(5);
     //provider_join_thread();
 
     CU_ASSERT(2+1 == *c_buffer->buffer->p_size); //msg + poison_pill

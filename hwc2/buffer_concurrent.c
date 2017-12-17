@@ -142,10 +142,10 @@ void buffer_concurrent_destroy(buffer_concurrent_t* c_buffer)
 {
     monitor_buffer_t* monitor = c_buffer->monitor;
     buffer_t* buffer = c_buffer->buffer;
+
     monitor->monitor_buffer_destroy(monitor);
     buffer->buffer_destroy(buffer);
     free(c_buffer);
-
 }
 
 // aggiunge un messaggio al buffer
