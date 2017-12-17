@@ -20,17 +20,4 @@ void test_accepter_1_richiesta_buffer_dim_5(void);
 void test_accepter_3_richiesta_buffer_dim_5(void);
 void test_accepter_6_richiesta_buffer_dim_5_submit_request_function(void);
 
-/*
- * rimuovere
-void test_accepter_submit_singola_request(void);
-void test_accepter_submit_3_request(void);
-void test_accepter_buffer_dim_5_e_accepter_submit_function_1_request(void);
-*/
-
-/* support */
-
-void* test_support_accepter_fake_reade_request_function(void* args);
-void test_support_accepter_fake_reader_request(buffer_concurrent_t* accepter_c_buffer, msg_t* ms, int ms_len);
-void test_support_accepter_join_fake_reader_request(void);
-
 #endif //UNTITLED_TEST_ACCEPTER_H
