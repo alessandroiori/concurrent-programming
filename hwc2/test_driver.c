@@ -96,7 +96,7 @@ int main()
             (NULL == CU_add_test(pSuite4, "4.4 Reader legge 1 msg da buffer size 5\n\t", test_reader_1_msg_letto_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite4, "4.5 Reader legge 4 msg da buffer size 5\n\t", test_reader_4_msg_letti_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite4, "4.6 Reader legge 6 msg da buffer size 5\n\t", test_reader_6_msg_letti_buffer_dim_5)) ||
-*/
+
 
             (NULL == CU_add_test(pSuite5, "5.1 Accepter creazione\n\t", test_accepter_init)) ||
             (NULL == CU_add_test(pSuite5, "5.2 Accepter distruzione\n\t", test_accepter_destroy)) ||
@@ -104,16 +104,11 @@ int main()
             (NULL == CU_add_test(pSuite5, "5.4 Accepter legge 1 richiesta da buffer non vuoto dim 5\n\t", test_accepter_1_richiesta_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 3 richiesta da buffer non vuoto dim 5\n\t", test_accepter_3_richiesta_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 6 richiesta da buffer non vuoto dim 5; submitRequest()\n\t", test_accepter_6_richiesta_buffer_dim_5_submit_request_function)) ||
+*/
 
-            /*
-             * remove
-            (NULL == CU_add_test(pSuite5, "5.5 Accepter accepter_submit_request() function test, una richiesta.\n\t", test_accepter_submit_singola_request)) ||
-            (NULL == CU_add_test(pSuite5, "5.5 Accepter accepter_submit_request() function test, 3 richieste.\n\t", test_accepter_submit_3_request)) ||
-            */
-            /*
             (NULL == CU_add_test(pSuite6, "6.1 Dispatcher creazione\n\t", test_dispatcher_init)) ||
             (NULL == CU_add_test(pSuite6, "6.2 Dispatcher distruzione\n\t", test_dispatcher_destroy)) ||
-             */
+
             (0))
     {
         CU_cleanup_registry();
