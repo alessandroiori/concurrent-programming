@@ -48,7 +48,7 @@ int main()
     /* add the tests to the suite */
     /* NOTE - ORDER IS IMPORTANT */
     if(
-       /*
+/*
             (NULL == CU_add_test(pSuite1, "1.1 Creazione buffer unitario\n\t", test_buffer_init_buffer_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.2 Creazione buffer non unitario\n\t", test_buffer_init_buffer_non_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.3 Creazione buffer unitario pieno\n\t", test_buffer_init_buffer_pieno_unitario)) ||
@@ -98,6 +98,7 @@ int main()
             (NULL == CU_add_test(pSuite5, "5.3 Accepter legge richieste da buffer vuoto dim 5\n\t", test_accepter_buffer_vuoto)) ||
             (NULL == CU_add_test(pSuite5, "5.4 Accepter legge 1 richiesta da buffer non vuoto dim 5\n\t", test_accepter_1_richiesta_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 3 richiesta da buffer non vuoto dim 5\n\t", test_accepter_3_richiesta_buffer_dim_5)) ||
+            (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 6 richiesta da buffer non vuoto dim 5\n\t", test_accepter_6_richiesta_buffer_dim_5)) ||
 
             (0))
     {
