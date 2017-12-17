@@ -62,7 +62,7 @@ void* dispatcher_thread_function(void* args)
         }
         else
         {
-            dispatcher_send_msg_to_reader(dispatcher->c_list, DISPATCHER_LAST_MSG);
+            //dispatcher_send_msg_to_reader(dispatcher->c_list, DISPATCHER_LAST_MSG);
         }
     }
     dispatcher_send_poison_msg_to_all_reader(dispatcher->c_list);

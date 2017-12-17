@@ -35,3 +35,27 @@ void test_dispatcher_destroy(void)
 
     dispatcher->dispatcher_destroy(dispatcher);
 }
+
+void test_dispatcher_provider_1_msg(void)
+{
+    int msg_len = 1;
+    char content[] = "content";
+    msg_t *msg = msg_init_string(content);
+
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    dispatcher_t* dispatcher = dispatcher_init(READERS_LIST);
+    provider_t *provider = provider_init(dispatcher->c_buffer, msg, &msg_len);
+
+    provider_start_thread(provider);
+    dispatcher_start_thread(dispatcher);
+    sleep(5);
+
+    CU_ASSERT(0 == *dispatcher->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(DISPATCHER_LAST_MSG->content, POISON_PILL->content));
+
+    //provider->provider_destroy(provider);
+    dispatcher->dispatcher_destroy(dispatcher);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    msg->msg_destroy(msg);
+
+}
