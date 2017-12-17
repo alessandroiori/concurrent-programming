@@ -31,10 +31,11 @@ void* accepter_submit_request_function(void* args)
 
 void accepter_submit_request(buffer_t* requests, char name[])
 {
-    if(ACCEPTER_BUFFER == (buffer_concurrent_t*) NULL)
+    /*if(ACCEPTER_BUFFER == (buffer_concurrent_t*) NULL)
     {
         exit(1);
     }
+     */
 
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute

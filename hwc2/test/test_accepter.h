@@ -18,11 +18,13 @@ void test_accepter_destroy(void);
 void test_accepter_buffer_vuoto(void);
 void test_accepter_1_richiesta_buffer_dim_5(void);
 void test_accepter_3_richiesta_buffer_dim_5(void);
-void test_accepter_6_richiesta_buffer_dim_5(void);
+void test_accepter_6_richiesta_buffer_dim_5_submit_request_function(void);
 
+/*
 void test_accepter_submit_singola_request(void);
 void test_accepter_submit_3_request(void);
 void test_accepter_buffer_dim_5_e_accepter_submit_function_1_request(void);
+*/
 
 /* support */
 
