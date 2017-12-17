@@ -16,6 +16,7 @@
 #include "test/test_provider.h"
 #include "test/test_reader.h"
 #include "test/test_accepter.h"
+#include "test/test_dispatcher.h"
 
 int main()
 {
@@ -24,6 +25,7 @@ int main()
     CU_pSuite pSuite3 = NULL; //provider
     CU_pSuite pSuite4 = NULL; //reader
     CU_pSuite pSuite5 = NULL; //accepter
+    CU_pSuite pSuite6 = NULL; //dispatcher
 
     /* initialize the CUnit test registry */
     if (CUE_SUCCESS != CU_initialize_registry())
@@ -35,11 +37,13 @@ int main()
     pSuite3 = CU_add_suite("Suite Provider", provider_before, provider_after);
     pSuite4 = CU_add_suite("Suite Reader", reader_before, reader_after);
     pSuite5 = CU_add_suite("Suite Accepter", accepter_before, accepter_after);
+    pSuite6 = CU_add_suite("Suite Dispatcher", dispatcher_before, dispatcher_after);
     if (pSuite1 == NULL ||
         pSuite2 == NULL ||
         pSuite3 == NULL ||
         pSuite4 == NULL ||
-        pSuite4 == NULL)
+        pSuite5 == NULL ||
+        pSuite6 == NULL)
     {
         CU_cleanup_registry();
         return CU_get_error();
@@ -93,19 +97,22 @@ int main()
             (NULL == CU_add_test(pSuite4, "4.5 Reader legge 4 msg da buffer size 5\n\t", test_reader_4_msg_letti_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite4, "4.6 Reader legge 6 msg da buffer size 5\n\t", test_reader_6_msg_letti_buffer_dim_5)) ||
 */
-
+            /*
             (NULL == CU_add_test(pSuite5, "5.1 Accepter creazione\n\t", test_accepter_init)) ||
             (NULL == CU_add_test(pSuite5, "5.2 Accepter distruzione\n\t", test_accepter_destroy)) ||
             (NULL == CU_add_test(pSuite5, "5.3 Accepter legge richieste da buffer vuoto dim 5\n\t", test_accepter_buffer_vuoto)) ||
             (NULL == CU_add_test(pSuite5, "5.4 Accepter legge 1 richiesta da buffer non vuoto dim 5\n\t", test_accepter_1_richiesta_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 3 richiesta da buffer non vuoto dim 5\n\t", test_accepter_3_richiesta_buffer_dim_5)) ||
-
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 6 richiesta da buffer non vuoto dim 5; submitRequest()\n\t", test_accepter_6_richiesta_buffer_dim_5_submit_request_function)) ||
-/*
+            */
+            /*
+             * remove
             (NULL == CU_add_test(pSuite5, "5.5 Accepter accepter_submit_request() function test, una richiesta.\n\t", test_accepter_submit_singola_request)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter accepter_submit_request() function test, 3 richieste.\n\t", test_accepter_submit_3_request)) ||
-*/
+            */
 
+            (NULL == CU_add_test(pSuite6, "6.1 Dispatcher creazione\n\t", test_dispatcher_init)) ||
+            (NULL == CU_add_test(pSuite6, "6.2 Dispatcher distruzione\n\t", test_dispatcher_destroy)) ||
             (0))
     {
         CU_cleanup_registry();

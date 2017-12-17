@@ -6,6 +6,7 @@
 
 /* support */
 
+/*
 pthread_t TMP_READER_REQUEST;
 buffer_concurrent_t* TMP_C_BUFFER;
 msg_t* TMP_MSGS;
@@ -43,6 +44,7 @@ void test_support_accepter_join_fake_reader_request(void)
         exit(1);
     }
 }
+*/
 
 /* Test */
 int accepter_before(void)
@@ -166,6 +168,8 @@ void test_accepter_3_richiesta_buffer_dim_5(void)
 }
 
 /*
+ * rimuovere
+ *
 void test_accepter_6_richiesta_buffer_dim_5(void)
 {
     int cnt = 0;
@@ -222,7 +226,7 @@ void test_accepter_6_richiesta_buffer_dim_5_submit_request_function(void)
 
     accepter_submit_request(request, "");
     accepter_start_thread(accepter);
-    sleep(5);
+    sleep(8);
 
     CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
     CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->tail);
@@ -246,6 +250,8 @@ void test_accepter_6_richiesta_buffer_dim_5_submit_request_function(void)
 }
 
 /*
+ * rimuovere
+ *
 void test_accepter_submit_singola_request(void)
 {
 
