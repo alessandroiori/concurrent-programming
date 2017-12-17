@@ -7,7 +7,7 @@
 
 #include <stdint.h>
 #include "hwc1/buffer.h"
-#include "monitor_buffer.h"
+#include "monitor.h"
 
 int* EXIT_FROM_COND_WAIT_WHILE; //consente funzionamento dei fake produttori consumatori
 

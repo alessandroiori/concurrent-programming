@@ -2,7 +2,7 @@
 // Created by Alessandro Iori on 09/12/2017.
 //
 
-#include "monitor_buffer.h"
+#include "monitor.h"
 
 monitor_buffer_t* monitor_buffer_init(void)
 {

@@ -138,9 +138,9 @@ void test_reader_6_msg_letti_buffer_dim_5(void)
     msg_t ms[] = {*m, *m, *m, *m, *m, *m};
     reader_t* reader = reader_init(1);
 
-    reader_start_thread(reader);
     test_support_reader_fake_dispatcher(reader->c_buffer, ms, 6);
-    sleep(7);
+    reader_start_thread(reader);
+    sleep(8);
     test_support_reader_join_fake_dispatcher();
 
     CU_ASSERT(0 == *reader->c_buffer->buffer->p_size);
@@ -149,4 +149,3 @@ void test_reader_6_msg_letti_buffer_dim_5(void)
     reader->reader_destroy(reader);
     m->msg_destroy(m);
 }
-

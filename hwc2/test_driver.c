@@ -40,7 +40,7 @@ int main()
     /* add the tests to the suite */
     /* NOTE - ORDER IS IMPORTANT */
     if(
-/*
+
             (NULL == CU_add_test(pSuite1, "1.1 Creazione buffer unitario\n\t", test_buffer_init_buffer_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.2 Creazione buffer non unitario\n\t", test_buffer_init_buffer_non_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.3 Creazione buffer unitario pieno\n\t", test_buffer_init_buffer_pieno_unitario)) ||
@@ -77,13 +77,13 @@ int main()
             (NULL == CU_add_test(pSuite3, "3.4 Provider spedisce 2 msg nel buffer size 4\n\t", test_provider_2_msg_spediti_buffer_dim_4)) ||
             (NULL == CU_add_test(pSuite3, "3.5 Provider spedisce 2 msg nel buffer size 1\n\t", test_provider_2_msg_spediti_buffer_dim_1)) ||
             (NULL == CU_add_test(pSuite3, "3.6 Provider spedisce 10 msg nel buffer size 5\n\t", test_provider_10_msg_spediti_buffer_dim_5)) ||
-*/
+
             (NULL == CU_add_test(pSuite4, "4.1 Reader creazione\n\t", test_reader_init)) ||
             (NULL == CU_add_test(pSuite4, "4.2 Reader distruzione\n\t", test_reader_init)) ||
             (NULL == CU_add_test(pSuite4, "4.3 Reader legge 0 msg da buffer size 5\n\t", test_reader_0_msg_letti_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite4, "4.4 Reader legge 1 msg da buffer size 5\n\t", test_reader_1_msg_letto_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite4, "4.5 Reader legge 4 msg da buffer size 5\n\t", test_reader_4_msg_letti_buffer_dim_5)) ||
-                    (NULL == CU_add_test(pSuite4, "4.6 Reader legge 6 msg da buffer size 5\n\t", test_reader_6_msg_letti_buffer_dim_5)) ||
+            (NULL == CU_add_test(pSuite4, "4.6 Reader legge 6 msg da buffer size 5\n\t", test_reader_6_msg_letti_buffer_dim_5)) ||
 
             (0))
     {
