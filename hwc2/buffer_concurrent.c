@@ -37,6 +37,40 @@ msg_t* put_bloccante(buffer_concurrent_t* c_buffer, msg_t* msg)
     return r_msg;
 }
 
+msg_t* put_semi_bloccante(buffer_concurrent_t* c_buffer, msg_t* msg)
+{
+    buffer_t* buffer = c_buffer->buffer;
+    pthread_mutex_t* MUTEX = c_buffer->monitor->MUTEX;
+    pthread_cond_t* COND_NOT_EMPTY = c_buffer->monitor->COND_NOT_EMPTY;
+
+    msg_t* return_msg = BUFFER_ERROR;
+    if(MESSAGE_NULL != msg)
+    {
+        if(pthread_mutex_lock(MUTEX) == 0)
+        {
+            if (*buffer->p_size < *buffer->p_max_size)
+            {
+                uint8_t d = *buffer->p_d;
+                uint8_t max_size = *buffer->p_max_size;
+                uint8_t size = *buffer->p_size;
+
+                buffer->msgs[d] = *msg;
+                *buffer->p_size = size + 1;
+                *buffer->p_d = (d + 1) % max_size;
+                return_msg = msg_init_string(buffer->msgs[d].content);
+                pthread_cond_signal(COND_NOT_EMPTY);
+            }
+            else
+            {
+                return_msg = BUFFER_FULL;
+            }
+            pthread_mutex_unlock(MUTEX);
+        }
+    }
+
+    return return_msg;
+}
+
 // inserimento non bloccante: restituisce BUFFER_ERROR se pieno,
 // altrimenti effettua l’inserimento e restituisce il messaggio
 // inserito; N.B.: msg!=null
@@ -99,6 +133,36 @@ msg_t* get_bloccante(buffer_concurrent_t* c_buffer)
     pthread_mutex_unlock(MUTEX);
 
     return r_msg;
+}
+
+msg_t* get_semi_bloccante(buffer_concurrent_t* c_buffer)
+{
+    buffer_t* buffer = c_buffer->buffer;
+    pthread_mutex_t* MUTEX = c_buffer->monitor->MUTEX;
+    pthread_cond_t* COND_NOT_FULL = c_buffer->monitor->COND_NOT_FULL;
+    msg_t* return_msg = BUFFER_ERROR;
+
+    if(pthread_mutex_lock(MUTEX) == 0)
+    {
+        if(*buffer->p_size > 0)
+        {
+            uint8_t t = *buffer->p_t;
+            uint8_t max_size = *buffer->p_max_size;
+            uint8_t size = *buffer->p_size;
+
+            *buffer->p_size = size - 1;
+            *buffer->p_t = (t + 1) % max_size;
+            return_msg = msg_init_string(buffer->msgs[t].content);
+            pthread_cond_signal(COND_NOT_FULL);
+        }
+        else
+        {
+            return_msg = BUFFER_EMPTY;
+        }
+        pthread_mutex_unlock(MUTEX);
+    }
+
+    return return_msg;
 }
 
 // estrazione non bloccante: restituisce BUFFER_ERROR se vuoto
@@ -170,6 +234,22 @@ msg_t* buffer_concurrent_get_msg(buffer_concurrent_t* c_buffer)
 {
     msg_t* r_msg;
     r_msg = get_bloccante(c_buffer);
+    return r_msg;
+}
+
+// aggiunge un messaggio al buffer (semi bloccante)
+msg_t* buffer_concurrent_add_msg_semi_block(buffer_concurrent_t* c_buffer, msg_t* msg)
+{
+    msg_t* r_msg;
+    r_msg = put_semi_bloccante(c_buffer, msg);
+    return r_msg;
+}
+
+// rimuove un messaggio dal buffer (semi bloccante)
+msg_t* buffer_concurrent_get_msg_semi_block(buffer_concurrent_t* c_buffer)
+{
+    msg_t* r_msg;
+    r_msg = get_semi_bloccante(c_buffer);
     return r_msg;
 }
 
