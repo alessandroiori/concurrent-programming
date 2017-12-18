@@ -167,34 +167,4 @@ void test_dispatcher_provider_1_reader_lento_eliminato(void)
     //provider->provider_destroy(provider);
     dispatcher->dispatcher_destroy(dispatcher);
     reader->reader_destroy(reader);
-
-
-    /*
-    char content[] = "content";
-    msg_t *msg = msg_init_string(content);
-    list_concurrent_t* READERS_LIST = list_concurrent_init();
-    reader_t* reader = reader_init(READER_DEFAUL_VELOCITY+1);
-    list_concurrent_addElement(READERS_LIST, reader);
-    dispatcher_t* dispatcher = dispatcher_init(READERS_LIST);
-
-    buffer_concurrent_add_msg(dispatcher->c_buffer, msg);
-    buffer_concurrent_add_msg(dispatcher->c_buffer, msg);
-    buffer_concurrent_add_msg(dispatcher->c_buffer, msg);
-    buffer_concurrent_add_msg(dispatcher->c_buffer, msg);
-    buffer_concurrent_add_msg(dispatcher->c_buffer, POISON_PILL);
-
-    printf("\r\n QUI2\r\n");
-    reader_start_thread(reader);
-    sleep(1);
-    dispatcher_start_thread(dispatcher);
-    sleep(4);
-
-    CU_ASSERT(0 == *dispatcher->c_buffer->buffer->p_size);
-    CU_ASSERT(0 == strcmp(DISPATCHER_LAST_MSG->content, POISON_PILL->content));
-    CU_ASSERT(0 == *reader->c_buffer->buffer->p_size);
-    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
-
-    dispatcher->dispatcher_destroy(dispatcher);
-    reader->reader_destroy(reader);
-     */
 }

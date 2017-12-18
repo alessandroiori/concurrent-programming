@@ -12,11 +12,13 @@
 
 typedef struct provider {
     int* msg_len;
-    msg_t* msgs;
-    buffer_concurrent_t* c_buffer;
+    //msg_t* msgs;
+    //buffer_concurrent_t* c_buffer;
     void (*provider_destroy)(struct provider* p);
 } provider_t;
 
+msg_t* PROVIDER_MSGS;
+buffer_concurrent_t* PROVIDER_DISPATCHER_BUFFER;
 
 provider_t* provider_init(buffer_concurrent_t* buffer, msg_t* msgs, int* msgs_len);
 void provider_destroy(provider_t* provider);

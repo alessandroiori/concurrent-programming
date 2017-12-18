@@ -10,9 +10,12 @@ provider_t* provider_init(buffer_concurrent_t* c_buffer, msg_t* msgs, int* msgs_
 
     if(msgs != (msg_t*) NULL)
     {
+        PROVIDER_MSGS = msgs;
+        PROVIDER_DISPATCHER_BUFFER = c_buffer;
+
         provider = (provider_t*) malloc(sizeof(provider_t));
-        provider->c_buffer = c_buffer;
-        provider->msgs = msgs;
+        //provider->c_buffer = c_buffer;
+        //provider->msgs = msgs;
         provider->msg_len = msgs_len;
         provider->provider_destroy = provider_destroy;
     }
@@ -22,6 +25,8 @@ provider_t* provider_init(buffer_concurrent_t* c_buffer, msg_t* msgs, int* msgs_
 
 void provider_destroy(provider_t* provider)
 {
+    PROVIDER_MSGS = (msg_t*) NULL;
+    PROVIDER_DISPATCHER_BUFFER = (buffer_concurrent_t*) NULL;
     free(provider->msg_len);
     free(provider);
 }
@@ -33,10 +38,11 @@ void* provider_thread_function(void* args)
     int i;
     for(i=0; i<*provider->msg_len; i++)
     {
-        buffer_concurrent_add_msg(provider->c_buffer, &provider->msgs[i]);
+        //buffer_concurrent_add_msg(provider->c_buffer, &provider->msgs[i]);
+        buffer_concurrent_add_msg(PROVIDER_DISPATCHER_BUFFER, &PROVIDER_MSGS[i]);
     }
-    buffer_concurrent_add_msg(provider->c_buffer, POISON_PILL);
-
+    //buffer_concurrent_add_msg(provider->c_buffer, POISON_PILL);
+    buffer_concurrent_add_msg(PROVIDER_DISPATCHER_BUFFER, POISON_PILL);
     return (void*) NULL;
 }
 
