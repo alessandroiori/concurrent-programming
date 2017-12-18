@@ -15,12 +15,13 @@
 
 typedef struct accepter {
     buffer_concurrent_t* c_buffer;
-    list_concurrent_t* c_list;
+    //list_concurrent_t* c_list;
     void (*accepter_destroy)(struct accepter* a);
 } accepter_t;
 
-msg_t* ACCEPTER_LAST_MSG;
+list_concurrent_t* ACCEPTER_READERS_LIST;
 buffer_concurrent_t* ACCEPTER_BUFFER;
+msg_t* ACCEPTER_LAST_MSG;
 
 accepter_t* accepter_init(list_concurrent_t* c_list);
 void accepter_destroy(accepter_t* a);

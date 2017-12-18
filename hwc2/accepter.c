@@ -65,9 +65,10 @@ accepter_t* accepter_init(list_concurrent_t* c_list)
     buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) malloc(sizeof(buffer_concurrent_t));
     c_buffer = buffer_concurrent_init(ACCEPTER_BUFFER_SIZE);
 
+    ACCEPTER_READERS_LIST = c_list;
     ACCEPTER_BUFFER = c_buffer;
 
-    return_accepter->c_list = c_list;
+    //return_accepter->c_list = c_list;
     return_accepter->c_buffer = c_buffer;
     return_accepter->accepter_destroy = accepter_destroy;
 
@@ -80,9 +81,7 @@ void accepter_destroy(accepter_t* a)
         perror("tentato il free su una accepter già NULL");
         exit(-1);
     }
-
     a->c_buffer->buffer_concurrent_destroy(a->c_buffer);
-    //NO : a->c_list->list_concurrent_destroy(a->c_list);
     free(a);
     if(ACCEPTER_LAST_MSG != (msg_t*)NULL)
     {
@@ -90,6 +89,7 @@ void accepter_destroy(accepter_t* a)
     }
 
     ACCEPTER_BUFFER = (buffer_concurrent_t*) NULL;
+    ACCEPTER_READERS_LIST = (list_concurrent_t*) NULL;
 }
 
 
@@ -112,7 +112,7 @@ void* accepter_thread_function(void* args)
         {
             reader_t* new_reader = reader_init(READER_DEFAUL_VELOCITY);
             //TODO: add start reader activity
-            list_concurrent_addElement(accepter->c_list,(void*) new_reader);
+            list_concurrent_addElement(ACCEPTER_READERS_LIST,(void*) new_reader);
         }
     }
     return (void*) NULL;

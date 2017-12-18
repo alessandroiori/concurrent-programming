@@ -23,7 +23,8 @@ void test_accepter_init(void)
 
     CU_ASSERT_PTR_NOT_NULL(accepter);
     CU_ASSERT_PTR_NOT_NULL(accepter->c_buffer);
-    CU_ASSERT_PTR_NOT_NULL(accepter->c_list);
+    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list);
+    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST);
     CU_ASSERT(ACCEPTER_BUFFER_SIZE == *accepter->c_buffer->buffer->p_max_size);
 
     accepter->c_buffer->buffer_concurrent_destroy(accepter->c_buffer);
@@ -46,14 +47,15 @@ void test_accepter_buffer_vuoto(void)
 {
     list_concurrent_t* READERS_LIST = list_concurrent_init();
     accepter_t* accepter = accepter_init(READERS_LIST);
-
     buffer_concurrent_add_msg(accepter->c_buffer, POISON_PILL);
 
     accepter_start_thread(accepter);
     sleep(5);
 
-    CU_ASSERT_PTR_NULL(accepter->c_list->list->head);
-    CU_ASSERT_PTR_NULL(accepter->c_list->list->tail);
+    //CU_ASSERT_PTR_NULL(accepter->c_list->list->head);
+    CU_ASSERT_PTR_NULL(ACCEPTER_READERS_LIST->list->head);
+    //CU_ASSERT_PTR_NULL(accepter->c_list->list->tail);
+    CU_ASSERT_PTR_NULL(ACCEPTER_READERS_LIST->list->tail);
     CU_ASSERT(0 == *accepter->c_buffer->buffer->p_size);
     CU_ASSERT(0 == strcmp(ACCEPTER_LAST_MSG->content, POISON_PILL->content));
 
@@ -68,17 +70,20 @@ void test_accepter_1_richiesta_buffer_dim_5(void)
     msg_t* msg = msg_init_string(content);
     list_concurrent_t* READERS_LIST = list_concurrent_init();
     accepter_t* accepter = accepter_init(READERS_LIST);
-
     buffer_concurrent_add_msg(accepter->c_buffer, msg);
     buffer_concurrent_add_msg(accepter->c_buffer, POISON_PILL);
 
     accepter_start_thread(accepter);
     sleep(5);
 
-    CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
-    CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->tail);
-    CU_ASSERT(accepter->c_list->list->head == accepter->c_list->list->tail);
-    reader_t* reader = (reader_t*)accepter->c_list->list->head->payload;
+    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
+    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST->list->head);
+    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->tail);
+    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST->list->tail);
+    //CU_ASSERT(accepter->c_list->list->head == accepter->c_list->list->tail);
+    CU_ASSERT(ACCEPTER_READERS_LIST->list->head == ACCEPTER_READERS_LIST->list->tail);
+    //reader_t* reader = (reader_t*)accepter->c_list->list->head->payload;
+    reader_t* reader = (reader_t*)ACCEPTER_READERS_LIST->list->head->payload;
     CU_ASSERT_PTR_NOT_NULL(reader->c_buffer);
     CU_ASSERT_PTR_NOT_NULL(reader->velocity);
     CU_ASSERT(0 == *accepter->c_buffer->buffer->p_size);
@@ -96,7 +101,6 @@ void test_accepter_3_richiesta_buffer_dim_5(void)
     msg_t* msg = msg_init_string(content);
     list_concurrent_t* READERS_LIST = list_concurrent_init();
     accepter_t* accepter = accepter_init(READERS_LIST);
-
     buffer_concurrent_add_msg(accepter->c_buffer, msg);
     buffer_concurrent_add_msg(accepter->c_buffer, msg);
     buffer_concurrent_add_msg(accepter->c_buffer, msg);
@@ -105,9 +109,12 @@ void test_accepter_3_richiesta_buffer_dim_5(void)
     accepter_start_thread(accepter);
     sleep(5);
 
-    CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
-    CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->tail);
-    CU_ASSERT(accepter->c_list->list->head != accepter->c_list->list->tail);
+    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
+    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST->list->head);
+    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->tail);
+    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST->list->tail);
+    //CU_ASSERT(accepter->c_list->list->head != accepter->c_list->list->tail);
+    CU_ASSERT(ACCEPTER_READERS_LIST->list->head != ACCEPTER_READERS_LIST->list->tail);
     iterator_concurrent_t* c_iterator = iterator_concurrent_init(READERS_LIST);
     while(iterator_concurrent_hasNext(c_iterator))
     {
@@ -145,9 +152,12 @@ void test_accepter_6_richiesta_buffer_dim_5_submit_request_function(void)
     accepter_start_thread(accepter);
     sleep(8);
 
-    CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
-    CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->tail);
-    CU_ASSERT(accepter->c_list->list->head != accepter->c_list->list->tail);
+    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
+    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST->list->head);
+    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->tail);
+    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST->list->tail);
+    //CU_ASSERT(accepter->c_list->list->head != accepter->c_list->list->tail);
+    CU_ASSERT(ACCEPTER_READERS_LIST->list->head != ACCEPTER_READERS_LIST->list->tail);
     iterator_concurrent_t* c_iterator = iterator_concurrent_init(READERS_LIST);
     while(iterator_concurrent_hasNext(c_iterator))
     {
