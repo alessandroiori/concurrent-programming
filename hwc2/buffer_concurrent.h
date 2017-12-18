@@ -25,6 +25,11 @@ msg_t* buffer_concurrent_add_msg(buffer_concurrent_t* buffer, msg_t* msg);
 // rimuove un messaggio dal buffer
 msg_t* buffer_concurrent_get_msg(buffer_concurrent_t* buffer);
 
+// aggiunge un messaggio al buffer (non bloccante)
+msg_t* buffer_concurrent_try_add_msg(buffer_concurrent_t* c_buffer, msg_t* msg);
+// rimuove un messaggio dal buffer (non bloccante)
+msg_t* buffer_concurrent_try_get_msg(buffer_concurrent_t* c_buffer);
+
 //**********************************************************************//
 msg_t* put_bloccante(buffer_concurrent_t* c_buffer, msg_t* msg);
 msg_t* put_non_bloccante(buffer_concurrent_t* c_buffer, msg_t* msg);

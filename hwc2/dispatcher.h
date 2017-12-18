@@ -28,4 +28,7 @@ void dispatcher_send_msg_to_all_reader(list_concurrent_t* c_list, msg_t* msg);
 void* dispatcher_thread_function(void* args);
 void dispatcher_start_thread(dispatcher_t* d);
 
+void* dispatcher_start_reader_eliminator_function(void* args);
+void dispatcher_start_reader_eliminator(reader_t* r);
+
 #endif //UNTITLED_DISPATCHER_H

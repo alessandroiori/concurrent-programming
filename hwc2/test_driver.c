@@ -105,12 +105,15 @@ int main()
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 3 richiesta da buffer non vuoto dim 5\n\t", test_accepter_3_richiesta_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 6 richiesta da buffer non vuoto dim 5; submitRequest()\n\t", test_accepter_6_richiesta_buffer_dim_5_submit_request_function)) ||
 */
-
+/*
             (NULL == CU_add_test(pSuite6, "6.1 Dispatcher creazione\n\t", test_dispatcher_init)) ||
             (NULL == CU_add_test(pSuite6, "6.2 Dispatcher distruzione\n\t", test_dispatcher_destroy)) ||
             (NULL == CU_add_test(pSuite6, "6.3 Dispatcher, provicer invia 1 msg\n\t", test_dispatcher_provider_1_msg)) ||
             (NULL == CU_add_test(pSuite6, "6.4 Dispatcher, provicer invia 6 msg\n\t", test_dispatcher_provider_6_msg)) ||
             (NULL == CU_add_test(pSuite6, "6.5 Dispatcher invia 1 msg a 1 reader\n\t", test_dispatcher_1_reader_1_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.6 Dispatcher invia 3 msg a 1 reader\n\t", test_dispatcher_1_reader_3_msg)) ||
+           */
+            (NULL == CU_add_test(pSuite6, "6.7 Dispatcher con provider, eliminato 1 reader lento\n\t", test_dispatcher_provider_1_reader_lento_eliminato)) ||
 
             (0))
     {

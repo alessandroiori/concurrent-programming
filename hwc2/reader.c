@@ -39,12 +39,14 @@ void* reader_thread_function(void* args)
     int exit = 0;
     while(!exit)
     {
+        printf("\r\n READER in While\r\n");
         READER_LAST_MSG = (msg_t*) NULL;
         READER_LAST_MSG = buffer_concurrent_get_msg(reader->c_buffer);
         if(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content))
         {
             exit = 1;
         }
+        printf("\r\n READER LETTO : %s\r\n", READER_LAST_MSG->content);
         //READER_LAST_MSG->msg_destroy(READER_LAST_MSG);
         sleep(*reader->velocity);
     }
@@ -54,12 +56,15 @@ void* reader_thread_function(void* args)
 
 void reader_start_thread(reader_t* r)
 {
+    printf("\r\n QUI2\r\n");
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute
 
     // set thread detachstate attribute to DETACHED
     pthread_attr_init(&attr);
+    printf("\r\n QUI3\r\n");
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    printf("\r\n READER START\r\n");
 
     if(pthread_create(&tid, &attr, reader_thread_function, r))
     {
