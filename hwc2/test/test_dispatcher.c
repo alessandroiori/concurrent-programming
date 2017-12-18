@@ -99,7 +99,7 @@ void test_dispatcher_1_reader_1_msg(void)
     buffer_concurrent_add_msg(dispatcher->c_buffer, POISON_PILL);
 
     reader_start_thread(reader);
-    sleep(1);
+    sleep(2);
     dispatcher_start_thread(dispatcher);
     sleep(4);
 
@@ -111,6 +111,41 @@ void test_dispatcher_1_reader_1_msg(void)
 
     dispatcher->dispatcher_destroy(dispatcher);
     reader->reader_destroy(reader);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    msg->msg_destroy(msg);
+}
+
+void test_dispatcher_2_reader_1_msg(void)
+{
+    int msg_len = 1;
+    char content[] = "content";
+    msg_t *msg = msg_init_string(content);
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    reader_t* reader1 = reader_init(READER_DEFAUL_VELOCITY);
+    reader_t* reader2 = reader_init(READER_DEFAUL_VELOCITY);
+    list_concurrent_addElement(READERS_LIST, reader1);
+    list_concurrent_addElement(READERS_LIST, reader2);
+    dispatcher_t* dispatcher = dispatcher_init(READERS_LIST);
+    buffer_concurrent_add_msg(dispatcher->c_buffer, msg);
+    buffer_concurrent_add_msg(dispatcher->c_buffer, POISON_PILL);
+
+    reader_start_thread(reader1);
+    reader_start_thread(reader2);
+    sleep(2);
+    dispatcher_start_thread(dispatcher);
+    sleep(4);
+
+    CU_ASSERT(1 == DISPATCHER_MSG_CNT);
+    //CU_ASSERT(2 == list_concurrent_size(READERS_LIST));
+    CU_ASSERT(0 == *dispatcher->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(DISPATCHER_LAST_MSG->content, POISON_PILL->content));
+    CU_ASSERT(0 == *reader1->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == *reader2->c_buffer->buffer->p_size);
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
+
+    reader1->reader_destroy(reader1);
+    reader2->reader_destroy(reader2);
+    dispatcher->dispatcher_destroy(dispatcher);
     READERS_LIST->list_concurrent_destroy(READERS_LIST);
     msg->msg_destroy(msg);
 }
@@ -145,6 +180,44 @@ void test_dispatcher_1_reader_3_msg(void)
     msg->msg_destroy(msg);
 }
 
+void test_dispatcher_provider_3_reader_3_msg(void)
+{
+    int msg_len = 3;
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    msg_t msgs[] = {*msg, *msg, *msg};
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    reader_t* reader1 = reader_init(READER_DEFAUL_VELOCITY);
+    reader_t* reader2 = reader_init(READER_DEFAUL_VELOCITY);
+    reader_t* reader3 = reader_init(READER_DEFAUL_VELOCITY);
+    list_concurrent_addElement(READERS_LIST, reader1);
+    list_concurrent_addElement(READERS_LIST, reader2);
+    list_concurrent_addElement(READERS_LIST, reader3);
+    dispatcher_t* dispatcher = dispatcher_init(READERS_LIST);
+    provider_t *provider = provider_init(dispatcher->c_buffer, msgs, &msg_len);
+
+    reader_start_thread(reader1);
+    reader_start_thread(reader2);
+    reader_start_thread(reader3);
+    sleep(1);
+    dispatcher_start_thread(dispatcher);
+    sleep(1);
+    provider_start_thread(provider);
+    sleep(8);
+
+    CU_ASSERT(3 == DISPATCHER_MSG_CNT);
+    //CU_ASSERT(3 == list_concurrent_size(READERS_LIST));
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
+
+    provider->provider_destroy(provider);
+    dispatcher->dispatcher_destroy(dispatcher);
+    reader1->reader_destroy(reader1);
+    reader2->reader_destroy(reader2);
+    reader2->reader_destroy(reader3);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    msg->msg_destroy(msg);
+}
+
 void test_dispatcher_provider_1_reader_lento_eliminato(void)
 {
     int msg_len = 8;
@@ -164,12 +237,40 @@ void test_dispatcher_provider_1_reader_lento_eliminato(void)
     provider_start_thread(provider);
     sleep(10);
 
+    CU_ASSERT(8 == DISPATCHER_MSG_CNT);
     CU_ASSERT(0 == list_concurrent_size(READERS_LIST));
     CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
 
     provider->provider_destroy(provider);
     dispatcher->dispatcher_destroy(dispatcher);
     reader->reader_destroy(reader);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    msg->msg_destroy(msg);
+}
+
+void test_dispatcher_provider_accepter_1_reader_1_msg(void)
+{
+    int msg_len = 1;
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    buffer_t* accepter_request = buffer_init(1);
+    buffer_add_msg(accepter_request,msg);
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    accepter_t* accepter = accepter_init(READERS_LIST);
+    dispatcher_t* dispatcher = dispatcher_init(READERS_LIST);
+    provider_t *provider = provider_init(dispatcher->c_buffer, msg, &msg_len);
+
+    accepter_submit_request(accepter_request, "");
+    accepter_start_thread(accepter);
+    sleep(1);
+    dispatcher_start_thread(dispatcher);
+    sleep(1);
+    provider_start_thread(provider);
+    sleep(8);
+
+    provider->provider_destroy(provider);
+    dispatcher->dispatcher_destroy(dispatcher);
+    accepter->accepter_destroy(accepter);
     READERS_LIST->list_concurrent_destroy(READERS_LIST);
     msg->msg_destroy(msg);
 }

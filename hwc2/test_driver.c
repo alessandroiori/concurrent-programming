@@ -104,21 +104,24 @@ int main()
             (NULL == CU_add_test(pSuite5, "5.4 Accepter legge 1 richiesta da buffer non vuoto dim 5\n\t", test_accepter_1_richiesta_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 3 richiesta da buffer non vuoto dim 5\n\t", test_accepter_3_richiesta_buffer_dim_5)) ||
             (NULL == CU_add_test(pSuite5, "5.5 Accepter legge 6 richiesta da buffer non vuoto dim 5; submitRequest()\n\t", test_accepter_6_richiesta_buffer_dim_5_submit_request_function)) ||
-
 */
+
             (NULL == CU_add_test(pSuite6, "6.1 Dispatcher creazione\n\t", test_dispatcher_init)) ||
             (NULL == CU_add_test(pSuite6, "6.2 Dispatcher distruzione\n\t", test_dispatcher_destroy)) ||
             (NULL == CU_add_test(pSuite6, "6.3 Dispatcher, provicer invia 1 msg\n\t", test_dispatcher_provider_1_msg)) ||
             (NULL == CU_add_test(pSuite6, "6.4 Dispatcher, provicer invia 6 msg\n\t", test_dispatcher_provider_6_msg)) ||
             (NULL == CU_add_test(pSuite6, "6.5 Dispatcher invia 1 msg a 1 reader\n\t", test_dispatcher_1_reader_1_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.6 Dispatcher invia 3 msg a 1 reader\n\t", test_dispatcher_1_reader_3_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.7 Dispatcher con provider, eliminato 1 reader lento\n\t", test_dispatcher_provider_1_reader_lento_eliminato)) ||
+            (NULL == CU_add_test(pSuite6, "6.6 Dispatcher invia 1 msg a 2 reader\n\t", test_dispatcher_2_reader_1_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.7 Dispatcher invia 3 msg a 1 reader\n\t", test_dispatcher_1_reader_3_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.8 Dispatcher con provider, invia 3 msg a 2 reader\n\t", test_dispatcher_provider_3_reader_3_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.9 Dispatcher con provider, eliminato 1 reader lento\n\t", test_dispatcher_provider_1_reader_lento_eliminato)) ||
+            (NULL == CU_add_test(pSuite6, "6.10 Dispatcher con provider e accepter, inviato 1 msg a 1 reader\n\t", test_dispatcher_provider_accepter_1_reader_1_msg)) ||
 
             (0))
-    {
-        CU_cleanup_registry();
-        return CU_get_error();
-    }
+   {
+       CU_cleanup_registry();
+       return CU_get_error();
+   }
 
     /* Run all tests using the CUnit Basic interface */
     CU_basic_set_mode(CU_BRM_VERBOSE);

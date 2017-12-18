@@ -25,10 +25,11 @@ void reader_destroy(reader_t* r)
     buffer_concurrent_t* b = r->c_buffer;
     b->buffer_concurrent_destroy(b);
     free(r->velocity);
-    if(READER_LAST_MSG != (msg_t*)NULL)
+    /*if(READER_LAST_MSG != (msg_t*)NULL)
     {
         READER_LAST_MSG->msg_destroy(READER_LAST_MSG);
     }
+     */
 }
 
 void* reader_thread_function(void* args)
