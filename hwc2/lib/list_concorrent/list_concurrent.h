@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <pthread.h>
-#include "hwc2list/list.h"
+#include "../hwc2list/list.h"
 
 typedef struct list_concurrent {
     pthread_mutex_t* MUTEX;

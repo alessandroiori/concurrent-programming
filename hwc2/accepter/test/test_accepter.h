@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include "CUnit/Basic.h"
 #include "../accepter.h"
-#include "../poison_pill.h"
+#include "../../lib/poison_pill/poison_pill.h"
 
 int accepter_before(void);
 int accepter_after(void);

@@ -6,8 +6,8 @@
 #define UNTITLED_READER_H
 
 #include <unistd.h>
-#include "poison_pill.h"
-#include "buffer_concurrent.h"
+#include "../lib/poison_pill/poison_pill.h"
+#include "../lib/buffer_concorrent/buffer_concurrent.h"
 
 #define READER_DEFAUL_VELOCITY 1
 #define READER_BUFFER_SIZE     5

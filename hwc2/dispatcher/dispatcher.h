@@ -5,10 +5,10 @@
 #ifndef UNTITLED_DISPATCHER_H
 #define UNTITLED_DISPATCHER_H
 
-#include "buffer_concurrent.h"
-#include "list_concurrent.h"
-#include "poison_pill.h"
-#include "reader.h"
+#include "../lib/buffer_concorrent/buffer_concurrent.h"
+#include "../lib/list_concorrent/list_concurrent.h"
+#include "../lib/poison_pill/poison_pill.h"
+#include "../reader/reader.h"
 
 #define DISPATCHER_BUFFER_SIZE      5
 

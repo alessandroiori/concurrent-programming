@@ -5,7 +5,7 @@
 #ifndef UNTITLED_POISON_PILL_H
 #define UNTITLED_POISON_PILL_H
 
-#include "hwc1/msg.h"
+#include "../msg/msg.h"
 
 //#define POISON_PILL ( (msg_t*)&POISON_PILL_MSG )
 

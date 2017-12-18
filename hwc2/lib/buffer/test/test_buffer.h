@@ -7,7 +7,7 @@
 
 #include <unistd.h>
 #include "CUnit/Basic.h"
-#include "../hwc1/buffer.h"
+#include "../buffer.h"
 
 int buffer_before(void);
 int buffer_after(void);

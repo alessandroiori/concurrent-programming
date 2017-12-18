@@ -7,11 +7,11 @@
 
 #include <unistd.h>
 #include "CUnit/Basic.h"
-#include "../reader.h"
+#include "../../reader/reader.h"
 #include "../dispatcher.h"
-#include "../provider.h"
-#include "../accepter.h"
-#include "../poison_pill.h"
+#include "../../provider/provider.h"
+#include "../../accepter/accepter.h"
+#include "../../lib/poison_pill/poison_pill.h"
 
 int dispatcher_before(void);
 int dispatcher_after(void);

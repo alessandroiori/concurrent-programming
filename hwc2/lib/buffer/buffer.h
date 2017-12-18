@@ -6,7 +6,7 @@
 #define UNTITLED_BUFFER_H
 
 #include <stdint.h>
-#include "msg.h"
+#include "../msg/msg.h"
 
 #define BUFFER_ERROR    (msg_t *) NULL
 #define BUFFER_NULL     (buffer_t*) NULL

@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include "CUnit/Basic.h"
 #include "../reader.h"
-#include "../poison_pill.h"
+#include "../../lib/poison_pill/poison_pill.h"
 
 int reader_before(void);
 int reader_after(void);

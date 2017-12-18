@@ -11,12 +11,12 @@
 
 #include "CUnit/Basic.h"
 
-#include "test/test_buffer.h"
-#include "test/test_buffer_concurrent.h"
-#include "test/test_provider.h"
-#include "test/test_reader.h"
-#include "test/test_accepter.h"
-#include "test/test_dispatcher.h"
+#include "lib/buffer/test/test_buffer.h"
+#include "lib/buffer_concorrent/test/test_buffer_concurrent.h"
+#include "provider/test/test_provider.h"
+#include "reader/test/test_reader.h"
+#include "accepter/test/test_accepter.h"
+#include "dispatcher/test/test_dispatcher.h"
 
 int main()
 {

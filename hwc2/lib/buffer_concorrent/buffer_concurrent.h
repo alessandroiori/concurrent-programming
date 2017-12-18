@@ -6,8 +6,8 @@
 #define UNTITLED_CONCURRENT_BUFFER_H
 
 #include <stdint.h>
-#include "hwc1/buffer.h"
-#include "monitor_buffer.h"
+#include "../buffer/buffer.h"
+#include "../monitor_buffer/monitor_buffer.h"
 
 int* EXIT_FROM_COND_WAIT_WHILE; //consente funzionamento dei fake produttori consumatori
 
