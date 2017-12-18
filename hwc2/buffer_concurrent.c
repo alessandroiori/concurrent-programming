@@ -44,24 +44,29 @@ msg_t* put_non_bloccante(buffer_concurrent_t* c_buffer, msg_t* msg)
 {
     buffer_t* buffer = c_buffer->buffer;
     pthread_mutex_t* MUTEX = c_buffer->monitor->MUTEX;
+    pthread_cond_t* COND_NOT_EMPTY = c_buffer->monitor->COND_NOT_EMPTY;
 
     msg_t* return_msg = BUFFER_ERROR;
     if(MESSAGE_NULL != msg)
     {
-        pthread_mutex_trylock(MUTEX);
-        if (*buffer->p_size < *buffer->p_max_size) {
-            uint8_t d = *buffer->p_d;
-            uint8_t max_size = *buffer->p_max_size;
-            uint8_t size = *buffer->p_size;
+        if(pthread_mutex_trylock(MUTEX) == 0)
+        {
+            if (*buffer->p_size < *buffer->p_max_size)
+            {
+                uint8_t d = *buffer->p_d;
+                uint8_t max_size = *buffer->p_max_size;
+                uint8_t size = *buffer->p_size;
 
-            buffer->msgs[d] = *msg;
-            *buffer->p_size = size + 1;
-            *buffer->p_d = (d + 1) % max_size;
-
-            return_msg = msg_init_string(buffer->msgs[d].content);
+                buffer->msgs[d] = *msg;
+                *buffer->p_size = size + 1;
+                *buffer->p_d = (d + 1) % max_size;
+                return_msg = msg_init_string(buffer->msgs[d].content);
+                pthread_cond_signal(COND_NOT_EMPTY);
+            }
+            pthread_mutex_unlock(MUTEX);
         }
-        pthread_mutex_unlock(MUTEX);
     }
+
     return return_msg;
 }
 
@@ -102,20 +107,24 @@ msg_t* get_non_bloccante(buffer_concurrent_t* c_buffer)
 {
     buffer_t* buffer = c_buffer->buffer;
     pthread_mutex_t* MUTEX = c_buffer->monitor->MUTEX;
+    pthread_cond_t* COND_NOT_FULL = c_buffer->monitor->COND_NOT_FULL;
     msg_t* return_msg = BUFFER_ERROR;
 
-    pthread_mutex_trylock(MUTEX);
-    if(*buffer->p_size > 0)
+    if(pthread_mutex_trylock(MUTEX) == 0)
     {
-        uint8_t t = *buffer->p_t;
-        uint8_t max_size = *buffer->p_max_size;
-        uint8_t size = *buffer->p_size;
+        if(*buffer->p_size > 0)
+        {
+            uint8_t t = *buffer->p_t;
+            uint8_t max_size = *buffer->p_max_size;
+            uint8_t size = *buffer->p_size;
 
-        *buffer->p_size = size - 1;
-        *buffer->p_t = (t + 1) % max_size;
-        return_msg = msg_init_string(buffer->msgs[t].content);
+            *buffer->p_size = size - 1;
+            *buffer->p_t = (t + 1) % max_size;
+            return_msg = msg_init_string(buffer->msgs[t].content);
+            pthread_cond_signal(COND_NOT_FULL);
+        }
+        pthread_mutex_unlock(MUTEX);
     }
-    pthread_mutex_unlock(MUTEX);
 
     return return_msg;
 }
@@ -161,6 +170,22 @@ msg_t* buffer_concurrent_get_msg(buffer_concurrent_t* c_buffer)
 {
     msg_t* r_msg;
     r_msg = get_bloccante(c_buffer);
+    return r_msg;
+}
+
+// aggiunge un messaggio al buffer (non bloccante)
+msg_t* buffer_concurrent_try_add_msg(buffer_concurrent_t* c_buffer, msg_t* msg)
+{
+    msg_t* r_msg;
+    r_msg = put_non_bloccante(c_buffer, msg);
+    return r_msg;
+}
+
+// rimuove un messaggio dal buffer (non bloccante)
+msg_t* buffer_concurrent_try_get_msg(buffer_concurrent_t* c_buffer)
+{
+    msg_t* r_msg;
+    r_msg = get_non_bloccante(c_buffer);
     return r_msg;
 }
 
