@@ -46,12 +46,12 @@ void* reader_thread_function(void* args)
         if(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content))
         {
             exit = 1;
+        } else {
+            printf("\r\n READER LETTO : %s\r\n", READER_LAST_MSG->content);
+            //READER_LAST_MSG->msg_destroy(READER_LAST_MSG);
         }
-        printf("\r\n READER LETTO : %s\r\n", READER_LAST_MSG->content);
-        //READER_LAST_MSG->msg_destroy(READER_LAST_MSG);
         sleep(*reader->velocity);
     }
-
     return (void*) NULL;
 }
 

@@ -268,6 +268,84 @@ void test_dispatcher_provider_accepter_1_reader_1_msg(void)
     provider_start_thread(provider);
     sleep(8);
 
+    CU_ASSERT(1 == DISPATCHER_MSG_CNT);
+    //CU_ASSERT(1 == list_concurrent_size(READERS_LIST));
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
+
+    provider->provider_destroy(provider);
+    dispatcher->dispatcher_destroy(dispatcher);
+    accepter->accepter_destroy(accepter);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    msg->msg_destroy(msg);
+}
+
+void test_dispatcher_provider_accepter_5_reader_5_msg(void)
+{
+    int msg_len = 5; // 5 msg
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    msg_t msgs[] = {*msg, *msg, *msg, *msg, *msg};
+    buffer_t* accepter_request = buffer_init(5); // 5 reader
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    accepter_t* accepter = accepter_init(READERS_LIST);
+    dispatcher_t* dispatcher = dispatcher_init(READERS_LIST);
+    provider_t *provider = provider_init(dispatcher->c_buffer, msgs, &msg_len);
+
+    accepter_submit_request(accepter_request, "");
+    sleep(1);
+    accepter_start_thread(accepter);
+    sleep(1);
+    dispatcher_start_thread(dispatcher);
+    sleep(1);
+    provider_start_thread(provider);
+    sleep(10);
+
+    CU_ASSERT(5 == DISPATCHER_MSG_CNT);
+    CU_ASSERT(5 == list_concurrent_size(READERS_LIST));
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
+
+    provider->provider_destroy(provider);
+    dispatcher->dispatcher_destroy(dispatcher);
+    accepter->accepter_destroy(accepter);
+    READERS_LIST->list_concurrent_destroy(READERS_LIST);
+    msg->msg_destroy(msg);
+}
+
+void test_dispatcher_provider_accepter_5_reader_10_msg(void)
+{
+    int msg_len = 10; // 10 msg
+    char content[] = "content";
+    msg_t* msg = msg_init_string(content);
+    msg_t msgs[] = {*msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg};
+    buffer_t* accepter_request = buffer_init(5); // 5 reader
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    buffer_add_msg(accepter_request,msg);
+    list_concurrent_t* READERS_LIST = list_concurrent_init();
+    accepter_t* accepter = accepter_init(READERS_LIST);
+    dispatcher_t* dispatcher = dispatcher_init(READERS_LIST);
+    provider_t *provider = provider_init(dispatcher->c_buffer, msgs, &msg_len);
+
+    accepter_submit_request(accepter_request, "");
+    sleep(1);
+    accepter_start_thread(accepter);
+    sleep(1);
+    dispatcher_start_thread(dispatcher);
+    sleep(1);
+    provider_start_thread(provider);
+    sleep(15);
+
+    CU_ASSERT(10 == DISPATCHER_MSG_CNT);
+    CU_ASSERT(5 >= list_concurrent_size(READERS_LIST));
+    CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
+
     provider->provider_destroy(provider);
     dispatcher->dispatcher_destroy(dispatcher);
     accepter->accepter_destroy(accepter);

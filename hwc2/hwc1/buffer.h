@@ -10,6 +10,8 @@
 
 #define BUFFER_ERROR    (msg_t *) NULL
 #define BUFFER_NULL     (buffer_t*) NULL
+#define BUFFER_FULL     (msg_t*) 1
+#define BUFFER_EMPTY    (msg_t*) 2
 
 typedef struct buffer {
     uint8_t* p_t;

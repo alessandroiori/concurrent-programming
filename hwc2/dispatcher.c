@@ -62,8 +62,11 @@ void dispatcher_send_msg_to_all_reader(list_concurrent_t* c_list, msg_t* msg)
     iterator_concurrent_t* c_iterator = iterator_concurrent_init(c_list);
     while(iterator_concurrent_hasNext(c_iterator))
     {
+        //msg_t* msg_copy = (msg_t*) malloc(sizeof(msg_t));
+        //msg_copy = msg_init_string(msg->content);
+
         reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
-        if(buffer_concurrent_try_add_msg(reader->c_buffer, msg) == BUFFER_ERROR)
+        if(buffer_concurrent_add_msg_semi_block(reader->c_buffer, msg) == BUFFER_FULL)
         {
             printf("\r\n Non riuscito ad aggiungere messaggio\r\n");
             list_concurrent_removeElement(c_list, (void*)reader);
