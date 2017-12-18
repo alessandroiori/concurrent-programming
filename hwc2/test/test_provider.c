@@ -76,9 +76,11 @@ void test_provider_init(void) {
     CU_ASSERT_PTR_NOT_NULL(PROVIDER_DISPATCHER_BUFFER);
     //CU_ASSERT_PTR_NOT_NULL(provider->msgs);
     CU_ASSERT_PTR_NOT_NULL(PROVIDER_MSGS);
-    CU_ASSERT(1 == *provider->msg_len);
+    //CU_ASSERT(1 == *provider->msg_len);
+    CU_ASSERT(1 == *PROVIDER_MSGS_LEN);
 
-    free(provider->msg_len);
+    //free(provider->msg_len);
+    free(msg_len);
     //free(provider->msgs);
     msg->msg_destroy(msg);
     free(provider);
