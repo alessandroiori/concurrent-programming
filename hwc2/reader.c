@@ -57,13 +57,11 @@ void* reader_thread_function(void* args)
 
 void reader_start_thread(reader_t* r)
 {
-    printf("\r\n QUI2\r\n");
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute
 
     // set thread detachstate attribute to DETACHED
     pthread_attr_init(&attr);
-    printf("\r\n QUI3\r\n");
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
     printf("\r\n READER START\r\n");
 

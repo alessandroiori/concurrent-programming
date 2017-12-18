@@ -23,12 +23,10 @@ void test_accepter_init(void)
 
     CU_ASSERT_PTR_NOT_NULL(accepter);
     CU_ASSERT_PTR_NOT_NULL(accepter->c_buffer);
-    //CU_ASSERT_PTR_NOT_NULL(accepter->c_list);
     CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST);
     CU_ASSERT(ACCEPTER_BUFFER_SIZE == *accepter->c_buffer->buffer->p_max_size);
 
     accepter->c_buffer->buffer_concurrent_destroy(accepter->c_buffer);
-    //accepter->c_list->list_concurrent_destroy(accepter->c_list);
     READERS_LIST->list_concurrent_destroy(READERS_LIST);
     free(accepter);
 }
@@ -149,8 +147,9 @@ void test_accepter_6_richiesta_buffer_dim_5_submit_request_function(void)
     accepter_t* accepter = accepter_init(READERS_LIST);
 
     accepter_submit_request(request, "");
+    sleep(1);
     accepter_start_thread(accepter);
-    sleep(8);
+    sleep(10);
 
     //CU_ASSERT_PTR_NOT_NULL(accepter->c_list->list->head);
     CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST->list->head);

@@ -64,12 +64,11 @@ int provider_after(void)
 }
 
 void test_provider_init(void) {
-    int* msg_len = (int*) malloc(sizeof(int));
-    *msg_len = 1;
+    int msg_len = 1;
     msg_t *msg = msg_init_string("content");
     buffer_concurrent_t *buffer = buffer_concurrent_init(1);
 
-    provider_t *provider = provider_init(buffer, msg, msg_len);
+    provider_t *provider = provider_init(buffer, msg, &msg_len);
 
     CU_ASSERT_PTR_NOT_NULL(provider);
     //CU_ASSERT_PTR_NOT_NULL(provider->c_buffer);
@@ -80,20 +79,21 @@ void test_provider_init(void) {
     CU_ASSERT(1 == *PROVIDER_MSGS_LEN);
 
     //free(provider->msg_len);
-    free(msg_len);
+
     //free(provider->msgs);
     msg->msg_destroy(msg);
+    buffer->buffer_concurrent_destroy(buffer);
     free(provider);
 }
 
 void test_provider_destroy(void)
 {
-    int* msg_len = (int*) malloc(sizeof(int));
-    *msg_len = 1;
+    int msg_len = 1;
     msg_t *msg = msg_init_string("content");
     buffer_concurrent_t *buffer = buffer_concurrent_init(1);
-    provider_t* provider = provider_init(buffer, msg, msg_len);
+    provider_t* provider = provider_init(buffer, msg, &msg_len);
 
+    buffer->buffer_concurrent_destroy(buffer);
     provider->provider_destroy(provider);
     // basta che il test termini correttamente: no asserzioni!
 }
@@ -101,15 +101,13 @@ void test_provider_destroy(void)
 void test_provider_1_msg_spediti_buffer_dim_2(void)
 {
     char content[] = "content";
-    int* msg_len = (int*) malloc(sizeof(int));
-    *msg_len = 1;
+    int msg_len = 1;
     msg_t *msg = msg_init_string(content);
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(1+1); //msg + poison_pill
-    provider_t *provider = provider_init(c_buffer, msg, msg_len);
+    provider_t *provider = provider_init(c_buffer, msg, &msg_len);
 
     provider_start_thread(provider);
     sleep(3);
-    //provider_join_thread();
 
     CU_ASSERT(2 == *c_buffer->buffer->p_size);
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[0].content, content));
@@ -123,16 +121,14 @@ void test_provider_1_msg_spediti_buffer_dim_2(void)
 void test_provider_2_msg_spediti_buffer_dim_4(void)
 {
     char content[] = "content";
-    int* msg_len = (int*) malloc(sizeof(int));
-    *msg_len = 2;
+    int msg_len = 2;
     msg_t* msg = msg_init_string(content);
     msg_t msgs[] = {*msg, *msg};
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(4);
-    provider_t *provider = provider_init(c_buffer, msgs, msg_len);
+    provider_t *provider = provider_init(c_buffer, msgs, &msg_len);
 
     provider_start_thread(provider);
     sleep(5);
-    //provider_join_thread();
 
     CU_ASSERT(2+1 == *c_buffer->buffer->p_size); //msg + poison_pill
     CU_ASSERT(0 == strcmp(c_buffer->buffer->msgs[0].content, content));
@@ -148,17 +144,16 @@ void test_provider_2_msg_spediti_buffer_dim_4(void)
 void test_provider_2_msg_spediti_buffer_dim_1(void)
 {
     char content[] = "content";
-    int* msg_len = (int*) malloc(sizeof(int));
-    *msg_len = 2;
+    int msg_len = 2;
     msg_t* msg = msg_init_string(content);
     msg_t msgs[] = {*msg, *msg};
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(1);
-    provider_t *provider = provider_init(c_buffer, msgs, msg_len);
+    provider_t *provider = provider_init(c_buffer, msgs, &msg_len);
     test_support_provider_cond_wait_while_init();
 
     provider_start_thread(provider);
+    sleep(2);
     test_support_provider_fake_dispatcher(c_buffer, 2+1); // 2 msg + poison
-    //provider_join_thread();
     sleep(3);
     test_support_provider_join_fake_dispatcher();
 
@@ -173,17 +168,16 @@ void test_provider_2_msg_spediti_buffer_dim_1(void)
 void test_provider_10_msg_spediti_buffer_dim_5(void)
 {
     char content[] = "content";
-    int* msg_len = (int*) malloc(sizeof(int));
-    *msg_len = 10;
+    int msg_len = 10;
     msg_t* msg = msg_init_string(content);
     msg_t msgs[] = {*msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg};
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(5);
-    provider_t *provider = provider_init(c_buffer, msgs, msg_len);
+    provider_t *provider = provider_init(c_buffer, msgs, &msg_len);
     test_support_provider_cond_wait_while_init();
 
     provider_start_thread(provider);
+    sleep(2);
     test_support_provider_fake_dispatcher(c_buffer, 10+1); // 10 msg + poison
-    //provider_join_thread();
     sleep(3);
     test_support_provider_join_fake_dispatcher();
 
@@ -194,12 +188,3 @@ void test_provider_10_msg_spediti_buffer_dim_5(void)
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
 }
-
-/*
- * (NULL == CU_add_test(pSuite1, "1.11 Add msg buffer pieno non unitario\n\t", test_buffer_add_msg_buffer_pineo_non_unitario)) ||
-    (NULL == CU_add_test(pSuite1, "1.12 Get msg buffer pieno non unitario\n\t", test_buffer_get_msg_buffer_pineo_non_unitario)) ||
-    (NULL == CU_add_test(pSuite1, "1.13 Get msg buffer vuoto non unitario\n\t", test_buffer_get_msg_buffer_vuoto_non_unitario)) ||
-    (NULL == CU_add_test(pSuite1, "1.14 Get msg buffer pieno unitario\n\t", test_buffer_get_msg_buffer_pineo_unitario)) ||
-    (NULL == CU_add_test(pSuite1, "1.15 Get msg buffer vuoto unitario\n\t", test_buffer_get_msg_buffer_vuoto_unitario)) ||
-
- */
