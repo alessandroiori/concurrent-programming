@@ -30,25 +30,23 @@ void dispatcher_destroy(dispatcher_t* d)
     }
 }
 
-void dispatcher_send_poison_msg_to_all_reader(list_concurrent_t* reader_list)
+
+void dispatcher_send_msg_to_all_reader(list_concurrent_t* c_list, msg_t* msg)
 {
-    iterator_concurrent_t* c_iterator = iterator_concurrent_init(reader_list);
+    iterator_concurrent_t* c_iterator = iterator_concurrent_init(c_list);
     while(iterator_concurrent_hasNext(c_iterator))
     {
         reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
-        buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
+        buffer_concurrent_add_msg(reader->c_buffer, msg);
+        //printf("\r\n Reader dovrebbe aver ricevuto: %s", msg->content);
     }
-}
-
-void dispatcher_send_msg_to_reader(list_concurrent_t* c_list, msg_t* msg)
-{
-
 }
 
 void* dispatcher_thread_function(void* args)
 {
     dispatcher_t* dispatcher = (dispatcher_t*) args;
 
+    DISPATCHER_MSG_CNT = 0;
     msg_t* m;
     int exit = 0;
     while(!exit)
@@ -62,10 +60,13 @@ void* dispatcher_thread_function(void* args)
         }
         else
         {
-            //dispatcher_send_msg_to_reader(dispatcher->c_list, DISPATCHER_LAST_MSG);
+            DISPATCHER_MSG_CNT++;
+            dispatcher_send_msg_to_all_reader(dispatcher->c_list, DISPATCHER_LAST_MSG);
+            //printf("\r\n Invio a tutti reader: %s", DISPATCHER_LAST_MSG->content);
         }
     }
-    dispatcher_send_poison_msg_to_all_reader(dispatcher->c_list);
+    dispatcher_send_msg_to_all_reader(dispatcher->c_list, POISON_PILL);
+    //printf("\r\n Invio a tutti reader: %s", POISON_PILL->content);
 
     return (void*) NULL;
 }

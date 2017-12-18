@@ -111,6 +111,7 @@ void* accepter_thread_function(void* args)
         else
         {
             reader_t* new_reader = reader_init(READER_DEFAUL_VELOCITY);
+            //TODO: add start reader activity
             list_concurrent_addElement(accepter->c_list,(void*) new_reader);
         }
     }
