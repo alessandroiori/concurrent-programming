@@ -13,11 +13,12 @@
 #define DISPATCHER_BUFFER_SIZE      5
 
 typedef struct dispatcher {
-    list_concurrent_t* c_list;
+    //list_concurrent_t* c_list;
     buffer_concurrent_t* c_buffer;
     void (*dispatcher_destroy)(struct dispatcher* d);
 } dispatcher_t;
 
+list_concurrent_t* DISPATCHER_READERS_LIST;
 msg_t* DISPATCHER_LAST_MSG;
 int DISPATCHER_MSG_CNT;
 

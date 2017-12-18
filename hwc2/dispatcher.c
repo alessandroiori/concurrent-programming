@@ -8,13 +8,14 @@ dispatcher_t* dispatcher_init(list_concurrent_t* reader_list)
 {
     dispatcher_t* dispatcher = (dispatcher_t*) malloc(sizeof(dispatcher_t));
     buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) malloc(sizeof(buffer_concurrent_t));
-    list_concurrent_t* c_list = (list_concurrent_t*) malloc(sizeof(list_concurrent_t));
+    //list_concurrent_t* c_list = (list_concurrent_t*) malloc(sizeof(list_concurrent_t));
 
     c_buffer = buffer_concurrent_init(DISPATCHER_BUFFER_SIZE);
-    c_list = reader_list;
+    //c_list = reader_list;
+    DISPATCHER_READERS_LIST = reader_list;
 
     dispatcher->c_buffer = c_buffer;
-    dispatcher->c_list = c_list;
+    //dispatcher->c_list = c_list;
     dispatcher->dispatcher_destroy = dispatcher_destroy;
 
     return dispatcher;
@@ -28,6 +29,7 @@ void dispatcher_destroy(dispatcher_t* d)
     {
         DISPATCHER_LAST_MSG->msg_destroy(DISPATCHER_LAST_MSG);
     }
+    DISPATCHER_READERS_LIST = (list_concurrent_t*) NULL;
 }
 
 void* dispatcher_start_reader_eliminator_function(void* args)
@@ -93,11 +95,11 @@ void* dispatcher_thread_function(void* args)
         else
         {
             DISPATCHER_MSG_CNT++;
-            dispatcher_send_msg_to_all_reader(dispatcher->c_list, DISPATCHER_LAST_MSG);
+            dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, DISPATCHER_LAST_MSG);
             //printf("\r\n Invio a tutti reader: %s", DISPATCHER_LAST_MSG->content);
         }
     }
-    dispatcher_send_msg_to_all_reader(dispatcher->c_list, POISON_PILL);
+    dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, POISON_PILL);
     //printf("\r\n Invio a tutti reader: %s", POISON_PILL->content);
 
     return (void*) NULL;
