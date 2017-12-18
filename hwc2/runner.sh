@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 echo "building"
-#gcc -lcunit ./*.c ./hwc1/*.c ./hwc2list/*.c ./test/*.c -o test_runner
 gcc -lcunit ./test_driver.c \
             ./accepter/*.c ./accepter/test/*.c \
             ./dispatcher/*.c ./dispatcher/test/*.c \

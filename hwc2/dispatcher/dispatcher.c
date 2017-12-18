@@ -36,7 +36,7 @@ void* dispatcher_start_reader_eliminator_function(void* args)
 {
     reader_t* reader = (reader_t*) args;
     buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
-    printf("\r\n INVIATA POISON ELIMINATIONE A READER\r\n");
+    //printf("\r\n INVIATA POISON ELIMINATIONE A READER\r\n");
     return (void*) NULL;
 }
 
@@ -49,7 +49,7 @@ void dispatcher_start_reader_eliminator(reader_t* r)
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-    printf("\r\n Avviato Reader Eliminator\r\n");
+    //printf("\r\n Avviato Reader Eliminator\r\n");
     if(pthread_create(&tid, &attr, dispatcher_start_reader_eliminator_function, r))
     {
         printf("error creating dispatcher thread\t\n");
@@ -68,13 +68,13 @@ void dispatcher_send_msg_to_all_reader(list_concurrent_t* c_list, msg_t* msg)
         reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
         if(buffer_concurrent_add_msg_semi_block(reader->c_buffer, msg) == BUFFER_FULL)
         {
-            printf("\r\n Non riuscito ad aggiungere messaggio\r\n");
+            //printf("\r\n Non riuscito ad aggiungere messaggio\r\n");
             list_concurrent_removeElement(c_list, (void*)reader);
             dispatcher_start_reader_eliminator(reader);
         }
         else
         {
-            printf("\r\n Aggiunto msg su buffer reader: %s\r\n", msg->content);
+            //printf("\r\n Aggiunto msg su buffer reader: %s\r\n", msg->content);
         }
     }
 }
