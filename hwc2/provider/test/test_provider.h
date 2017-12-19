@@ -21,10 +21,12 @@ void test_provider_2_msg_spediti_buffer_dim_1(void);
 void test_provider_10_msg_spediti_buffer_dim_5(void);
 
 /* support */
-void test_support_provider_cond_wait_while_init(void);
-void test_support_provider_cond_wait_while_destroy(void);
+//id test_support_provider_cond_wait_while_init(void);
+//void test_support_provider_cond_wait_while_destroy(void);
 void* test_support_provider_fake_dispatcher_function(void* args);
-void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer, int msg_number);
-void test_support_provider_join_fake_dispatcher(void);
+//void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer, int msg_number);
+void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer);
+void test_support_provider_clean_fake_dispatcher(void);
+//void test_support_provider_join_fake_dispatcher(void);
 
 #endif //UNTITLED_TEST_PROVIDER_H

@@ -83,13 +83,14 @@ int main()
             (NULL == CU_add_test(pSuite2, "2.14 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_unitario)) ||
             (NULL == CU_add_test(pSuite2, "2.15 Get msg buffer concorrente vuoto non unitario\n\t", test_buffer_concorrente_get_msg_buffer_vuoto_non_unitario)) ||
 
-            (NULL == CU_add_test(pSuite3, "3.1 Creazione provider\n\t", test_provider_init)) ||
-            (NULL == CU_add_test(pSuite3, "3.2 Distruzione provider\n\t", test_provider_destroy)) ||
+            (NULL == CU_add_test(pSuite3, "3.1 Provider creazione\n\t", test_provider_init)) ||
+            (NULL == CU_add_test(pSuite3, "3.2 Provider distruzione\n\t", test_provider_destroy)) ||
             (NULL == CU_add_test(pSuite3, "3.3 Provider spedisce 1 msg nel buffer size 2\n\t", test_provider_1_msg_spediti_buffer_dim_2)) ||
             (NULL == CU_add_test(pSuite3, "3.4 Provider spedisce 2 msg nel buffer size 4\n\t", test_provider_2_msg_spediti_buffer_dim_4)) ||
-            (NULL == CU_add_test(pSuite3, "3.5 Provider spedisce 2 msg nel buffer size 1\n\t", test_provider_2_msg_spediti_buffer_dim_1)) ||
-            (NULL == CU_add_test(pSuite3, "3.6 Provider spedisce 10 msg nel buffer size 5\n\t", test_provider_10_msg_spediti_buffer_dim_5)) ||
 */
+            (NULL == CU_add_test(pSuite3, "3.5 Provider spedisce 2 msg nel buffer size 1\n\t", test_provider_2_msg_spediti_buffer_dim_1)) ||
+            //(NULL == CU_add_test(pSuite3, "3.6 Provider spedisce 10 msg nel buffer size 5\n\t", test_provider_10_msg_spediti_buffer_dim_5)) ||
+/*
             (NULL == CU_add_test(pSuite4, "4.1 Reader creazione\n\t", test_reader_init)) ||
             (NULL == CU_add_test(pSuite4, "4.2 Reader distruzione\n\t", test_reader_destroy)) ||
             (NULL == CU_add_test(pSuite4, "4.3 Reader legge 0 msg da buffer size 5\n\t", test_reader_0_msg_letti_buffer_dim_5)) ||
@@ -106,17 +107,17 @@ int main()
 
             (NULL == CU_add_test(pSuite6, "6.1 Dispatcher creazione\n\t", test_dispatcher_init)) ||
             (NULL == CU_add_test(pSuite6, "6.2 Dispatcher distruzione\n\t", test_dispatcher_destroy)) ||
-            (NULL == CU_add_test(pSuite6, "6.3 Dispatcher, provider invia 1 msg\n\t", test_dispatcher_provider_1_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.4 Dispatcher, provider invia 6 msg\n\t", test_dispatcher_provider_6_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.5 Dispatcher invia 1 msg a 1 reader\n\t", test_dispatcher_1_reader_1_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.6 Dispatcher invia 1 msg a 2 reader\n\t", test_dispatcher_2_reader_1_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.7 Dispatcher invia 3 msg a 1 reader\n\t", test_dispatcher_1_reader_3_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.8 Dispatcher con provider, invia 3 msg a 2 reader\n\t", test_dispatcher_provider_3_reader_3_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.9 Dispatcher con provider, eliminato 1 reader lento\n\t", test_dispatcher_provider_1_reader_lento_eliminato)) ||
-            (NULL == CU_add_test(pSuite6, "6.10 Dispatcher con provider e accepter, inviato 1 msg a 1 reader\n\t", test_dispatcher_provider_accepter_1_reader_1_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.11 Dispatcher con provider e accepter, inviati 5 msg a 5 di buffer 5\n\t", test_dispatcher_provider_accepter_5_reader_5_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.12 Dispatcher con provider e accepter, inviati 10 msg a 5 reader di buffer 5\n\t", test_dispatcher_provider_accepter_5_reader_10_msg)) ||
-
+            (NULL == CU_add_test(pSuite6, "6.3 Dispatcher, provider invia 1 msg.\n\t", test_dispatcher_provider_1_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.4 Dispatcher, provider invia 6 msg.\n\t", test_dispatcher_provider_6_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.5 Dispatcher invia 1 msg a 1 reader.\n\t", test_dispatcher_1_reader_1_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.6 Dispatcher invia 1 msg a 2 reader.\n\t", test_dispatcher_2_reader_1_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.7 Dispatcher invia 3 msg a 1 reader.\n\t", test_dispatcher_1_reader_3_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.8 Dispatcher con provider, invia 3 msg a 2 reader.\n\t", test_dispatcher_provider_3_reader_3_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.9 Dispatcher con provider, eliminato 1 reader lento.\n\t", test_dispatcher_provider_1_reader_lento_eliminato)) ||
+            (NULL == CU_add_test(pSuite6, "6.10 Dispatcher con provider e accepter, inviato 1 msg a 1 reader.\n\t", test_dispatcher_provider_accepter_1_reader_1_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.11 Dispatcher con provider e accepter, inviati 5 msg a 5 reader di buffer 5.\n\t", test_dispatcher_provider_accepter_5_reader_5_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.12 Dispatcher con provider e accepter, inviati 10 msg a 5 reader di buffer 5,\n\teliminati reader lenti.\n\t", test_dispatcher_provider_accepter_5_reader_10_msg)) ||
+*/
             (0))
    {
        CU_cleanup_registry();

@@ -4,11 +4,15 @@
 #include "test_provider.h"
 
 /* Support */
-
+/*
 buffer_concurrent_t* TMP_C_BUFFER;
 pthread_t TMP_DISPATCHER;
 int TMP_MSGS_NUMBER;
+*/
 
+int PROVIDER_FAKE_DISPATCHER_MSG_CNT;
+msg_t* PROVIDER_FAKE_DISPATCHER_LAST_MSG;
+/*
 void test_support_provider_cond_wait_while_init(void)
 {
     EXIT_FROM_COND_WAIT_WHILE = (int*) malloc(sizeof(int));
@@ -19,9 +23,48 @@ void test_support_provider_cond_wait_while_destroy(void)
 {
     free(EXIT_FROM_COND_WAIT_WHILE);
 }
+ */
+
+void test_support_provider_clean_fake_dispatcher(void)
+{
+    PROVIDER_FAKE_DISPATCHER_MSG_CNT = 0;
+    if(PROVIDER_FAKE_DISPATCHER_LAST_MSG != (msg_t*)NULL)
+    {
+        PROVIDER_FAKE_DISPATCHER_LAST_MSG->msg_destroy(PROVIDER_FAKE_DISPATCHER_LAST_MSG);
+    }
+}
+
 
 void* test_support_provider_fake_dispatcher_function(void* args)
 {
+    buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) args;
+
+    PROVIDER_FAKE_DISPATCHER_MSG_CNT = 0;
+
+    msg_t* m;
+    int exit = 0;
+    while(!exit)
+    {
+        PROVIDER_FAKE_DISPATCHER_LAST_MSG = (msg_t*) NULL;
+        PROVIDER_FAKE_DISPATCHER_LAST_MSG = buffer_concurrent_get_msg(c_buffer);
+
+        if(0 == strcmp(PROVIDER_FAKE_DISPATCHER_LAST_MSG->content, POISON_PILL->content))
+        {
+            exit = 1;
+        }
+        else
+        {
+            PROVIDER_FAKE_DISPATCHER_MSG_CNT++;
+            //dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, DISPATCHER_LAST_MSG);
+            //printf("\r\n Invio a tutti reader: %s", DISPATCHER_LAST_MSG->content);
+        }
+    }
+    //dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, POISON_PILL);
+    //printf("\r\n Invio a tutti reader: %s", POISON_PILL->content);
+
+    return (void*) NULL;
+
+    /*
     while(TMP_MSGS_NUMBER > 0)
     {
         TMP_MSGS_NUMBER--;
@@ -29,10 +72,24 @@ void* test_support_provider_fake_dispatcher_function(void* args)
     }
     TMP_C_BUFFER = (buffer_concurrent_t*) NULL;
     return (void*) NULL;
+    */
 }
 
-void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer, int msg_number)
+void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer)
 {
+    pthread_t      tid;  // thread ID
+    pthread_attr_t attr; // thread attribute
+
+    // set thread detachstate attribute to DETACHED
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
+    if(pthread_create(&tid, &attr, test_support_provider_fake_dispatcher_function, c_buffer))
+    {
+        printf("error creating dispatcher thread\t\n");
+        exit(1);
+    }
+    /*
     TMP_C_BUFFER = c_buffer;
     TMP_MSGS_NUMBER = msg_number;
 
@@ -41,8 +98,10 @@ void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer, int ms
         printf("error creating dispatcher thread\t\n");
         exit(1);
     }
+     */
 }
 
+/*
 void test_support_provider_join_fake_dispatcher(void)
 {
     if(pthread_join(TMP_DISPATCHER, NULL))
@@ -51,6 +110,7 @@ void test_support_provider_join_fake_dispatcher(void)
         exit(1);
     }
 }
+ */
 
 /* Test */
 int provider_before(void)
@@ -71,16 +131,10 @@ void test_provider_init(void) {
     provider_t *provider = provider_init(buffer, msg, &msg_len);
 
     CU_ASSERT_PTR_NOT_NULL(provider);
-    //CU_ASSERT_PTR_NOT_NULL(provider->c_buffer);
     CU_ASSERT_PTR_NOT_NULL(PROVIDER_DISPATCHER_BUFFER);
-    //CU_ASSERT_PTR_NOT_NULL(provider->msgs);
     CU_ASSERT_PTR_NOT_NULL(PROVIDER_MSGS);
-    //CU_ASSERT(1 == *provider->msg_len);
     CU_ASSERT(1 == *PROVIDER_MSGS_LEN);
 
-    //free(provider->msg_len);
-
-    //free(provider->msgs);
     msg->msg_destroy(msg);
     buffer->buffer_concurrent_destroy(buffer);
     free(provider);
@@ -149,22 +203,27 @@ void test_provider_2_msg_spediti_buffer_dim_1(void)
     msg_t msgs[] = {*msg, *msg};
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(1);
     provider_t *provider = provider_init(c_buffer, msgs, &msg_len);
-    test_support_provider_cond_wait_while_init();
+    //test_support_provider_cond_wait_while_init();
 
     provider_start_thread(provider);
     sleep(2);
-    test_support_provider_fake_dispatcher(c_buffer, 2+1); // 2 msg + poison
-    sleep(3);
-    test_support_provider_join_fake_dispatcher();
+    //test_support_provider_fake_dispatcher(c_buffer, 2+1); // 2 msg + poison
+    test_support_provider_fake_dispatcher(c_buffer);
+    sleep(4);
+    //test_support_provider_join_fake_dispatcher();
 
     CU_ASSERT(0 == *c_buffer->buffer->p_size);
+    CU_ASSERT(2 == PROVIDER_FAKE_DISPATCHER_MSG_CNT);
+    CU_ASSERT(0 == strcmp(PROVIDER_FAKE_DISPATCHER_LAST_MSG->content, POISON_PILL->content));
 
-    test_support_provider_cond_wait_while_destroy();
+    //test_support_provider_cond_wait_while_destroy();
+    test_support_provider_clean_fake_dispatcher();
     provider->provider_destroy(provider);
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
 }
 
+/*
 void test_provider_10_msg_spediti_buffer_dim_5(void)
 {
     char content[] = "content";
@@ -188,3 +247,4 @@ void test_provider_10_msg_spediti_buffer_dim_5(void)
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
 }
+ */
