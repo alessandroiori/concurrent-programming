@@ -50,7 +50,7 @@ void* dispatcher_start_reader_eliminator_function(void* args)
 {
     reader_t* reader = (reader_t*) args;
     buffer_concurrent_add_msg(reader->c_buffer, POISON_PILL);
-    //printf("\r\n INVIATA POISON ELIMINATIONE A READER\r\n");
+
     return (void*) NULL;
 }
 
@@ -59,11 +59,9 @@ void dispatcher_start_reader_eliminator(reader_t* r)
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute
 
-    // set thread detachstate attribute to DETACHED
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
-    //printf("\r\n Avviato Reader Eliminator\r\n");
     if(pthread_create(&tid, &attr, dispatcher_start_reader_eliminator_function, r))
     {
         printf("error creating dispatcher thread\t\n");
@@ -76,20 +74,13 @@ void dispatcher_send_msg_to_all_reader(list_concurrent_t* c_list, msg_t* msg)
     iterator_concurrent_t* c_iterator = iterator_concurrent_init(c_list);
     while(iterator_concurrent_hasNext(c_iterator))
     {
-        //msg_t* msg_copy = (msg_t*) malloc(sizeof(msg_t));
-        //msg_copy = msg_init_string(msg->content);
 
         reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
         if(buffer_concurrent_add_msg_semi_block(reader->c_buffer, msg) == BUFFER_FULL)
         {
-            //printf("\r\n Non riuscito ad aggiungere messaggio\r\n");
             list_concurrent_removeElement(c_list, (void*)reader);
             list_concurrent_addElement(DISPATCHER_REMOVED_READERS_LIST, reader);
             dispatcher_start_reader_eliminator(reader);
-        }
-        else
-        {
-            //printf("\r\n Aggiunto msg su buffer reader: %s\r\n", msg->content);
         }
     }
 }
@@ -114,11 +105,9 @@ void* dispatcher_thread_function(void* args)
         {
             DISPATCHER_MSG_CNT++;
             dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, DISPATCHER_LAST_MSG);
-            //printf("\r\n Invio a tutti reader: %s", DISPATCHER_LAST_MSG->content);
         }
     }
     dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, POISON_PILL);
-    //printf("\r\n Invio a tutti reader: %s", POISON_PILL->content);
 
     return (void*) NULL;
 }
@@ -128,7 +117,6 @@ void dispatcher_start_thread(dispatcher_t* d)
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute
 
-    // set thread detachstate attribute to DETACHED
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 

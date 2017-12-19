@@ -136,7 +136,9 @@ void test_dispatcher_2_reader_1_msg(void)
     sleep(4);
 
     CU_ASSERT(1 == DISPATCHER_MSG_CNT);
-    //CU_ASSERT(2 == list_concurrent_size(READERS_LIST));
+    // AAAAAAA
+    CU_ASSERT(2 == list_concurrent_size(READERS_LIST));
+    // AAAAAAA
     CU_ASSERT(0 == *dispatcher->c_buffer->buffer->p_size);
     CU_ASSERT(0 == strcmp(DISPATCHER_LAST_MSG->content, POISON_PILL->content));
     CU_ASSERT(0 == *reader1->c_buffer->buffer->p_size);
@@ -206,7 +208,9 @@ void test_dispatcher_provider_3_reader_3_msg(void)
     sleep(8);
 
     CU_ASSERT(3 == DISPATCHER_MSG_CNT);
-    //CU_ASSERT(3 == list_concurrent_size(READERS_LIST));
+    // AAAAAAA
+    CU_ASSERT(3 == list_concurrent_size(READERS_LIST));
+    // AAAAAAA
     CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
 
     provider->provider_destroy(provider);
@@ -269,7 +273,9 @@ void test_dispatcher_provider_accepter_1_reader_1_msg(void)
     sleep(8);
 
     CU_ASSERT(1 == DISPATCHER_MSG_CNT);
-    //CU_ASSERT(1 == list_concurrent_size(READERS_LIST));
+    // AAAAAAA
+    CU_ASSERT(1 == list_concurrent_size(READERS_LIST));
+    // AAAAAAA
     CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
 
     provider->provider_destroy(provider);

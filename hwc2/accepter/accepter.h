@@ -15,7 +15,6 @@
 
 typedef struct accepter {
     buffer_concurrent_t* c_buffer;
-    //list_concurrent_t* c_list;
     void (*accepter_destroy)(struct accepter* a);
 } accepter_t;
 

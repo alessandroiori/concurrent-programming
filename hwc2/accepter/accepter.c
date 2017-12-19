@@ -31,16 +31,9 @@ void* accepter_submit_request_function(void* args)
 
 void accepter_submit_request(buffer_t* requests, char name[])
 {
-    /*if(ACCEPTER_BUFFER == (buffer_concurrent_t*) NULL)
-    {
-        exit(1);
-    }
-     */
-
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute
 
-    // set thread detachstate attribute to DETACHED
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 
@@ -49,18 +42,10 @@ void accepter_submit_request(buffer_t* requests, char name[])
         printf("error creating accepter thread\t\n");
         exit(1);
     }
-
 }
 
 accepter_t* accepter_init(list_concurrent_t* c_list)
 {
-    /*
-    if(c_list == (list_concurrent_t*)NULL)
-    {
-        return (accepter_t*) NULL;
-    }
-     */
-
     accepter_t* return_accepter = (accepter_t*) malloc(sizeof(accepter_t));
     buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) malloc(sizeof(buffer_concurrent_t));
     c_buffer = buffer_concurrent_init(ACCEPTER_BUFFER_SIZE);
@@ -68,7 +53,6 @@ accepter_t* accepter_init(list_concurrent_t* c_list)
     ACCEPTER_READERS_LIST = c_list;
     ACCEPTER_BUFFER = c_buffer;
 
-    //return_accepter->c_list = c_list;
     return_accepter->c_buffer = c_buffer;
     return_accepter->accepter_destroy = accepter_destroy;
 
@@ -123,7 +107,6 @@ void accepter_start_thread(accepter_t* a)
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute
 
-    // set thread detachstate attribute to DETACHED
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 

@@ -14,7 +14,6 @@
 #define DISPATCHER_BUFFER_SIZE      5
 
 typedef struct dispatcher {
-    //list_concurrent_t* c_list;
     buffer_concurrent_t* c_buffer;
     void (*dispatcher_destroy)(struct dispatcher* d);
 } dispatcher_t;
