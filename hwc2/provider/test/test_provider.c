@@ -4,26 +4,9 @@
 #include "test_provider.h"
 
 /* Support */
-/*
-buffer_concurrent_t* TMP_C_BUFFER;
-pthread_t TMP_DISPATCHER;
-int TMP_MSGS_NUMBER;
-*/
 
 int PROVIDER_FAKE_DISPATCHER_MSG_CNT;
 msg_t* PROVIDER_FAKE_DISPATCHER_LAST_MSG;
-/*
-void test_support_provider_cond_wait_while_init(void)
-{
-    EXIT_FROM_COND_WAIT_WHILE = (int*) malloc(sizeof(int));
-    *EXIT_FROM_COND_WAIT_WHILE = 1;
-}
-
-void test_support_provider_cond_wait_while_destroy(void)
-{
-    free(EXIT_FROM_COND_WAIT_WHILE);
-}
- */
 
 void test_support_provider_clean_fake_dispatcher(void)
 {
@@ -55,24 +38,10 @@ void* test_support_provider_fake_dispatcher_function(void* args)
         else
         {
             PROVIDER_FAKE_DISPATCHER_MSG_CNT++;
-            //dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, DISPATCHER_LAST_MSG);
-            //printf("\r\n Invio a tutti reader: %s", DISPATCHER_LAST_MSG->content);
         }
     }
-    //dispatcher_send_msg_to_all_reader(DISPATCHER_READERS_LIST, POISON_PILL);
-    //printf("\r\n Invio a tutti reader: %s", POISON_PILL->content);
 
     return (void*) NULL;
-
-    /*
-    while(TMP_MSGS_NUMBER > 0)
-    {
-        TMP_MSGS_NUMBER--;
-        buffer_concurrent_get_msg(TMP_C_BUFFER);
-    }
-    TMP_C_BUFFER = (buffer_concurrent_t*) NULL;
-    return (void*) NULL;
-    */
 }
 
 void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer)
@@ -89,28 +58,7 @@ void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer)
         printf("error creating dispatcher thread\t\n");
         exit(1);
     }
-    /*
-    TMP_C_BUFFER = c_buffer;
-    TMP_MSGS_NUMBER = msg_number;
-
-    if(pthread_create(&TMP_DISPATCHER, NULL, test_support_provider_fake_dispatcher_function, NULL))
-    {
-        printf("error creating dispatcher thread\t\n");
-        exit(1);
-    }
-     */
 }
-
-/*
-void test_support_provider_join_fake_dispatcher(void)
-{
-    if(pthread_join(TMP_DISPATCHER, NULL))
-    {
-        printf("error joining dispatcher thread\t\n");
-        exit(1);
-    }
-}
- */
 
 /* Test */
 int provider_before(void)
