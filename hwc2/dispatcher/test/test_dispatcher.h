@@ -26,7 +26,7 @@ void test_dispatcher_2_reader_1_msg(void);
 void test_dispatcher_provider_3_reader_3_msg(void);
 void test_dispatcher_provider_1_reader_lento_eliminato(void);
 void test_dispatcher_provider_accepter_1_reader_1_msg(void);
-void test_dispatcher_provider_accepter_5_reader_5_msg(void);
+void test_dispatcher_provider_accepter_5_reader_4_msg(void);
 void test_dispatcher_provider_accepter_5_reader_10_msg(void);
 
 #endif //UNTITLED_TEST_DISPATCHER_H

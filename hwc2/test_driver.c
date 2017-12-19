@@ -52,7 +52,7 @@ int main()
     /* add the tests to the suite */
     /* NOTE - ORDER IS IMPORTANT */
     if(
-/*
+
             (NULL == CU_add_test(pSuite1, "1.1 Creazione buffer unitario\n\t", test_buffer_init_buffer_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.2 Creazione buffer non unitario\n\t", test_buffer_init_buffer_non_unitario)) ||
             (NULL == CU_add_test(pSuite1, "1.3 Creazione buffer unitario pieno\n\t", test_buffer_init_buffer_pieno_unitario)) ||
@@ -112,10 +112,9 @@ int main()
             (NULL == CU_add_test(pSuite6, "6.6 Dispatcher invia 1 msg a 2 reader.\n\t", test_dispatcher_2_reader_1_msg)) ||
             (NULL == CU_add_test(pSuite6, "6.7 Dispatcher invia 3 msg a 1 reader.\n\t", test_dispatcher_1_reader_3_msg)) ||
             (NULL == CU_add_test(pSuite6, "6.8 Dispatcher con provider, invia 3 msg a 2 reader.\n\t", test_dispatcher_provider_3_reader_3_msg)) ||
-*/
             (NULL == CU_add_test(pSuite6, "6.9 Dispatcher con provider, eliminato 1 reader lento.\n\t", test_dispatcher_provider_1_reader_lento_eliminato)) ||
             (NULL == CU_add_test(pSuite6, "6.10 (main) Dispatcher con provider e accepter, inviato 1 msg a 1 reader.\n\t", test_dispatcher_provider_accepter_1_reader_1_msg)) ||
-            (NULL == CU_add_test(pSuite6, "6.11 (main) Dispatcher con provider e accepter, inviati 5 msg a 5 reader di buffer 5.\n\t", test_dispatcher_provider_accepter_5_reader_5_msg)) ||
+            (NULL == CU_add_test(pSuite6, "6.11 (main) Dispatcher con provider e accepter, inviati 4 msg a 5 reader di buffer 5.\n\t", test_dispatcher_provider_accepter_5_reader_4_msg)) ||
             (NULL == CU_add_test(pSuite6, "6.12 (main) Dispatcher con provider e accepter, inviati 10 msg a 5 reader di buffer 5,\n\teliminati reader lenti.\n\t", test_dispatcher_provider_accepter_5_reader_10_msg)) ||
 
             (0))

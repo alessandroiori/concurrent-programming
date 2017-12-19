@@ -21,7 +21,6 @@ void test_dispatcher_init(void)
 
     CU_ASSERT_PTR_NOT_NULL(dispatcher);
     CU_ASSERT_PTR_NOT_NULL(dispatcher->c_buffer);
-    //CU_ASSERT_PTR_NOT_NULL(dispatcher->c_list);
     CU_ASSERT_PTR_NOT_NULL(DISPATCHER_REMOVED_READERS_LIST);
     CU_ASSERT_PTR_NOT_NULL(DISPATCHER_READERS_LIST);
     CU_ASSERT(DISPATCHER_BUFFER_SIZE == *dispatcher->c_buffer->buffer->p_max_size);
@@ -280,12 +279,12 @@ void test_dispatcher_provider_accepter_1_reader_1_msg(void)
     msg->msg_destroy(msg);
 }
 
-void test_dispatcher_provider_accepter_5_reader_5_msg(void)
+void test_dispatcher_provider_accepter_5_reader_4_msg(void)
 {
-    int msg_len = 5; // 5 msg
+    int msg_len = 4; // 4 msg
     char content[] = "content";
     msg_t* msg = msg_init_string(content);
-    msg_t msgs[] = {*msg, *msg, *msg, *msg, *msg};
+    msg_t msgs[] = {*msg, *msg, *msg, *msg};
     buffer_t* accepter_request = buffer_init(5); // 5 reader
     buffer_add_msg(accepter_request,msg);
     buffer_add_msg(accepter_request,msg);
@@ -306,7 +305,7 @@ void test_dispatcher_provider_accepter_5_reader_5_msg(void)
     provider_start_thread(provider);
     sleep(13);
 
-    CU_ASSERT(5 == DISPATCHER_MSG_CNT);
+    CU_ASSERT(4 == DISPATCHER_MSG_CNT);
     CU_ASSERT(5 == list_concurrent_size(READERS_LIST));
     CU_ASSERT(0 == strcmp(READER_LAST_MSG->content, POISON_PILL->content));
 
