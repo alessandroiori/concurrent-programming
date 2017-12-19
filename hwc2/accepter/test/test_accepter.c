@@ -24,7 +24,6 @@ void test_accepter_init(void)
     CU_ASSERT_PTR_NOT_NULL(accepter);
     CU_ASSERT_PTR_NOT_NULL(accepter->c_buffer);
     CU_ASSERT_PTR_NOT_NULL(ACCEPTER_READERS_LIST);
-    CU_ASSERT_PTR_NOT_NULL(ACCEPTER_REMOVED_READERS_LIST);
     CU_ASSERT(ACCEPTER_BUFFER_SIZE == *accepter->c_buffer->buffer->p_max_size);
 
     accepter->c_buffer->buffer_concurrent_destroy(accepter->c_buffer);

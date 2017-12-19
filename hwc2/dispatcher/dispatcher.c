@@ -4,9 +4,24 @@
 
 #include "dispatcher.h"
 
+void dispatcher_destroy_removed_readers(void)
+{
+    if(!list_concurrent_isEmpty(DISPATCHER_REMOVED_READERS_LIST))
+    {
+        iterator_concurrent_t* c_iterator = iterator_concurrent_init(DISPATCHER_REMOVED_READERS_LIST);
+        while(iterator_concurrent_hasNext(c_iterator))
+        {
+            reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
+            reader->reader_destroy(reader);
+        }
+    }
+}
+
 dispatcher_t* dispatcher_init(list_concurrent_t* reader_list)
 {
     DISPATCHER_READERS_LIST = reader_list;
+    DISPATCHER_REMOVED_READERS_LIST = (list_concurrent_t*) malloc(sizeof(list_concurrent_t));
+    DISPATCHER_REMOVED_READERS_LIST = list_concurrent_init();
 
     dispatcher_t* dispatcher = (dispatcher_t*) malloc(sizeof(dispatcher_t));
     buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) malloc(sizeof(buffer_concurrent_t));
@@ -27,6 +42,8 @@ void dispatcher_destroy(dispatcher_t* d)
         DISPATCHER_LAST_MSG->msg_destroy(DISPATCHER_LAST_MSG);
     }
     DISPATCHER_READERS_LIST = (list_concurrent_t*) NULL;
+    dispatcher_destroy_removed_readers();
+    DISPATCHER_REMOVED_READERS_LIST->list_concurrent_destroy(DISPATCHER_REMOVED_READERS_LIST);
 }
 
 void* dispatcher_start_reader_eliminator_function(void* args)
@@ -67,7 +84,7 @@ void dispatcher_send_msg_to_all_reader(list_concurrent_t* c_list, msg_t* msg)
         {
             //printf("\r\n Non riuscito ad aggiungere messaggio\r\n");
             list_concurrent_removeElement(c_list, (void*)reader);
-            list_concurrent_addElement(ACCEPTER_REMOVED_READERS_LIST, reader);
+            list_concurrent_addElement(DISPATCHER_REMOVED_READERS_LIST, reader);
             dispatcher_start_reader_eliminator(reader);
         }
         else

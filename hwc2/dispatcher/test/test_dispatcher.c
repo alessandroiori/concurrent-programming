@@ -22,6 +22,7 @@ void test_dispatcher_init(void)
     CU_ASSERT_PTR_NOT_NULL(dispatcher);
     CU_ASSERT_PTR_NOT_NULL(dispatcher->c_buffer);
     //CU_ASSERT_PTR_NOT_NULL(dispatcher->c_list);
+    CU_ASSERT_PTR_NOT_NULL(DISPATCHER_REMOVED_READERS_LIST);
     CU_ASSERT_PTR_NOT_NULL(DISPATCHER_READERS_LIST);
     CU_ASSERT(DISPATCHER_BUFFER_SIZE == *dispatcher->c_buffer->buffer->p_max_size);
 
@@ -243,7 +244,7 @@ void test_dispatcher_provider_1_reader_lento_eliminato(void)
 
     provider->provider_destroy(provider);
     dispatcher->dispatcher_destroy(dispatcher);
-    reader->reader_destroy(reader);
+    //reader->reader_destroy(reader);
     READERS_LIST->list_concurrent_destroy(READERS_LIST);
     msg->msg_destroy(msg);
 }

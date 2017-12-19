@@ -20,6 +20,7 @@ typedef struct dispatcher {
 } dispatcher_t;
 
 list_concurrent_t* DISPATCHER_READERS_LIST;
+list_concurrent_t* DISPATCHER_REMOVED_READERS_LIST;
 msg_t* DISPATCHER_LAST_MSG;
 int DISPATCHER_MSG_CNT;
 
@@ -32,5 +33,7 @@ void dispatcher_start_thread(dispatcher_t* d);
 
 void* dispatcher_start_reader_eliminator_function(void* args);
 void dispatcher_start_reader_eliminator(reader_t* r);
+
+void dispatcher_destroy_removed_readers(void);
 
 #endif //UNTITLED_DISPATCHER_H

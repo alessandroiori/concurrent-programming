@@ -19,7 +19,6 @@ typedef struct accepter {
     void (*accepter_destroy)(struct accepter* a);
 } accepter_t;
 
-list_concurrent_t* ACCEPTER_REMOVED_READERS_LIST;
 list_concurrent_t* ACCEPTER_READERS_LIST;
 buffer_concurrent_t* ACCEPTER_BUFFER;
 msg_t* ACCEPTER_LAST_MSG;
@@ -29,8 +28,6 @@ void accepter_destroy(accepter_t* a);
 
 void* accepter_thread_function(void* args);
 void accepter_start_thread(accepter_t* a);
-
-void accepter_destroy_removed_readers(void);
 
 void* accepter_submit_request_function(void* args);
 void accepter_submit_request(buffer_t *requests, char name[]);
