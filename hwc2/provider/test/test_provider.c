@@ -166,7 +166,36 @@ void test_provider_2_msg_spediti_buffer_dim_1(void)
     msg->msg_destroy(msg);
 }
 
-void test_provider_10_msg_spediti_buffer_dim_5(void)
+void test_provider_1_msg_spediti_buffer_dim_5_pieno(void)
+{
+    char content[] = "content";
+    char full[] = "full";
+    int msg_len = 1;
+    msg_t* msg = msg_init_string(content);
+    msg_t* msg_full = msg_init_string(full);
+    buffer_concurrent_t* c_buffer = buffer_concurrent_init(5);
+    buffer_concurrent_add_msg(c_buffer, msg_full);
+    buffer_concurrent_add_msg(c_buffer, msg_full);
+    buffer_concurrent_add_msg(c_buffer, msg_full);
+    buffer_concurrent_add_msg(c_buffer, msg_full);
+    buffer_concurrent_add_msg(c_buffer, msg_full);
+    provider_t *provider = provider_init(c_buffer, msg, &msg_len);
+
+    provider_start_thread(provider);
+    sleep(2);
+    test_support_provider_fake_dispatcher(c_buffer);
+    sleep(5);
+
+    CU_ASSERT(0 == *c_buffer->buffer->p_size);
+
+    test_support_provider_clean_fake_dispatcher();
+    provider->provider_destroy(provider);
+    c_buffer->buffer_concurrent_destroy(c_buffer);
+    msg->msg_destroy(msg);
+    msg_full->msg_destroy(msg_full);
+}
+
+void test_provider_10_msg_spediti_buffer_dim_5_vuoto(void)
 {
     char content[] = "content";
     int msg_len = 10;

@@ -88,7 +88,8 @@ int main()
             (NULL == CU_add_test(pSuite3, "3.3 Provider spedisce 1 msg nel buffer size 2\n\t", test_provider_1_msg_spediti_buffer_dim_2)) ||
             (NULL == CU_add_test(pSuite3, "3.4 Provider spedisce 2 msg nel buffer size 4\n\t", test_provider_2_msg_spediti_buffer_dim_4)) ||
             (NULL == CU_add_test(pSuite3, "3.5 Provider spedisce 2 msg nel buffer size 1\n\t", test_provider_2_msg_spediti_buffer_dim_1)) ||
-            (NULL == CU_add_test(pSuite3, "3.6 Provider spedisce 10 msg nel buffer size 5\n\t", test_provider_10_msg_spediti_buffer_dim_5)) ||
+            (NULL == CU_add_test(pSuite3, "3.6 Provider spedisce 1 msg nel buffer size 5 pieno\n\t", test_provider_1_msg_spediti_buffer_dim_5_pieno)) ||
+            (NULL == CU_add_test(pSuite3, "3.7 Provider spedisce 10 msg nel buffer size 5 vuoto\n\t", test_provider_10_msg_spediti_buffer_dim_5_vuoto)) ||
 
             (NULL == CU_add_test(pSuite4, "4.1 Reader creazione\n\t", test_reader_init)) ||
             (NULL == CU_add_test(pSuite4, "4.2 Reader distruzione\n\t", test_reader_destroy)) ||
