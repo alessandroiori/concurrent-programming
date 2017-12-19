@@ -49,7 +49,6 @@ void test_support_provider_fake_dispatcher(buffer_concurrent_t* c_buffer)
     pthread_t      tid;  // thread ID
     pthread_attr_t attr; // thread attribute
 
-    // set thread detachstate attribute to DETACHED
     pthread_attr_init(&attr);
     pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
 

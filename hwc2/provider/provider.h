@@ -12,8 +12,6 @@
 
 typedef struct provider {
     int* msg_len;
-    //msg_t* msgs;
-    //buffer_concurrent_t* c_buffer;
     void (*provider_destroy)(struct provider* p);
 } provider_t;
 
