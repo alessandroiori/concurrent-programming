@@ -4,16 +4,6 @@
 
 #include "list_concurrent.h"
 
-/************* FUNZIONI PRIVATE ***********************
-list_node_t* list_node_init(void* payload){
-    list_node_t* result = malloc(sizeof(list_node_t));
-    result->next=NULL;
-    result->payload=payload;
-    return result;
-}
-*/
-
-
 /*************FUNZIONI DELL'INTERFACCIA***************/
 
 list_concurrent_t* list_concurrent_init() {
@@ -72,7 +62,6 @@ void list_concurrent_addElement(list_concurrent_t* c_list, void *element)
     pthread_mutex_unlock(c_list->MUTEX);
 }
 
-
 /*
  * Rimuovere l'elemento il cui payload ha indirizzo element.
  * Rimuove l'elemento dalla lista, non dealloca il payload
@@ -85,7 +74,6 @@ int list_concurrent_removeElement(list_concurrent_t* c_list, void *element)
     pthread_mutex_unlock(c_list->MUTEX);
     return result;
 }
-
 
 iterator_concurrent_t* iterator_concurrent_init(list_concurrent_t* c_list)
 {

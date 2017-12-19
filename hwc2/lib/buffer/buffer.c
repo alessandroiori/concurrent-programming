@@ -75,7 +75,6 @@ msg_t* buffer_get_msg(buffer_t* buffer)
     {
         msg_t* tmp_msg = &buffer->msgs[*buffer->p_t];
         return_msg = msg_init_string(tmp_msg->content);
-        //free(&buffer->msgs[*buffer->p_t]);
         *buffer->p_size = *buffer->p_size - 1;
         *buffer->p_t = (*buffer->p_t + 1) % *buffer->p_max_size;
     }

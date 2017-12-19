@@ -243,7 +243,6 @@ void test_buffer_concorrente_add_msg_buffer_pineo_unitario(void)
     buffer_concurrent_add_msg(c_buffer, msg);
     test_support_buffer_concurrent_cond_wait_while_init();
 
-    //buffer_concurrent_add_msg(c_buffer, new_msg);
     test_support_buffer_concurrent_produttore(c_buffer, new_msg);
     sleep(3);
     test_support_buffer_concurrent_fake_concumatore(c_buffer->monitor);
@@ -275,7 +274,6 @@ void test_buffer_concorrente_add_msg_buffer_pineo_non_unitario(void)
     }
     test_support_buffer_concurrent_cond_wait_while_init();
 
-    //buffer_concurrent_add_msg(c_buffer, new_msg);
     test_support_buffer_concurrent_produttore(c_buffer, new_msg);
     sleep(3);
     test_support_buffer_concurrent_fake_concumatore(c_buffer->monitor);
