@@ -8,6 +8,7 @@
 #include "../lib/buffer_concorrent/buffer_concurrent.h"
 #include "../lib/list_concorrent/list_concurrent.h"
 #include "../lib/poison_pill/poison_pill.h"
+#include "../accepter/accepter.h"
 #include "../reader/reader.h"
 
 #define DISPATCHER_BUFFER_SIZE      5

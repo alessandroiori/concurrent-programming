@@ -303,7 +303,7 @@ void test_dispatcher_provider_accepter_5_reader_5_msg(void)
     dispatcher_start_thread(dispatcher);
     sleep(1);
     provider_start_thread(provider);
-    sleep(10);
+    sleep(13);
 
     CU_ASSERT(5 == DISPATCHER_MSG_CNT);
     CU_ASSERT(5 == list_concurrent_size(READERS_LIST));

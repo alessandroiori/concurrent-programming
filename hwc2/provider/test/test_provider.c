@@ -203,27 +203,22 @@ void test_provider_2_msg_spediti_buffer_dim_1(void)
     msg_t msgs[] = {*msg, *msg};
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(1);
     provider_t *provider = provider_init(c_buffer, msgs, &msg_len);
-    //test_support_provider_cond_wait_while_init();
 
     provider_start_thread(provider);
     sleep(2);
-    //test_support_provider_fake_dispatcher(c_buffer, 2+1); // 2 msg + poison
     test_support_provider_fake_dispatcher(c_buffer);
     sleep(4);
-    //test_support_provider_join_fake_dispatcher();
 
     CU_ASSERT(0 == *c_buffer->buffer->p_size);
     CU_ASSERT(2 == PROVIDER_FAKE_DISPATCHER_MSG_CNT);
     CU_ASSERT(0 == strcmp(PROVIDER_FAKE_DISPATCHER_LAST_MSG->content, POISON_PILL->content));
 
-    //test_support_provider_cond_wait_while_destroy();
     test_support_provider_clean_fake_dispatcher();
     provider->provider_destroy(provider);
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
 }
 
-/*
 void test_provider_10_msg_spediti_buffer_dim_5(void)
 {
     char content[] = "content";
@@ -232,19 +227,18 @@ void test_provider_10_msg_spediti_buffer_dim_5(void)
     msg_t msgs[] = {*msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg, *msg};
     buffer_concurrent_t* c_buffer = buffer_concurrent_init(5);
     provider_t *provider = provider_init(c_buffer, msgs, &msg_len);
-    test_support_provider_cond_wait_while_init();
 
     provider_start_thread(provider);
     sleep(2);
-    test_support_provider_fake_dispatcher(c_buffer, 10+1); // 10 msg + poison
-    sleep(3);
-    test_support_provider_join_fake_dispatcher();
+    test_support_provider_fake_dispatcher(c_buffer);
+    sleep(5);
 
     CU_ASSERT(0 == *c_buffer->buffer->p_size);
+    CU_ASSERT(10 == PROVIDER_FAKE_DISPATCHER_MSG_CNT);
+    CU_ASSERT(0 == strcmp(PROVIDER_FAKE_DISPATCHER_LAST_MSG->content, POISON_PILL->content));
 
-    test_support_provider_cond_wait_while_destroy();
+    test_support_provider_clean_fake_dispatcher();
     provider->provider_destroy(provider);
     c_buffer->buffer_concurrent_destroy(c_buffer);
     msg->msg_destroy(msg);
 }
- */

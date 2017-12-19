@@ -4,6 +4,19 @@
 
 #include "accepter.h"
 
+void accepter_destroy_removed_readers(void)
+{
+    if(!list_concurrent_isEmpty(ACCEPTER_REMOVED_READERS_LIST))
+    {
+        iterator_concurrent_t* c_iterator = iterator_concurrent_init(ACCEPTER_READERS_LIST);
+        while(iterator_concurrent_hasNext(c_iterator))
+        {
+            reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
+            reader->reader_destroy(reader);
+        }
+    }
+}
+
 void* accepter_submit_request_function(void* args)
 {
     buffer_t* requests = (buffer_t*) args;
@@ -64,7 +77,9 @@ accepter_t* accepter_init(list_concurrent_t* c_list)
     accepter_t* return_accepter = (accepter_t*) malloc(sizeof(accepter_t));
     buffer_concurrent_t* c_buffer = (buffer_concurrent_t*) malloc(sizeof(buffer_concurrent_t));
     c_buffer = buffer_concurrent_init(ACCEPTER_BUFFER_SIZE);
+    ACCEPTER_REMOVED_READERS_LIST = (list_concurrent_t*) malloc(sizeof(list_concurrent_t));
 
+    ACCEPTER_REMOVED_READERS_LIST = list_concurrent_init();
     ACCEPTER_READERS_LIST = c_list;
     ACCEPTER_BUFFER = c_buffer;
 
@@ -90,6 +105,8 @@ void accepter_destroy(accepter_t* a)
 
     ACCEPTER_BUFFER = (buffer_concurrent_t*) NULL;
     ACCEPTER_READERS_LIST = (list_concurrent_t*) NULL;
+    accepter_destroy_removed_readers();
+    ACCEPTER_REMOVED_READERS_LIST->list_concurrent_destroy(ACCEPTER_REMOVED_READERS_LIST);
 }
 
 
