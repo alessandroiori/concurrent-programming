@@ -12,7 +12,7 @@
 #include "CUnit/Basic.h"
 
 #include "lib/buffer/test/test_buffer.h"
-#include "lib/buffer_concorrent/test/test_buffer_concurrent.h"
+#include "lib/buffer_concurrent/test/test_buffer_concurrent.h"
 #include "provider/test/test_provider.h"
 #include "reader/test/test_reader.h"
 #include "accepter/test/test_accepter.h"

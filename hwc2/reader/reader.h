@@ -7,7 +7,7 @@
 
 #include <unistd.h>
 #include "../lib/poison_pill/poison_pill.h"
-#include "../lib/buffer_concorrent/buffer_concurrent.h"
+#include "../lib/buffer_concurrent/buffer_concurrent.h"
 
 #define READER_DEFAUL_VELOCITY 1
 #define READER_BUFFER_SIZE     5

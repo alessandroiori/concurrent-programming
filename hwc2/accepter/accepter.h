@@ -7,8 +7,8 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "../lib/buffer_concorrent/buffer_concurrent.h"
-#include "../lib/list_concorrent/list_concurrent.h"
+#include "../lib/buffer_concurrent/buffer_concurrent.h"
+#include "../lib/list_concurrent/list_concurrent.h"
 #include "../reader/reader.h"
 
 #define ACCEPTER_BUFFER_SIZE     5

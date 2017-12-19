@@ -4,11 +4,11 @@
 
 #include "dispatcher.h"
 
-void dispatcher_destroy_removed_readers(void)
+void dispatcher_destroy_readers_from_list(list_concurrent_t* reader_list)
 {
-    if(!list_concurrent_isEmpty(DISPATCHER_REMOVED_READERS_LIST))
+    if(!list_concurrent_isEmpty(reader_list))
     {
-        iterator_concurrent_t* c_iterator = iterator_concurrent_init(DISPATCHER_REMOVED_READERS_LIST);
+        iterator_concurrent_t* c_iterator = iterator_concurrent_init(reader_list);
         while(iterator_concurrent_hasNext(c_iterator))
         {
             reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
@@ -41,8 +41,9 @@ void dispatcher_destroy(dispatcher_t* d)
     {
         DISPATCHER_LAST_MSG->msg_destroy(DISPATCHER_LAST_MSG);
     }
+
     DISPATCHER_READERS_LIST = (list_concurrent_t*) NULL;
-    dispatcher_destroy_removed_readers();
+    dispatcher_destroy_readers_from_list(DISPATCHER_REMOVED_READERS_LIST);
     DISPATCHER_REMOVED_READERS_LIST->list_concurrent_destroy(DISPATCHER_REMOVED_READERS_LIST);
 }
 
@@ -74,7 +75,6 @@ void dispatcher_send_msg_to_all_reader(list_concurrent_t* c_list, msg_t* msg)
     iterator_concurrent_t* c_iterator = iterator_concurrent_init(c_list);
     while(iterator_concurrent_hasNext(c_iterator))
     {
-
         reader_t* reader = (reader_t*)iterator_concurrent_next(c_iterator);
         if(buffer_concurrent_add_msg_semi_block(reader->c_buffer, msg) == BUFFER_FULL)
         {

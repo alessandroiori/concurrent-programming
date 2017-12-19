@@ -7,7 +7,7 @@
 
 #include <stdio.h>
 #include <pthread.h>
-#include "../lib/buffer_concorrent/buffer_concurrent.h"
+#include "../lib/buffer_concurrent/buffer_concurrent.h"
 #include "../lib/poison_pill/poison_pill.h"
 
 typedef struct provider {

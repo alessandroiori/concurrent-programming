@@ -5,8 +5,8 @@
 #ifndef UNTITLED_DISPATCHER_H
 #define UNTITLED_DISPATCHER_H
 
-#include "../lib/buffer_concorrent/buffer_concurrent.h"
-#include "../lib/list_concorrent/list_concurrent.h"
+#include "../lib/buffer_concurrent/buffer_concurrent.h"
+#include "../lib/list_concurrent/list_concurrent.h"
 #include "../lib/poison_pill/poison_pill.h"
 #include "../accepter/accepter.h"
 #include "../reader/reader.h"
@@ -33,6 +33,6 @@ void dispatcher_start_thread(dispatcher_t* d);
 void* dispatcher_start_reader_eliminator_function(void* args);
 void dispatcher_start_reader_eliminator(reader_t* r);
 
-void dispatcher_destroy_removed_readers(void);
+void dispatcher_destroy_readers_from_list(list_concurrent_t* reader_list);
 
 #endif //UNTITLED_DISPATCHER_H

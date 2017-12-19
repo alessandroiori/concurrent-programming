@@ -7,8 +7,8 @@ gcc -lcunit ./test_driver.c \
             ./provider/*.c ./provider/test/*.c \
             ./reader/*.c ./reader/test/*.c \
             ./lib/buffer/*.c ./lib/buffer/test/*.c \
-            ./lib/buffer_concorrent/*.c ./lib/buffer_concorrent/test/*.c \
-            ./lib/hwc2list/*.c ./lib/list_concorrent/*.c \
+            ./lib/buffer_concurrent/*.c ./lib/buffer_concurrent/test/*.c \
+            ./lib/hwc2list/*.c ./lib/list_concurrent/*.c \
             ./lib/monitor_buffer/*.c ./lib/msg/*.c ./lib/poison_pill/*.c \
             -o test_runner
 
