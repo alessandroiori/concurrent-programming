@@ -1,4 +1,5 @@
 public class ProducerConsumer {
+
     public static class CircularBuffer {
         private int[] contents;
         private int maxSize;
