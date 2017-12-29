@@ -20,21 +20,33 @@ public class BoundedBuffer<Data> {
         numberInBuffer = 0;
     }
 
-    public void put() {
-
+    public void put(Data d) throws InterruptedException{
+        lock.lock();
         try {
-
+            while(numberInBuffer == size) {
+                notFull.await();
+            }
+            last = (last + 1) % size;
+            numberInBuffer++;
+            buffer[last] = d;
+            notEmpty.signal();
         } finally {
-
+            lock.unlock();
         }
     }
 
-    public void get() {
-
+    public Data get() throws InterruptedException{
+        lock.lock();
         try {
-
+            while(numberInBuffer == 0) {
+                notEmpty.await();
+            }
+            first = (first + 1) % size;
+            numberInBuffer--;
+            notFull.signal();
+            return buffer[first];
         } finally {
-
+            lock.unlock();
         }
     }
 }
