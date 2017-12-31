@@ -38,15 +38,15 @@ public class DirSizer {
     }
 
     public static void main(String args[]) {
-
         /*
-        if(args[0] == null) {
+         $ javac src/DirSizer
+         $ java DirSizer ../
+         */
 
-        }
-        */
         try {
             final ForkJoinPool pool = new ForkJoinPool();
             try {
+                System.out.println("Start");
                 System.out.println("Total size (including rec. subdirs): " +
                         pool.invoke(new SizerTask(new File(args[0]))));
             } finally {
