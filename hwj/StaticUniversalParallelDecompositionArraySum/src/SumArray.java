@@ -1,11 +1,11 @@
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 
 public class SumArray {
+    static final int SEQUENTIAL_THRESHOLD = 4096;
 
-    private static
-
-    class SumArrayTask extends RecursiveTask<Long>{
+    static class SumArrayTask extends RecursiveTask<Long>{
         private int[] array;
         private int low, high;
 
@@ -17,9 +17,21 @@ public class SumArray {
 
         @Override
         protected Long compute() {
-
+            long sum = 0;
+            if( high - low <= SEQUENTIAL_THRESHOLD) {
+                for(int i=low; i<high; i++) {
+                    sum += array[i];
+                }
+            } else {
+                int mid = low + (high - low) / 2;
+                final SumArrayTask left = new SumArrayTask(array, low, mid);
+                final SumArrayTask right = new SumArrayTask(array, mid, high);
+                left.fork();
+                sum += right.compute();
+                sum += left.join();
+            }
             //TODO:
-            return null;
+            return sum;
         }
     }
 
