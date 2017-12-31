@@ -38,12 +38,24 @@ public class DirSizer {
     }
 
     public static void main(String args[]) {
-        final ForkJoinPool pool = new ForkJoinPool();
+
+        /*
+        if(args[0] == null) {
+
+        }
+        */
         try {
-            System.out.println("Total size (including rec. subdirs): " +
-                    pool.invoke(new SizerTask(new File(args[0]))));
-        } finally {
-            pool.shutdown();
+            final ForkJoinPool pool = new ForkJoinPool();
+            try {
+                System.out.println("Total size (including rec. subdirs): " +
+                        pool.invoke(new SizerTask(new File(args[0]))));
+            } finally {
+                pool.shutdown();
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("ERROR: add dir path to compute.");
+            //System.exit(0);
+            //e.printStackTrace();
         }
     }
 }
