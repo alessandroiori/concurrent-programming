@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+@DisplayName("Class StandardTests")
 public class StandardTests {
     @BeforeAll
     static void initAll() {
@@ -18,12 +19,12 @@ public class StandardTests {
 
     @Test
     void succeedingTest() {
-        assertEquals(2, 1 + 1);
+        assertEquals(2, 1 + 1, "SucceedingTest");
     }
 
     @Test
     void failingTest() {
-        //fail("a failing test");
+        fail("a failing test");
     }
 
     @Test
