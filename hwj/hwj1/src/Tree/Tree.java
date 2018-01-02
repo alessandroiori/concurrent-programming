@@ -1,13 +1,19 @@
-package node;
+package Tree;
 
-public class TreeNode implements Node {
-    private TreeNode sx;
-    private TreeNode dx;
+public class Tree implements Node {
+    private Node sx;
+    private Node dx;
     private int value;
 
-    public TreeNode(int value) {
+    public Tree(int value) {
         this.sx = null;
         this.dx = null;
+        this.value = value;
+    }
+
+    public Tree(Node sx, Node dx, int value) {
+        this.sx = sx;
+        this.dx = dx;
         this.value = value;
     }
 
@@ -16,17 +22,9 @@ public class TreeNode implements Node {
         return  sx;
     }
 
-    public void setSx(TreeNode sxn) {
-        sx = sxn;
-    }
-
     @Override
     public Node getDx() {
         return dx;
-    }
-
-    public void setDx(TreeNode dxn) {
-        dx = dxn;
     }
 
     @Override
