@@ -1,6 +1,6 @@
 package adder;
 
-import Tree.Node;
+import tree.Node;
 
 public interface BinaryTreeAdder {
     public int computeOnerousSum(Node root);

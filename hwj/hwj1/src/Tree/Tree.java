@@ -1,4 +1,4 @@
-package Tree;
+package tree;
 
 public class Tree implements Node {
     private Node sx;
@@ -11,7 +11,7 @@ public class Tree implements Node {
         this.value = value;
     }
 
-    public Tree(Node sx, Node dx, int value) {
+    public Tree(Tree sx, Tree dx, int value) {
         this.sx = sx;
         this.dx = dx;
         this.value = value;
