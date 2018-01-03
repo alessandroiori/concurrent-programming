@@ -3,6 +3,7 @@ package adder;
 import processor.FakeProcessor;
 import tree.Node;
 import tree.Tree;
+import tree.TreeNode;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Hwj1 implements BinaryTreeAdder {
             Node node;
 
             while(semaphore.availablePermits() != 0) {
+
                 node = this.buffer.poll();
 
                 if(node != null) {
@@ -50,10 +52,12 @@ public class Hwj1 implements BinaryTreeAdder {
                         }
                     }
 
+                    //result += node.getValue();
                     result += new FakeProcessor(node.getValue()).onerousFunction(node.getValue());
 
                     while(!semaphore.tryAcquire(1)) {
                         Thread.sleep(10); //never..
+                        System.out.println("Sleep");
                     }
                 }
             }
@@ -91,12 +95,16 @@ public class Hwj1 implements BinaryTreeAdder {
     }
 
     public static void main(String args[]) throws InterruptedException {
+        System.out.println("Start");
+        int depth = 20;
         Hwj1 tmp = new Hwj1();
-        Tree sx = new Tree(2);
-        Tree dx = new Tree(3);
-        Tree root = new Tree(sx,dx,1);
+        Tree tree = new Tree();
+        System.out.println("Creating Binary Tree depth: " + depth);
+        tree.generateBinaryTree(depth);
 
-        int result = tmp.computeOnerousSum(root);
-        System.out.println("Result is: " + result);
+        System.out.println("Start Computing");
+        int result = tmp.computeOnerousSum(tree.getRoot());
+        System.out.println("Result is: " + result); // (2^(depth+1))-1
+        System.out.println("Stop");
     }
 }
