@@ -52,7 +52,7 @@ public class Hwj1 implements BinaryTreeAdder {
                     }
                 }
             }
-            System.out.println("Thread " + Thread.currentThread().getName() + " exit, partial result: " + result);
+            //System.out.println("Thread " + Thread.currentThread().getName() + " exit, partial result: " + result);
             return result;
         }
     }
