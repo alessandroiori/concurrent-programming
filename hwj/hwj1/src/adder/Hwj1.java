@@ -1,10 +1,8 @@
 package adder;
 
 import processor.FakeProcessor;
-import tree.Tree;
-import tree.TreeNode;
 import tree.Node;
-import utils.speedup.PerformanceCalculator;
+import utils.PerformanceCalculator;
 
 import java.util.LinkedList;
 import java.util.List;

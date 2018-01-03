@@ -1,12 +1,12 @@
-package utils.speedup;
+package utils;
 
 /*
  * Riferimento : https://en.wikipedia.org/wiki/Speedup#Using_execution_times
  */
 
-import adder.BinaryTreeAdder;
 import adder.BinaryTreeAdderThreads;
 import adder.Hwj1;
+import adder.Hwj3;
 import tree.Tree;
 import tree.TreeNode;
 
@@ -40,8 +40,6 @@ public class PerformanceCalculator {
     }
 
     public void speedUpComputation(BinaryTreeAdderThreads adder, int treeDepth) {
-        //int depth = 3;
-        //Hwj1 tmp = new Hwj1("HWJ1");
         TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(treeDepth);
 
         PerformanceCalculator serialePc = new PerformanceCalculator();
@@ -60,10 +58,15 @@ public class PerformanceCalculator {
 
         long speedup = new PerformanceCalculator().getSpeedUp(serialeElapsedTime, concorrenteElapsedTime);
 
-        System.out.print("["+ adder.getName() +"] tree depth " + treeDepth +
+        System.out.println("["+ adder.getName() +"] binary tree depth " + treeDepth +
                 ", seriale (1 Thread) " + serialeElapsedTime / 1000000000.0 +
                 "s, concorrente ("+ NCPU +" Thread) " + concorrenteElapsedTime / 1000000000.0 +
                 "s, speedup: " + speedup);
+    }
+
+    public static void main(String args[]) {
+        new PerformanceCalculator().speedUpComputation(new Hwj1("HWJ1"), 20);
+        new PerformanceCalculator().speedUpComputation(new Hwj3("HWJ3"), 20);
     }
 }
 
