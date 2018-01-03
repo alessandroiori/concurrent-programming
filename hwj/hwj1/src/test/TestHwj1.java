@@ -24,7 +24,7 @@ public class TestHwj1 {
         tree.generateBinaryTree(0);
         Hwj1 hwj1;
 
-        hwj1 = new Hwj1();
+        hwj1 = new Hwj1("");
 
         assertNotNull(hwj1);
     }
@@ -35,7 +35,7 @@ public class TestHwj1 {
         int depth = 0;
         Tree tree = new Tree();
         tree.generateBinaryTree(depth);
-        Hwj1 hwj1 = new Hwj1();
+        Hwj1 hwj1 = new Hwj1("");
 
         result = hwj1.computeOnerousSum(tree.getRoot());
 
@@ -48,7 +48,7 @@ public class TestHwj1 {
         int depth = 1;
         Tree tree = new Tree();
         tree.generateBinaryTree(depth);
-        Hwj1 hwj1 = new Hwj1();
+        Hwj1 hwj1 = new Hwj1("");
 
         result = hwj1.computeOnerousSum(tree.getRoot());
 
@@ -61,7 +61,7 @@ public class TestHwj1 {
         int depth = 2;
         Tree tree = new Tree();
         tree.generateBinaryTree(depth);
-        Hwj1 hwj1 = new Hwj1();
+        Hwj1 hwj1 = new Hwj1("");
 
         result = hwj1.computeOnerousSum(tree.getRoot());
 
@@ -74,7 +74,7 @@ public class TestHwj1 {
         int depth = 10;
         Tree tree = new Tree();
         tree.generateBinaryTree(depth);
-        Hwj1 hwj1 = new Hwj1();
+        Hwj1 hwj1 = new Hwj1("");
 
         result = hwj1.computeOnerousSum(tree.getRoot());
 
@@ -87,7 +87,7 @@ public class TestHwj1 {
         int depth = 15;
         Tree tree = new Tree();
         tree.generateBinaryTree(depth);
-        Hwj1 hwj1 = new Hwj1();
+        Hwj1 hwj1 = new Hwj1("");
 
         result = hwj1.computeOnerousSum(tree.getRoot());
 
