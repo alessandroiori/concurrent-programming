@@ -1,8 +1,10 @@
 package adder;
 
 import processor.FakeProcessor;
-import tree.Node;
 import tree.Tree;
+import tree.TreeNode;
+import tree.Node;
+import utils.speedup.PerformanceCalculator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Queue;
 import java.util.concurrent.*;
 
 public class Hwj1 implements BinaryTreeAdder {
-    private static final int NCPU = Runtime.getRuntime().availableProcessors();
+    private static int nThreads;
     private static Semaphore semaphore;
 
     public static class Task implements Callable<Integer> {
@@ -61,15 +63,16 @@ public class Hwj1 implements BinaryTreeAdder {
     public int computeOnerousSum(Node root) {
         int result = 0;
         semaphore = new Semaphore(0);
+        nThreads = nThreads == 0 ? 1 : nThreads;
         List<Future<Integer>> penging = new LinkedList<>();
         ConcurrentLinkedQueue<Node> buffer = new ConcurrentLinkedQueue<>(); //https://docs.oracle.com/javase/7/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html
-        ExecutorService es = Executors.newFixedThreadPool(NCPU);
+        ExecutorService es = Executors.newFixedThreadPool(nThreads);
 
         if(root == null) { return 0; }
 
         if(buffer.add(root)) { semaphore.release(1); }
 
-        for(int i=0; i<NCPU; i++) { penging.add(es.submit(new Task(buffer))); }
+        for(int i=0; i<nThreads; i++) { penging.add(es.submit(new Task(buffer))); }
 
         for(Future<Integer> f : penging) {
             try { result += f.get(); }
@@ -81,17 +84,49 @@ public class Hwj1 implements BinaryTreeAdder {
         return result;
     }
 
-    public static void main(String args[]) {
-        System.out.println("Start");
-        int depth = 20;
-        Hwj1 tmp = new Hwj1();
-        Tree tree = new Tree();
-        System.out.println("Creating Binary Tree depth: " + depth);
-        tree.generateBinaryTree(depth);
+    public int computeOnerousSumSeriale(Node root) {
+        nThreads = 1;
+        return computeOnerousSum(root);
 
-        System.out.println("Start Computing");
-        int result = tmp.computeOnerousSum(tree.getRoot());
-        System.out.println("Result is: " + result); // (2^(depth+1))-1
-        System.out.println("Stop");
+    }
+
+    public int computeOnerousSumConcorrente(Node root) {
+        nThreads = Runtime.getRuntime().availableProcessors();
+        return computeOnerousSum(root);
+    }
+
+
+    public static void main(String args[]) {
+        //System.out.println("Start");
+        int depth = 3;
+        Hwj1 tmp = new Hwj1();
+        TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(depth);
+        //System.out.println("Creating Binary Tree depth: " + depth);
+
+        PerformanceCalculator serialePc = new PerformanceCalculator();
+        serialePc.startTime();
+        int serialeResult = tmp.computeOnerousSumSeriale(rootNode);
+        serialePc.stopTime();
+        long serialeElapsedTime = serialePc.getElapsedTime();
+
+        PerformanceCalculator concorrentePc = new PerformanceCalculator();
+        concorrentePc.startTime();
+        int concorrenteResult = tmp.computeOnerousSumConcorrente(rootNode);
+        concorrentePc.stopTime();
+        long concorrenteElapsedTime = concorrentePc.getElapsedTime();
+
+        long speedup = new PerformanceCalculator().getSpeedUp(serialeElapsedTime, concorrenteElapsedTime);
+
+
+        //System.out.println("Start Computing");
+        //int result = tmp.computeOnerousSum(tree.getRoot());
+
+        //System.out.println("Result is: " + result); // (2^(depth+1))-1
+        //System.out.println("Stop");
+
+        System.out.print("[HWJ1] tree depth " + depth +
+                ", seriale (1 Thread) " + serialeElapsedTime / 1000000000.0 +
+                "s, concorrente ("+ Runtime.getRuntime().availableProcessors() +" Thread) " + concorrenteElapsedTime / 1000000000.0 +
+                "s, speedup: " + speedup);
     }
 }
