@@ -1,6 +1,10 @@
 package adder;
 
-import tree.Node;
+import processor.FakeProcessor;
+import tree.*;
+
+
+import java.util.ArrayList;
 
 public class BinaryTreeAdderThreads implements BinaryTreeAdder {
     public static final int NCPU = Runtime.getRuntime().availableProcessors();
@@ -23,6 +27,16 @@ public class BinaryTreeAdderThreads implements BinaryTreeAdder {
 
     public int getNThreads() {
         return this.nThreads;
+    }
+
+    public static int sequentialTask(Node subRoot) {
+        int result = 0;
+        ArrayList<Integer> values = new Tree().extractSubTreeNodesValue((TreeNode) subRoot);
+        FakeProcessor fp = new FakeProcessor(1);
+        for(int value : values) {
+            result += fp.onerousFunction(value);
+        }
+        return result;
     }
 
     @Override
