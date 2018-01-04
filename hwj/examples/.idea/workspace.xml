@@ -2,13 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7759f44d-29bb-4e0d-af14-c03c9ee100c7" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/../hw/hwj1.iml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/../hw/src/test/HwjTests.java" />
-      <change beforePath="$PROJECT_DIR$/../UniversalStaticArrayDecomposition/StaticUniversalDecompositionArray.iml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/../UniversalStaticArrayDecomposition/UniversalStaticArrayDecomposition.iml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/../hw/hw.iml" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/out/production/test/testjunit/StandardTests.class" afterPath="$PROJECT_DIR$/out/production/test/testjunit/StandardTests.class" />
-      <change beforePath="$PROJECT_DIR$/src/testjunit/StandardTests.java" afterPath="$PROJECT_DIR$/src/testjunit/StandardTests.java" />
+      <change beforePath="$PROJECT_DIR$/../hw/hwj1.iml" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/../hw/src/HomeWorkJava.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/../hw/src/adder/BinaryTreeAdder.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/../hw/src/node/Node.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/../hw/src/test/HwjTests.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/../hwj1/.idea/workspace.xml" afterPath="$PROJECT_DIR$/../hwj1/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/../hwj1/src/adder/CoreBinaryTreeAdder.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -20,7 +21,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="FirstJUnit5Tests.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FirstJUnit5Tests.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/testjunit/FirstJUnit5Tests.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
@@ -37,8 +38,8 @@
       <file leaf-file-name="StandardTests.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/testjunit/StandardTests.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" column="9" lean-forward="false" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+            <state relative-caret-position="345">
+              <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#274#275#0" expanded="true" />
@@ -58,7 +59,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ThreadLocalExample.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ThreadLocalExample.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ThreadLocalExample.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="331">
@@ -107,7 +108,7 @@
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1280" />
-    <option name="height" value="796" />
+    <option name="height" value="800" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -412,12 +413,12 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287483" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21567044" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21567044" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -452,14 +453,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/TwoThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="4" lean-forward="false" selection-start-line="1" selection-start-column="4" selection-end-line="1" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PingPong.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="195">
@@ -871,22 +864,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/testjunit/FirstJUnit5Tests.java">
+    <entry file="file://$PROJECT_DIR$/src/ThreadLocalExample.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="31" lean-forward="false" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#175#176#0" expanded="true" />
-            <element signature="e#213#214#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="331">
+          <caret line="38" column="17" lean-forward="true" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/testjunit/StandardTests.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="9" lean-forward="false" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+        <state relative-caret-position="345">
+          <caret line="23" column="0" lean-forward="true" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#274#275#0" expanded="true" />
@@ -905,11 +894,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ThreadLocalExample.java">
+    <entry file="file://$PROJECT_DIR$/../StaticUniversalParallelDecompositionArraySum/src/SumArray.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="38" column="17" lean-forward="true" selection-start-line="38" selection-start-column="17" selection-end-line="38" selection-end-column="17" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/testjunit/FirstJUnit5Tests.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="31" lean-forward="false" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="31" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#175#176#0" expanded="true" />
+            <element signature="e#213#214#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
