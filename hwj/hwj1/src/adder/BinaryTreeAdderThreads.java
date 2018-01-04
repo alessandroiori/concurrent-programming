@@ -29,11 +29,34 @@ public class BinaryTreeAdderThreads implements BinaryTreeAdder {
         return this.nThreads;
     }
 
-    public static int sequentialTask(Node subRoot) {
+    private static int recursiveSequentialComputation(Node subRoot, FakeProcessor fp) {
+        int partialResult = 0;
+
+        if(subRoot == null) return partialResult;
+
+        if(subRoot.getDx() != null) {
+            partialResult += recursiveSequentialComputation(subRoot.getDx(), fp);
+        }
+
+        if(subRoot.getSx() != null) {
+            partialResult += recursiveSequentialComputation(subRoot.getSx(), fp);
+        }
+
+        partialResult += fp.onerousFunction(subRoot.getValue());
+
+        return partialResult;
+    }
+
+    public static int sequentialComputation(Node subRoot) {
+        FakeProcessor fp = new FakeProcessor(1);
+        return recursiveSequentialComputation(subRoot, fp);
+    }
+
+    public static int sequentialComputation2(Node subRoot) {
         int result = 0;
         ArrayList<Integer> values = new Tree().extractSubTreeNodesValue((TreeNode) subRoot);
         FakeProcessor fp = new FakeProcessor(1);
-        for(int value : values) {
+        for (int value : values) {
             result += fp.onerousFunction(value);
         }
         return result;

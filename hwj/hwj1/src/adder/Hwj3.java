@@ -64,7 +64,7 @@ public class Hwj3 extends BinaryTreeAdderThreads {
                 result += new FakeProcessor(node.getValue()).onerousFunction(node.getValue());
 
             } else {
-                result += new BinaryTreeAdderThreads("").sequentialTask(node);
+                result += new BinaryTreeAdderThreads("").sequentialComputation(node);
             }
 
             for(final Hwj3Task t : tasks) {

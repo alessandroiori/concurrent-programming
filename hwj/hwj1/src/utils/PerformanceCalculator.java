@@ -44,7 +44,7 @@ public class PerformanceCalculator {
         PerformanceCalculator serialePc = new PerformanceCalculator();
 
         serialePc.startTime();
-        int serialResult = serial.sequentialTask(rootNode);
+        int serialResult = serial.sequentialComputation(rootNode);
         serialePc.stopTime();
         long serialeElapsedTime = serialePc.getElapsedTime();
 
