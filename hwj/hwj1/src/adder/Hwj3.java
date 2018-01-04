@@ -2,6 +2,8 @@ package adder;
 
 import processor.FakeProcessor;
 import tree.Node;
+import tree.Tree;
+import tree.TreeNode;
 import utils.PerformanceCalculator;
 
 import java.util.ArrayList;
@@ -32,10 +34,6 @@ public class Hwj3 extends BinaryTreeAdderThreads {
         return result;
     }
 
-    public static void main(String args[]) {
-        new PerformanceCalculator().speedUpComputation(new Hwj3("HWJ3"), 15);
-    }
-
     public static class Hwj3Task extends RecursiveTask<Integer> {
         private int SEQUENTIAL_THRESHOLD = 64;
         private Node node;
@@ -44,16 +42,23 @@ public class Hwj3 extends BinaryTreeAdderThreads {
             this.node = node;
         }
 
-        private int sequentialHwj3Task(Node node) {
-            return 0;
+        private int sequentialHwj3Task(Node subRoot) {
+            int result = 0;
+            ArrayList<Integer> values = new Tree().extractSubTreeNodesValue((TreeNode) subRoot);
+            FakeProcessor fp = new FakeProcessor(1);
+            for(int value : values) {
+                result += fp.onerousFunction(value);
+            }
+            return result;
         }
 
         @Override
         protected Integer compute() {
             int result = 0;
+            final Tree tree = new Tree();
             final List<Hwj3Task> tasks = new ArrayList<>();
 
-            if(true){//node.getSubNodeNumber() > SEQUENTIAL_THRESHOLD) {
+            if(tree.getSubTreeNodesNumber((TreeNode) node) > SEQUENTIAL_THRESHOLD) {
                 if(node.getDx() != null) {
                     Hwj3Task taskDx = new Hwj3Task(node.getDx());
                     taskDx.fork();
@@ -65,11 +70,12 @@ public class Hwj3 extends BinaryTreeAdderThreads {
                     taskSx.fork();
                     tasks.add(taskSx);
                 }
+
+                result += new FakeProcessor(node.getValue()).onerousFunction(node.getValue());
+
             } else {
                 result += this.sequentialHwj3Task(node);
             }
-
-            result += new FakeProcessor(node.getValue()).onerousFunction(node.getValue());
 
             for(final Hwj3Task t : tasks) {
                 result += t.join();

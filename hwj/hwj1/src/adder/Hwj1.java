@@ -40,11 +40,6 @@ public class Hwj1 extends BinaryTreeAdderThreads {
         return result;
     }
 
-    //TODO: remove
-    public static void main(String args[]) {
-        new PerformanceCalculator().speedUpComputation(new Hwj1("HWJ1"), 15);
-    }
-
     public static class Task implements Callable<Integer> {
         private static Queue<Node> buffer;
 

@@ -19,6 +19,24 @@ public class Tree {
         return this.root;
     }
 
+    public int recursiveGetSubTreeNodesNumber(TreeNode subRoot) {
+        int partialResult = 1;
+        if(subRoot.getDx() != null) {
+            partialResult += recursiveGetSubTreeNodesNumber((TreeNode) subRoot.getDx());
+        }
+
+        if(subRoot.getSx() != null) {
+            partialResult += recursiveGetSubTreeNodesNumber((TreeNode) subRoot.getSx());
+        }
+
+        return partialResult;
+    }
+
+    public int getSubTreeNodesNumber(TreeNode subRoot) {
+        if(subRoot == null) return 0;
+        return recursiveGetSubTreeNodesNumber(subRoot);
+    }
+
     public Node generateBinaryTree(int depth) {
         List<TreeNode> level = new LinkedList<>();
         if(root == null) { root = new TreeNode(1); }
