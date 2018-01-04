@@ -47,6 +47,48 @@ public class TreeTest {
     }
 
     @Test
+    void testTreeGetSubTreeNodesNumber0() {
+        TreeNode root = null;
+
+        int occorrence = new Tree().getSubTreeNodesNumber(root);
+
+        assertEquals(0, occorrence); //(2^(depth + 1))-1
+    }
+
+    @Test
+    void testTreeGetSubTreeNodesNumber1() {
+        TreeNode root = new TreeNode(1);
+
+        int occorrence = new Tree().getSubTreeNodesNumber(root);
+
+        assertEquals(1, occorrence); //(2^(depth + 1))-1
+    }
+
+    @Test
+    void testTreeGetSubTreeNodesNumber3() {
+        TreeNode sx = new TreeNode(2);
+        TreeNode dx = new TreeNode(3);
+        TreeNode root = new TreeNode(sx, dx,1);
+
+        int occorrence = new Tree().getSubTreeNodesNumber(root);
+
+        assertEquals(3, occorrence); //(2^(depth + 1))-1
+    }
+
+    @Test
+    void testTreeGetSubTreeNodesNumber5() {
+        TreeNode sx2 = new TreeNode(4);
+        TreeNode dx3 = new TreeNode(3);
+        TreeNode sx = new TreeNode(sx2, null, 2);
+        TreeNode dx = new TreeNode(null, dx3,3);
+        TreeNode root = new TreeNode(sx, dx,1);
+
+        int occorrence = new Tree().getSubTreeNodesNumber(root);
+
+        assertEquals(5, occorrence); //(2^(depth + 1))-1
+    }
+
+    @Test
     void testTreeGenerateBinaryTreeDepth0() {
         Tree tree = new Tree();
 
