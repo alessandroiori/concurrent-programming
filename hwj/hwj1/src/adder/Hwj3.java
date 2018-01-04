@@ -42,16 +42,6 @@ public class Hwj3 extends BinaryTreeAdderThreads {
             this.node = node;
         }
 
-        /*private int sequentialHwj3Task(Node subRoot) {
-            int result = 0;
-            ArrayList<Integer> values = new Tree().extractSubTreeNodesValue((TreeNode) subRoot);
-            FakeProcessor fp = new FakeProcessor(1);
-            for(int value : values) {
-                result += fp.onerousFunction(value);
-            }
-            return result;
-        }*/
-
         @Override
         protected Integer compute() {
             int result = 0;
