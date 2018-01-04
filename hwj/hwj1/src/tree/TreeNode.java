@@ -1,5 +1,7 @@
 package tree;
 
+import java.util.ArrayList;
+
 public class TreeNode implements Node {
     private Node sx;
     private Node dx;

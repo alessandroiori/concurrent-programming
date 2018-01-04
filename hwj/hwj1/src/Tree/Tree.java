@@ -1,5 +1,6 @@
 package tree;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,4 +41,18 @@ public class Tree {
         }
         return root;
     }
+
+    public void ricorsiveExtractSubTreeNodesValue(TreeNode subRoot, ArrayList<Integer> list) {
+        if(subRoot != null) { list.add(subRoot.getValue()); }
+        if(subRoot.getDx() != null) { ricorsiveExtractSubTreeNodesValue((TreeNode) subRoot.getDx(), list); }
+        if(subRoot.getSx() != null) { ricorsiveExtractSubTreeNodesValue((TreeNode) subRoot.getSx(), list); }
+    }
+
+    public ArrayList<Integer> extractSubTreeNodesValue(TreeNode subRoot) {
+        ArrayList<Integer> list = new ArrayList<>();
+        this.ricorsiveExtractSubTreeNodesValue(subRoot, list);
+
+        return list;
+    }
+
 }

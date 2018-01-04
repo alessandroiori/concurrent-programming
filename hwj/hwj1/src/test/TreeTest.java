@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import tree.Tree;
 import tree.TreeNode;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -70,6 +72,18 @@ public class TreeTest {
         assertNull(tree.getRoot().getDx().getSx());
         assertNull(tree.getRoot().getSx().getDx());
         assertNull(tree.getRoot().getSx().getSx());
+    }
+
+
+    @Test
+    void testTreeExtractSubTreeNodesValue() {
+        Tree tree = new Tree();
+        TreeNode root =(TreeNode) tree.generateBinaryTree(3);
+
+        ArrayList<Integer> list = tree.extractSubTreeNodesValue(root);
+
+        assertNotNull(list);
+        assertEquals(15, list.size()); //(2^(depth + 1))-1
     }
 
     @AfterAll

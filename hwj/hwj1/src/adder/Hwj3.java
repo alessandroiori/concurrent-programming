@@ -24,7 +24,7 @@ public class Hwj3 extends BinaryTreeAdderThreads {
         ForkJoinPool fjpool = new ForkJoinPool(this.getNThreads());
 
         try {
-            result = fjpool.invoke(new Task(root));
+            result = fjpool.invoke(new Hwj3Task(root));
         } finally {
             fjpool.shutdown();
         }
@@ -36,34 +36,42 @@ public class Hwj3 extends BinaryTreeAdderThreads {
         new PerformanceCalculator().speedUpComputation(new Hwj3("HWJ3"), 15);
     }
 
-    public static class Task extends RecursiveTask<Integer> {
-
+    public static class Hwj3Task extends RecursiveTask<Integer> {
+        private int SEQUENTIAL_THRESHOLD = 64;
         private Node node;
 
-        public Task(Node node) {
+        public Hwj3Task(Node node) {
             this.node = node;
+        }
+
+        private int sequentialHwj3Task(Node node) {
+            return 0;
         }
 
         @Override
         protected Integer compute() {
             int result = 0;
-            final List<Task> tasks = new ArrayList<>();
+            final List<Hwj3Task> tasks = new ArrayList<>();
 
-            if(node.getDx() != null) {
-                Task taskDx = new Task(node.getDx());
-                taskDx.fork();
-                tasks.add(taskDx);
-            }
+            if(true){//node.getSubNodeNumber() > SEQUENTIAL_THRESHOLD) {
+                if(node.getDx() != null) {
+                    Hwj3Task taskDx = new Hwj3Task(node.getDx());
+                    taskDx.fork();
+                    tasks.add(taskDx);
+                }
 
-            if(node.getSx() != null) {
-                Task taskSx = new Task(node.getSx());
-                taskSx.fork();
-                tasks.add(taskSx);
+                if(node.getSx() != null) {
+                    Hwj3Task taskSx = new Hwj3Task(node.getSx());
+                    taskSx.fork();
+                    tasks.add(taskSx);
+                }
+            } else {
+                result += this.sequentialHwj3Task(node);
             }
 
             result += new FakeProcessor(node.getValue()).onerousFunction(node.getValue());
 
-            for(final Task t : tasks) {
+            for(final Hwj3Task t : tasks) {
                 result += t.join();
             }
 
