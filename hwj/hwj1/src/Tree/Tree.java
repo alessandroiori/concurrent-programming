@@ -37,6 +37,38 @@ public class Tree {
         return recursiveGetSubTreeNodesNumber(subRoot);
     }
 
+    public boolean subTreeNodesNumberThreshold(TreeNode subRoot, int threshold) {
+        if(subRoot == null) return false;
+
+        int partialNodesNumber = 0;
+        List<TreeNode> nodes = new LinkedList<>();
+
+        nodes.add(subRoot);
+
+        while(!nodes.isEmpty()) {
+
+            TreeNode tmpNode = nodes.remove(0);
+
+            if(tmpNode != null) {
+                partialNodesNumber++;
+            }
+
+            if(partialNodesNumber > threshold) {
+                return true;
+            }
+
+            if(tmpNode.getDx() != null) {
+                nodes.add((TreeNode) tmpNode.getDx());
+            }
+
+            if(tmpNode.getSx() != null) {
+                nodes.add((TreeNode) tmpNode.getSx());
+            }
+        }
+
+        return false;
+    }
+
     public Node generateBinaryTree(int depth) {
         List<TreeNode> level = new LinkedList<>();
         if(root == null) { root = new TreeNode(1); }

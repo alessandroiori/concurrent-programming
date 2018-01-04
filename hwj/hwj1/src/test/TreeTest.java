@@ -8,9 +8,7 @@ import tree.TreeNode;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TreeTest {
     @BeforeAll
@@ -86,6 +84,63 @@ public class TreeTest {
         int occorrence = new Tree().getSubTreeNodesNumber(root);
 
         assertEquals(5, occorrence); //(2^(depth + 1))-1
+    }
+
+    @Test
+    void testTreeSubTreeNodesNumberThreshold_1_0() {
+        TreeNode root = new TreeNode(1);
+
+        boolean result = new Tree().subTreeNodesNumberThreshold(root, 0);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testTreeSubTreeNodesNumberThreshold_1_1() {
+        TreeNode root = new TreeNode(1);
+
+        boolean result = new Tree().subTreeNodesNumberThreshold(root, 1);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void testTreeSubTreeNodesNumberThreshold_5_1() {
+        TreeNode sx2 = new TreeNode(4);
+        TreeNode dx3 = new TreeNode(3);
+        TreeNode sx = new TreeNode(sx2, null, 2);
+        TreeNode dx = new TreeNode(null, dx3,3);
+        TreeNode root = new TreeNode(sx, dx,1);
+
+        boolean result = new Tree().subTreeNodesNumberThreshold(root, 1);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testTreeSubTreeNodesNumberThreshold_5_4() {
+        TreeNode sx2 = new TreeNode(4);
+        TreeNode dx3 = new TreeNode(3);
+        TreeNode sx = new TreeNode(sx2, null, 2);
+        TreeNode dx = new TreeNode(null, dx3,3);
+        TreeNode root = new TreeNode(sx, dx,1);
+
+        boolean result = new Tree().subTreeNodesNumberThreshold(root, 4);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testTreeSubTreeNodesNumberThreshold_5_5() {
+        TreeNode sx2 = new TreeNode(4);
+        TreeNode dx3 = new TreeNode(3);
+        TreeNode sx = new TreeNode(sx2, null, 2);
+        TreeNode dx = new TreeNode(null, dx3,3);
+        TreeNode root = new TreeNode(sx, dx,1);
+
+        boolean result = new Tree().subTreeNodesNumberThreshold(root, 5);
+
+        assertFalse(result);
     }
 
     @Test

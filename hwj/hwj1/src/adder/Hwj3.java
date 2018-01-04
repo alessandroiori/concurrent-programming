@@ -35,7 +35,7 @@ public class Hwj3 extends BinaryTreeAdderThreads {
     }
 
     public static class Hwj3Task extends RecursiveTask<Integer> {
-        private int SEQUENTIAL_THRESHOLD = 64;
+        private int SEQUENTIAL_THRESHOLD = 128;
         private Node node;
 
         public Hwj3Task(Node node) {
@@ -48,7 +48,7 @@ public class Hwj3 extends BinaryTreeAdderThreads {
             final Tree tree = new Tree();
             final List<Hwj3Task> tasks = new ArrayList<>();
 
-            if(tree.getSubTreeNodesNumber((TreeNode) node) > SEQUENTIAL_THRESHOLD) {
+            if(tree.subTreeNodesNumberThreshold((TreeNode) node, SEQUENTIAL_THRESHOLD)) {
                 if(node.getDx() != null) {
                     Hwj3Task taskDx = new Hwj3Task(node.getDx());
                     taskDx.fork();
