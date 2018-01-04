@@ -39,8 +39,8 @@ public class PerformanceCalculator {
         return speedup;
     }
 
-    public void speedUpComputation(BinaryTreeAdderThreads adder, int treeDepth) {
-        TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(treeDepth);
+    public void speedUpComputation(BinaryTreeAdderThreads adder, TreeNode rootNode, int treeDepth) {
+        //TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(treeDepth);
 
         PerformanceCalculator serialePc = new PerformanceCalculator();
         adder.setNThreads(1);
@@ -65,8 +65,11 @@ public class PerformanceCalculator {
     }
 
     public static void main(String args[]) {
-        new PerformanceCalculator().speedUpComputation(new Hwj1("HWJ1"), 20);
-        new PerformanceCalculator().speedUpComputation(new Hwj3("HWJ3"), 20);
+        int treeDepth = 15;
+        TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(treeDepth);
+
+        new PerformanceCalculator().speedUpComputation(new Hwj1("HWJ1"), rootNode, treeDepth);
+        new PerformanceCalculator().speedUpComputation(new Hwj3("HWJ3"), rootNode, treeDepth);
     }
 }
 
