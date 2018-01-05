@@ -48,20 +48,10 @@ public class SpliteratorTree<T> implements Spliterator<T> {
 
     @Override
     public long estimateSize() {
-        return this.queue.parallelStream().mapToLong(x -> new Tree(x).getSubTreeNodesNumber((TreeNode)x)).sum();
-        /*return this.queue.parallelStream().mapToLong(x -> {
-
-            if(new Tree(x).subTreeNodesNumberThreshold((TreeNode)x, 5)){
-                return Long.MAX_VALUE;
-            }
-            return this.queue.size();
-        }).sum();*/
-        /*int result =  this.queue.size();
-        switch (result){
-            case 0: return 0;
-            case 1: return 2;
-            default: return Long.MAX_VALUE;
-        }*/
+        return this.queue
+                .parallelStream()
+                .mapToLong(x -> new Tree(x).getSubTreeNodesNumber((TreeNode)x))
+                .sum();
     }
 
     @Override

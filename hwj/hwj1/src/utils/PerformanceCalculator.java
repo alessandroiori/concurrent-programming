@@ -72,7 +72,7 @@ public class PerformanceCalculator {
     }
 
     public static void main(String args[]) {
-        int treeDepth = 15;
+        int treeDepth = 18;
         TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(treeDepth);
         PerformanceCalculator pc = new PerformanceCalculator();
 
