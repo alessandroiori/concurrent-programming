@@ -7,6 +7,7 @@ package utils;
 import adder.BinaryTreeAdderThreads;
 import adder.Hwj1;
 import adder.Hwj3;
+import adder.Hwj4;
 import tree.Tree;
 import tree.TreeNode;
 
@@ -76,8 +77,9 @@ public class PerformanceCalculator {
         PerformanceCalculator pc = new PerformanceCalculator();
 
         long serialElapsedTime = pc.serialElapsedTimeComputation(rootNode, treeDepth);
-        pc.speedUpComputation(new Hwj1("HWJ1"), rootNode, serialElapsedTime, treeDepth);
-        pc.speedUpComputation(new Hwj3("HWJ3"), rootNode, serialElapsedTime, treeDepth);
+        //pc.speedUpComputation(new Hwj1("HWJ1"), rootNode, serialElapsedTime, treeDepth);
+        //pc.speedUpComputation(new Hwj3("HWJ3"), rootNode, serialElapsedTime, treeDepth);
+        pc.speedUpComputation(new Hwj4("HWJ4"), rootNode, serialElapsedTime, treeDepth);
     }
 }
 

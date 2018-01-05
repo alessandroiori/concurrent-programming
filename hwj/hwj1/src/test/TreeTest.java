@@ -3,6 +3,7 @@ package test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import tree.SpliteratorTree;
 import tree.Tree;
 import tree.TreeNode;
 
@@ -181,6 +182,49 @@ public class TreeTest {
 
         assertNotNull(list);
         assertEquals(15, list.size()); //(2^(depth + 1))-1
+    }
+
+    @Test
+    void testSpliteratoTreeCreate() {
+        TreeNode root = (TreeNode) new Tree().generateBinaryTree(0);
+        SpliteratorTree st = new SpliteratorTree(root);
+
+        assertNotNull(st);
+    }
+
+    @Test
+    void testSpliteratoTreeEstimateSize7() {
+        TreeNode root = (TreeNode) new Tree().generateBinaryTree(2);
+        SpliteratorTree st = new SpliteratorTree(root);
+
+        long cnt = st.estimateSize();
+
+        assertEquals(7, cnt); //(2^(depth + 1))-1
+    }
+
+
+    @Test
+    void testSpliteratoTreeTrySplit() {
+        TreeNode root = (TreeNode) new Tree().generateBinaryTree(2);
+        SpliteratorTree st = new SpliteratorTree(root);
+
+        SpliteratorTree nst = (SpliteratorTree) st.trySplit();
+
+        assertNotNull(nst);
+        assertEquals(7, nst.estimateSize()); //(2^(depth + 1))-1
+    }
+
+    @Test
+    void testSpliteratorTreeTryAdvance() {
+        TreeNode root = (TreeNode) new Tree().generateBinaryTree(1);
+        SpliteratorTree st = new SpliteratorTree(root);
+
+        boolean t1 = st.tryAdvance(x -> x.getClass());
+        while(st.tryAdvance(x -> x.getClass()));
+        boolean t2 = st.tryAdvance(x -> x.getClass());
+
+        assertTrue(t1);
+        assertFalse(t2);
     }
 
     @AfterAll

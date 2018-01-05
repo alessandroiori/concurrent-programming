@@ -14,7 +14,7 @@ public class BinaryTreeAdderThreads implements BinaryTreeAdder {
 
     public BinaryTreeAdderThreads(String name) {
         this.name = name;
-        this.nThreads = 1;
+        this.nThreads = NCPU;
     }
 
     public String getName() {
