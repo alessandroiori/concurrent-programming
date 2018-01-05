@@ -72,13 +72,13 @@ public class PerformanceCalculator {
     }
 
     public static void main(String args[]) {
-        int treeDepth = 18;
+        int treeDepth = 15;
         TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(treeDepth);
         PerformanceCalculator pc = new PerformanceCalculator();
 
         long serialElapsedTime = pc.serialElapsedTimeComputation(rootNode, treeDepth);
-        //pc.speedUpComputation(new Hwj1("HWJ1"), rootNode, serialElapsedTime, treeDepth);
-        //pc.speedUpComputation(new Hwj3("HWJ3"), rootNode, serialElapsedTime, treeDepth);
+        pc.speedUpComputation(new Hwj1("HWJ1"), rootNode, serialElapsedTime, treeDepth);
+        pc.speedUpComputation(new Hwj3("HWJ3"), rootNode, serialElapsedTime, treeDepth);
         pc.speedUpComputation(new Hwj4("HWJ4"), rootNode, serialElapsedTime, treeDepth);
     }
 }

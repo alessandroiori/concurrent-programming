@@ -3,13 +3,17 @@ package tree;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Spliterator;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class TreeNode implements Node, Collection<Node> {
+    private ConcurrentLinkedQueue<Node> spliteratorQueue;
+
     private Node sx;
     private Node dx;
     private int value;
 
     public TreeNode(int value) {
+        this.spliteratorQueue = new ConcurrentLinkedQueue<>();
         this.sx = null;
         this.dx = null;
         this.value = value;
@@ -46,9 +50,13 @@ public class TreeNode implements Node, Collection<Node> {
 
     /* Collection */
 
+    public ConcurrentLinkedQueue<Node> getSpliteratorQueue() {
+        return this.spliteratorQueue;
+    }
+
     @Override
     public Spliterator<Node> spliterator() {
-        return new SpliteratorTree<>(this);
+        return new SpliteratorTree<>(this, this.spliteratorQueue);
     }
 
     /*
