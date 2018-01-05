@@ -5,10 +5,10 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.Consumer;
 
 public class SpliteratorTree<T> implements Spliterator<T> {
-    private ConcurrentLinkedQueue<Node> queue; // = new ConcurrentLinkedQueue<>();
+    private ConcurrentLinkedQueue<Node> queue;
 
-    public SpliteratorTree(Node root, ConcurrentLinkedQueue<Node> q) {
-        this.queue = q;
+    public SpliteratorTree(Node root) {
+        this.queue = new ConcurrentLinkedQueue<>();
         this.queue.add(root);
     }
 
@@ -33,13 +33,13 @@ public class SpliteratorTree<T> implements Spliterator<T> {
                 TreeNode tmp = (TreeNode)n.getDx();
                 n.setDx(null);
                 queue.add(n);
-                return new SpliteratorTree(tmp, this.queue);
+                return new SpliteratorTree(tmp);
             }
             if(n.getSx() != null) {
                 TreeNode tmp = (TreeNode)n.getSx();
                 n.setSx(null);
                 queue.add(n);
-                return new SpliteratorTree(tmp, this.queue);
+                return new SpliteratorTree(tmp);
             }
         }
         //return (n == null) ? null : new SpliteratorTree(n);
@@ -48,14 +48,14 @@ public class SpliteratorTree<T> implements Spliterator<T> {
 
     @Override
     public long estimateSize() {
-        //return this.queue.parallelStream().mapToLong(x -> new Tree(x).getSubTreeNodesNumber((TreeNode)x)).sum();
-        return this.queue.parallelStream().mapToLong(x -> {
+        return this.queue.parallelStream().mapToLong(x -> new Tree(x).getSubTreeNodesNumber((TreeNode)x)).sum();
+        /*return this.queue.parallelStream().mapToLong(x -> {
 
             if(new Tree(x).subTreeNodesNumberThreshold((TreeNode)x, 5)){
                 return Long.MAX_VALUE;
             }
             return this.queue.size();
-        }).sum();
+        }).sum();*/
         /*int result =  this.queue.size();
         switch (result){
             case 0: return 0;

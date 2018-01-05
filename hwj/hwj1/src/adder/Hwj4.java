@@ -12,9 +12,8 @@ public class Hwj4 extends BinaryTreeAdderThreads {
 
     @Override
     public int computeOnerousSum(Node root) {
-        FakeProcessor fp = new FakeProcessor(1);
         TreeNode tnRoot = (TreeNode) root;
-        return tnRoot.parallelStream().mapToInt(x -> fp.onerousFunction(x.getValue())).sum();
+        return tnRoot.parallelStream().mapToInt(x -> new FakeProcessor(x.getValue()).onerousFunction(x.getValue())).sum();
     }
 
 }

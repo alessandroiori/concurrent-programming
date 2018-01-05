@@ -187,7 +187,7 @@ public class TreeTest {
     @Test
     void testSpliteratoTreeCreate() {
         TreeNode root = (TreeNode) new Tree().generateBinaryTree(0);
-        SpliteratorTree st = new SpliteratorTree(root, root.getSpliteratorQueue());
+        SpliteratorTree st = new SpliteratorTree(root);
 
         assertNotNull(st);
     }
@@ -206,7 +206,7 @@ public class TreeTest {
     @Test
     void testSpliteratoTreeTrySplit() {
         TreeNode root = (TreeNode) new Tree().generateBinaryTree(2);
-        SpliteratorTree st = new SpliteratorTree(root, root.getSpliteratorQueue());
+        SpliteratorTree st = new SpliteratorTree(root);
 
         SpliteratorTree nst = (SpliteratorTree) st.trySplit();
 
@@ -217,7 +217,7 @@ public class TreeTest {
     @Test
     void testSpliteratorTreeTryAdvance() {
         TreeNode root = (TreeNode) new Tree().generateBinaryTree(1);
-        SpliteratorTree st = new SpliteratorTree(root, root.getSpliteratorQueue());
+        SpliteratorTree st = new SpliteratorTree(root);
 
         boolean t1 = st.tryAdvance(x -> x.getClass());
         while(st.tryAdvance(x -> x.getClass()));
