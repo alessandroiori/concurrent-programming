@@ -1,8 +1,7 @@
 package test;
 
 import adder.Hwj3;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+
 import org.junit.jupiter.api.Test;
 import tree.Tree;
 
@@ -11,21 +10,24 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TestHwj3 {
 
+    /*
     @BeforeAll
     static void initAll() {
-        System.out.println("Start");
+        System.out.println("[HWJ3T] Start Test HWJ3");
     }
+    */
 
     @Test
-    void testHwj1Create() {
-
+    void testHwj3Create() {
+        System.out.println("[HWJ3T] Creazione HWJ3T object");
         Hwj3 hwj3 = new Hwj3("HWJ3");
 
         assertNotNull(hwj3);
     }
 
     @Test
-    void testHwj1ComputeOnerousSumTreeDepth0() {
+    void testHwj3ComputeOnerousSumTreeDepth0() {
+        System.out.println("[HWJ3T] computeOnerousSumTree() su albero binario profondita' 0");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(0);
@@ -37,7 +39,8 @@ public class TestHwj3 {
     }
 
     @Test
-    void testHwj1ComputeOnerousSumTreeDepth1() {
+    void testHwj3ComputeOnerousSumTreeDepth1() {
+        System.out.println("[HWJ3T] computeOnerousSumTree() su albero binario profondita' 1");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(1);
@@ -49,7 +52,8 @@ public class TestHwj3 {
     }
 
     @Test
-    void testHwj1ComputeOnerousSumTreeDepth2() {
+    void testHwj3ComputeOnerousSumTreeDepth2() {
+        System.out.println("[HWJ3T] computeOnerousSumTree() su albero binario profondita' 2");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(2);
@@ -61,7 +65,8 @@ public class TestHwj3 {
     }
 
     @Test
-    void testHwj1ComputeOnerousSumTreeDepth10() {
+    void testHwj3ComputeOnerousSumTreeDepth10() {
+        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 10");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(10);
@@ -73,7 +78,8 @@ public class TestHwj3 {
     }
 
     @Test
-    void testHwj1ComputeOnerousSumTreeDepth15() {
+    void testHwj3ComputeOnerousSumTreeDepth15() {
+        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 15");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(15);
@@ -84,9 +90,11 @@ public class TestHwj3 {
         assertEquals(65535 , result); //(2^(depth+1))-1
     }
 
+    /*
     @AfterAll
     static void tearDownAll() {
-        System.out.println("Stop");
+        System.out.println("[HWJ3T] Fine Test HWJ3");
     }
+    */
 
 }

@@ -36,6 +36,7 @@ public class PerformanceCalculator {
     }
 
     public long getSpeedUp(long oldElapsedTime, long newElapsedTime) {
+        // reference: https://en.wikipedia.org/wiki/Speedup#Using_execution_times
         long speedup = oldElapsedTime / newElapsedTime;
         return speedup;
     }
