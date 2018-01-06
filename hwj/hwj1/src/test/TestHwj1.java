@@ -19,7 +19,7 @@ public class TestHwj1 {
 
     @Test
     void B_testHwj1Create() {
-        System.out.println("[HWJ1T] Creazione HWJ1T object");
+        System.out.println("[T_HWJ1] Creazione HWJ1T object");
         Tree tree = new Tree();
         tree.generateBinaryTree(0);
         Hwj1 hwj1;
@@ -31,7 +31,7 @@ public class TestHwj1 {
 
     @Test
     void C_testHwj1ComputeOnerousSumTreeDepth0() {
-        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 0");
+        System.out.println("[T_HWJ1] computeOnerousSumTree() su albero binario profondita' 0");
         int result;
         int depth = 0;
         Tree tree = new Tree();
@@ -45,7 +45,7 @@ public class TestHwj1 {
 
     @Test
     void D_testHwj1ComputeOnerousSumTreeDepth1() {
-        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 1");
+        System.out.println("[T_HWJ1] computeOnerousSumTree() su albero binario profondita' 1");
         int result;
         int depth = 1;
         Tree tree = new Tree();
@@ -59,7 +59,7 @@ public class TestHwj1 {
 
     @Test
     void E_testHwj1ComputeOnerousSumTreeDepth2() {
-        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 2");
+        System.out.println("[T_HWJ1] computeOnerousSumTree() su albero binario profondita' 2");
         int result;
         int depth = 2;
         Tree tree = new Tree();
@@ -73,7 +73,7 @@ public class TestHwj1 {
 
     @Test
     void F_testHwj1ComputeOnerousSumTreeDepth10() {
-        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 10");
+        System.out.println("[T_HWJ1] computeOnerousSumTree() su albero binario profondita' 10");
         int result;
         int depth = 10;
         Tree tree = new Tree();
@@ -87,7 +87,7 @@ public class TestHwj1 {
 
     @Test
     void G_testHwj1ComputeOnerousSumTreeDepth15() {
-        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 15");
+        System.out.println("[T_HWJ1] computeOnerousSumTree() su albero binario profondita' 15");
         int result;
         int depth = 15;
         Tree tree = new Tree();

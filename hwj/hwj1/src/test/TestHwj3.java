@@ -19,7 +19,7 @@ public class TestHwj3 {
 
     @Test
     void testHwj3Create() {
-        System.out.println("[HWJ3T] Creazione HWJ3T object");
+        System.out.println("[T_HWJ3] Creazione HWJ3T object");
         Hwj3 hwj3 = new Hwj3("HWJ3");
 
         assertNotNull(hwj3);
@@ -27,7 +27,7 @@ public class TestHwj3 {
 
     @Test
     void testHwj3ComputeOnerousSumTreeDepth0() {
-        System.out.println("[HWJ3T] computeOnerousSumTree() su albero binario profondita' 0");
+        System.out.println("[T_HWJ3] computeOnerousSumTree() su albero binario profondita' 0");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(0);
@@ -40,7 +40,7 @@ public class TestHwj3 {
 
     @Test
     void testHwj3ComputeOnerousSumTreeDepth1() {
-        System.out.println("[HWJ3T] computeOnerousSumTree() su albero binario profondita' 1");
+        System.out.println("[T_HWJ3] computeOnerousSumTree() su albero binario profondita' 1");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(1);
@@ -53,7 +53,7 @@ public class TestHwj3 {
 
     @Test
     void testHwj3ComputeOnerousSumTreeDepth2() {
-        System.out.println("[HWJ3T] computeOnerousSumTree() su albero binario profondita' 2");
+        System.out.println("[T_HWJ3] computeOnerousSumTree() su albero binario profondita' 2");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(2);
@@ -66,7 +66,7 @@ public class TestHwj3 {
 
     @Test
     void testHwj3ComputeOnerousSumTreeDepth10() {
-        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 10");
+        System.out.println("[T_HWJ3] computeOnerousSumTree() su albero binario profondita' 10");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(10);
@@ -79,7 +79,7 @@ public class TestHwj3 {
 
     @Test
     void testHwj3ComputeOnerousSumTreeDepth15() {
-        System.out.println("[HWJ1T] computeOnerousSumTree() su albero binario profondita' 15");
+        System.out.println("[T_HWJ3] computeOnerousSumTree() su albero binario profondita' 15");
         int result;
         Tree tree = new Tree();
         tree.generateBinaryTree(15);

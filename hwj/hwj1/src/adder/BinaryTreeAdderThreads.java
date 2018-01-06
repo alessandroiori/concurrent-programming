@@ -63,5 +63,5 @@ public class BinaryTreeAdderThreads implements BinaryTreeAdder {
     }
 
     @Override
-    public int computeOnerousSum(Node root) { return 0;}
+    public int computeOnerousSum(Node root) { return sequentialComputation(root);}
 }
