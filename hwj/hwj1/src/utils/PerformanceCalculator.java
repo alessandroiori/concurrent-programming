@@ -1,9 +1,5 @@
 package utils;
 
-/*
- * Riferimento : https://en.wikipedia.org/wiki/Speedup#Using_execution_times
- */
-
 import adder.BinaryTreeAdderThreads;
 import adder.Hwj1;
 import adder.Hwj3;
@@ -31,56 +27,27 @@ public class PerformanceCalculator {
         return this.stopTime;
     }
 
+    public void clean() {
+        this.stopTime = 0;
+        this.startTime = 0;
+    }
+
     public long getElapsedTime() {
         return this.stopTime - this.startTime;
     }
 
-    public long getSpeedUp(long oldElapsedTime, long newElapsedTime) {
+    public double getSpeedUp(long oldElapsedTime, long newElapsedTime) {
         // reference: https://en.wikipedia.org/wiki/Speedup#Using_execution_times
-        long speedup = oldElapsedTime / newElapsedTime;
+        double speedup = (double)oldElapsedTime / (double)newElapsedTime;
         return speedup;
     }
 
-    public long serialElapsedTimeComputation(TreeNode rootNode, int treeDepth) {
-        BinaryTreeAdderThreads serial = new BinaryTreeAdderThreads("SERIAL");
-        PerformanceCalculator serialePc = new PerformanceCalculator();
+    public long elapsedTimeComputation(BinaryTreeAdderThreads adder, TreeNode root) {
+        this.startTime();
+        adder.computeOnerousSum(root);
+        this.stopTime();
 
-        serialePc.startTime();
-        int serialResult = serial.sequentialComputation(rootNode);
-        serialePc.stopTime();
-        long serialeElapsedTime = serialePc.getElapsedTime();
-
-        System.out.println("["+ serial.getName() +"] binary tree depth " + treeDepth +
-                ", seriale (1 Thread) " + serialeElapsedTime / 1000000000.0 + "s");
-
-        return serialeElapsedTime;
-    }
-
-    public void speedUpComputation(BinaryTreeAdderThreads adder, TreeNode rootNode, long serialElapsedTime, int treeDepth) {
-
-        PerformanceCalculator concorrentePc = new PerformanceCalculator();
-        adder.setNThreads(NCPU);
-        concorrentePc.startTime();
-        int concorrenteResult = adder.computeOnerousSum(rootNode); //(2^(depth+1))-1
-        concorrentePc.stopTime();
-        long concorrenteElapsedTime = concorrentePc.getElapsedTime();
-
-        long speedup = new PerformanceCalculator().getSpeedUp(serialElapsedTime, concorrenteElapsedTime);
-
-        System.out.println("["+ adder.getName() +"] binary tree depth " + treeDepth +
-                ", concorrente ("+ NCPU +" Thread) " + concorrenteElapsedTime / 1000000000.0 +
-                "s, speedup: " + speedup);
-    }
-
-    public static void main(String args[]) {
-        int treeDepth = 18;
-        TreeNode rootNode = (TreeNode) new Tree().generateBinaryTree(treeDepth);
-        PerformanceCalculator pc = new PerformanceCalculator();
-
-        long serialElapsedTime = pc.serialElapsedTimeComputation(rootNode, treeDepth);
-        pc.speedUpComputation(new Hwj1("HWJ1"), rootNode, serialElapsedTime, treeDepth);
-        pc.speedUpComputation(new Hwj3("HWJ3"), rootNode, serialElapsedTime, treeDepth);
-        pc.speedUpComputation(new Hwj4("HWJ4"), rootNode, serialElapsedTime, treeDepth);
+        return this.getElapsedTime();
     }
 }
 
