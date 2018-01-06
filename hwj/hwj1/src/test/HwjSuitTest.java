@@ -36,10 +36,9 @@ public class HwjSuitTest {
         DecimalFormat df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.CEILING);
 
-        //System.out.println("Stat Speed Up Test");
+        System.out.println("[INFO] max threads number " + NCPU);
         for(int treeDepth = 10; treeDepth <= 18; treeDepth+=2) {
             TreeNode rootTree = (TreeNode) new Tree().generateBinaryTree(treeDepth);
-            //System.out.println("[SU_TREE] binary tree depth " + treeDepth );
 
             pc.clean();
             long serialElapsedTime = pc.elapsedTimeComputation(new BinaryTreeAdderThreads("SERIAL"), rootTree);
