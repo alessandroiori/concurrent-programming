@@ -1,4 +1,4 @@
-# Homework HWJ di Programmazione Concorrente: Documento di Testo
+# Progetto HWJ di Programmazione Concorrente
 (7 gennaio 2017 - anno accademico 2017/2018)
 
 Alessandro Iori
