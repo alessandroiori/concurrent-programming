@@ -1,4 +1,4 @@
-# Homework HWC2 di Programmazione Concorrente: Documento di Testo 
+# Progetto HWC2 di Programmazione Concorrente
 (20 dicembre 2017 — anno accademico 2017/2018)
 
 Alessandro Iori
