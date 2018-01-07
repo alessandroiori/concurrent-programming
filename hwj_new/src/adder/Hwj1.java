@@ -3,6 +3,8 @@ package adder;
 import processor.FakeProcessor;
 import tree.Node;
 import tree.Tree;
+import tree.TreeNode;
+import utils.PerformanceCalculator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -84,10 +86,25 @@ public class Hwj1 extends SerialBinaryTreeAdder {
         }
     }
 
-    public static int main(String args[]) {
+    public static void main(String args[]) {
         if(args[0] == null) throw new NullPointerException();
-        if(Integer.parseInt(args[0]) > 0) throw new NullPointerException();
+        if(Integer.parseInt(args[0]) < 0) throw new NullPointerException();
 
-        return new Hwj1("HWJ1").computeOnerousSum(new Tree().generateBinaryTree(Integer.parseInt(args[0])));
+        PerformanceCalculator pc = new PerformanceCalculator();
+        int treeDepth = Integer.parseInt(args[0]);
+        System.out.println("[HWJ1] Start generation btree, depth: " + treeDepth);
+        pc.startTime();
+        TreeNode root = (TreeNode) new Tree().generateBinaryTree(treeDepth);
+        pc.stopTime();
+        long elapsedTimeBtree = pc.getElapsedTime();
+        System.out.println("[HWJ1] Stop generation btree, elapsed time: " + elapsedTimeBtree / 1000000000.0 + "s");
+
+        pc.clean();
+        System.out.println("[HWJ1] Start computation btree");
+        pc.startTime();
+        int result = new Hwj1("HWJ1").computeOnerousSum(root);
+        pc.stopTime();
+        long elapsedTimeHwj = pc.getElapsedTime();
+        System.out.println("[HWJ1] Stop computation, result: " + result + ", elapsed time: " + elapsedTimeHwj / 1000000000.0 + "s");
     }
 }
