@@ -1,4 +1,4 @@
-# Homework HWC1 di Programmazione Concorrente: Documento di Testo 
+# Progetto HWC1 di Programmazione Concorrente: Documento di Testo 
 (17 novembre 2017 — anno accademico 2017/2018)
 
 Alessandro Iori
