@@ -1,7 +1,9 @@
 Homework HWC1 di Programmazione Concorrente: Documento di Testo 
 (17 novembre 2017 — anno accademico 2017/2018)
 
-Alessandro Iori - mat: 450005
+Alessandro Iori
+
+Specifiche del progetto [HWC1_17112017.pdf](https://github.com/alessandroiori/concurrent-programming/blob/master/hwc1/HWC1_17112017.pdf)
 
 STRUTTURA PROGETTO
 Il progetto si compone dei seguenti file:
