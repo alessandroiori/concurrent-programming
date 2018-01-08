@@ -7,10 +7,9 @@ Specifiche del progetto [HWJ_22122017.pdf](https://github.com/alessandroiori/con
 
 ## INTRODUZIONE
 Sono stati implementati i seguenti punti del documento “HWJ_22122017.pdf”:
-- 1. Occupazione di Memoria Illimitata (Hwj1.java)
-- 3. Framework Fork/Join (Hwj3.java)
-- 4. Parallel Stream (Hwj4.java)
-
+1. Occupazione di Memoria Illimitata (Lightweight Executable Framework) (Hwj1.java)
+3. Framework Fork/Join (Hwj3.java)
+4. Parallel Stream (Hwj4.java)
 
 ## STRUTTURA PROGETTO
 Il progetto è stato strutturato come segue:
@@ -80,12 +79,14 @@ Output esecuzione (profondità_btree = 10):
 Consente di calcolare elapsed time di esecuzione e restituire lo speed-up relativo a due elapsed time precedentemente calcolati. Lo speed-up viene implementato con riferimento a: https://en.wikipedia.org/wiki/Speedup#Using_execution_times
 
 
-## TEST
+## TEST
 Sono stati realizzati JUnit test per le classi: Hwj1, Hwj3, Hwj4, SerialBinaryTreeAdder, SplitteratorTree, Tree, TreeNode. I test sono contenuti in hwj/src/test e realizzati con Junit4.12.
 I Test per le classi Hwj1, Hwj3, Hwj4, più relativa misurazione asintotica dello speed-up, vengono eseguiti automaticamente nella classe hwj/src/HWJ.
 
 ### Esecuzione Test
-Comandi utilizzati per l’esecuzione: $ java -jar HWJ.jar
+Comandi utilizzati per l’esecuzione: 
+
+    $ java -jar HWJ.jar
 
 ## OUTPUT TEST
 Specifiche Hardware: macOS Sierra 10.12.6, 2.9GHz dual-core Intel Core i7 processor (Turbo Boost up to 3.6GHz) with 4MB L3 cache.
