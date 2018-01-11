@@ -17,15 +17,15 @@ Il progetto si compone dei seguenti file:
 L'implementazione delle funzioni che operano sul buffer è stata effettuata utilizzando un mutex e due variabili condizione della libreria "pthread.h". 
 - Per le funzioni NON bloccanti è stato utilizzato esclusivamente il mutex sulla risorsa buffer, interpretando il "non bloccante" con al funzione "pthread_mutex_trylock()".
 - Per le funzioni bloccanti, sono state utilizzate le due variabili condizione e un mutex, realizzando un monitor. Nei test in cui occorre verificare la sola produzioni o consumazione, vengono utilizzati dei fake produttori/consumatori che effettuano un numero prefissato di signal sulle variabili condizione su cui sono in wait (all'interno di un while) i relativi consumatori/produttori. Inoltre per far uscire i consumatori/produttori dal while, in quanto nonostante le fake signal la condizione non si è comunque verificata, viene utilizzata una variabile "exit" attivata in fase di inizializzazione del test. Codice di esempio:
-#    
-     while(*buffer->p_size == 0 && exit == 0)
-     {
-        pthread_cond_wait(&COND_NOT_EMPTY, &MUTEX);
-        if(EXIT_FROM_COND_WAIT_WHILE != 0)
-        {
-            exit = *EXIT_FROM_COND_WAIT_WHILE;
-        }
-     }
+  
+          while(*buffer->p_size == 0 && exit == 0)
+          {
+             pthread_cond_wait(&COND_NOT_EMPTY, &MUTEX);
+             if(EXIT_FROM_COND_WAIT_WHILE != 0)
+             {
+                 exit = *EXIT_FROM_COND_WAIT_WHILE;
+             }
+          }
      
 In fine per cercare di forzare le sequenza di interleaving vengono utilizzate delle sleep di 3 secondi. I 3 secondi sono stati calibrati e selezionati come una buona attesa che consente di ottenere, nella maggior parte dei casi, la sequenza di interleaving desiderata anche all'aumentare dei produttori/consumatori.
 
@@ -48,14 +48,7 @@ $./test
      CUnit - A unit testing framework for C - Version 2.1-3
      http://cunit.sourceforge.net/
      
-     while(*buffer->p_size == 0 && exit == 0)
-     {
-        pthread_cond_wait(&COND_NOT_EMPTY, &MUTEX);
-        if(EXIT_FROM_COND_WAIT_WHILE != 0)
-        {
-            exit = *EXIT_FROM_COND_WAIT_WHILE;
-        }
-     }
+    
      Suite: Suite_1
        Test: 1. (P=1; C=0; N=1) Produzione di un solo messaggio in un buffer vuoto:
         T1_put_non_bloccante_buffer_vuoto_unitario()
