@@ -60,6 +60,9 @@ public class Hwj1 extends SerialBinaryTreeAdder {
 
                 if(node != null) {
 
+                    // TODO: add sync
+                    // Object obj = new Object();
+                    // synchronized(obj) {
                     if(node.getDx() != null) {
                         if(buffer.add(node.getDx())) {
                             semaphore.release(1);
@@ -71,6 +74,7 @@ public class Hwj1 extends SerialBinaryTreeAdder {
                             semaphore.release(1);
                         }
                     }
+                    //} //sync-end 
 
                     //result += node.getValue();
                     result += new FakeProcessor(node.getValue()).onerousFunction(node.getValue());
