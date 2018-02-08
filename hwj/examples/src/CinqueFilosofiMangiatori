@@ -1,0 +1,112 @@
+public class CinqueFilosofiMangiatori {
+
+    public static class Filosofo extends Thread {
+        private int id;
+        private boolean[] forchetta_status;
+        private Object[] forchetta;
+
+        public Filosofo( int id, boolean[] forchette_status, Object[] forchetta) {
+            this.id = id;
+            this.forchetta_status = forchette_status;
+            this.forchetta = forchetta;
+        }
+
+        private int getFirst() {
+            // fisolosofo mancino
+            int first = id, second = (id + 1) % 5;
+            if (first > second) {
+                first = second;
+                second = id;
+            }
+            return first;
+        }
+
+        private int getSecond() {
+            // fisolosofo mancino
+            int first = id, second = (id + 1) % 5;
+            if (first > second) {
+                first = second;
+                second = id;
+            }
+            return second;
+        }
+
+        public void prendi() {
+
+            // fisolosofo mancino
+            int first = getFirst(), second = getSecond();
+
+            synchronized (forchetta[first]) {
+                while (forchetta_status[first] == false) {
+                    try {
+                        forchetta[first].wait();
+                    } catch (InterruptedException e) { }
+                }
+                System.out.println("[" + Thread.currentThread().getName() + "] prende forchetta " + first);
+                forchetta_status[first] = false;
+            }
+
+            synchronized (forchetta[second]) {
+                while (forchetta_status[second] == false) {
+                    try {
+                        forchetta[second].wait();
+                    } catch (InterruptedException e) {
+                    }
+                }
+                System.out.println("[" + Thread.currentThread().getName() + "] prende forchetta " + second);
+                forchetta_status[second] = false;
+            }
+        }
+
+        public void lascia() {
+            int first = getFirst(), second = getSecond();
+
+            synchronized (forchetta[first]) {
+                System.out.println("[" + Thread.currentThread().getName() + "] lascia forchetta " + first);
+                forchetta_status[first] = true;
+                forchetta[first].notify();
+            }
+
+            synchronized (forchetta[second]) {
+                System.out.println("[" + Thread.currentThread().getName() + "] lascia forchetta " + second);
+                forchetta_status[second] = true;
+                forchetta[second].notify();
+            }
+        }
+
+        @Override
+        public void run() {
+            while(true) {
+                //pensa
+                System.out.println("[" + Thread.currentThread().getName() + "] pensa");
+                try { sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+
+                //prende forchetta
+                prendi();
+
+                //mnangia
+                System.out.println("[" + Thread.currentThread().getName() + "] mangia");
+                try { sleep(1000); } catch (InterruptedException e) { e.printStackTrace(); }
+
+                //posa forchetta
+                lascia();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int N = 5; //numero filosofi e forchette;
+        boolean[] forchetta_status = new boolean[N];
+        Object[] forchetta = new Object[N];
+
+        for (int i = 0; i<N; i++) {
+            forchetta_status[i] = true;
+            forchetta[i] = new Object();
+        }
+
+        for (int i = 0; i<N; i++) {
+            Filosofo f = new Filosofo(i, forchetta_status, forchetta);
+            f.start();
+        }
+    }
+}
