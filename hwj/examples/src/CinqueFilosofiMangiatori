@@ -1,3 +1,38 @@
+/* 
+
+No Starvation, no deadlock version.
+
+OUTPUT:
+[Thread-0] pensa
+[Thread-2] pensa
+[Thread-1] pensa
+[Thread-3] pensa
+[Thread-4] pensa
+[Thread-2] prende forchetta 2
+[Thread-1] prende forchetta 1
+[Thread-0] prende forchetta 0
+[Thread-3] prende forchetta 3
+[Thread-3] prende forchetta 4
+[Thread-3] mangia
+[Thread-3] lascia forchetta 3
+[Thread-2] prende forchetta 3
+[Thread-2] mangia
+[Thread-3] lascia forchetta 4
+[Thread-3] pensa
+[Thread-2] lascia forchetta 2
+[Thread-2] lascia forchetta 3
+[Thread-1] prende forchetta 2
+[Thread-3] prende forchetta 3
+[Thread-3] prende forchetta 4
+[Thread-2] pensa
+[Thread-3] mangia
+[Thread-1] mangia
+[Thread-1] lascia forchetta 1
+[Thread-3] lascia forchetta 3
+...
+*/
+
+
 public class CinqueFilosofiMangiatori {
 
     public static class Filosofo extends Thread {
