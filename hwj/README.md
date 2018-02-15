@@ -24,7 +24,7 @@ Il progetto è stato strutturato come segue:
 ## IMPLEMENTAZIONE
 
 ### hwj/src/tree/TreeNode
-Classe che implementa hwj/src/tree/Node e java.util.Collection. Effettua override del metodo “spliterator()” di Collection consentendo l’utilizzo degli Stream alla classe hwj/src/tree/SpliteratorTree.
+Classe che implementa hwj/src/tree/Node e java.util.Collection. Effettua override del metodo “spliterator()” di Collection consentendo l’utilizzo degli Stream sulla struttura dati TreeNode tramite hwj/src/tree/SpliteratorTree.
 
 ### hwj/src/tree/Tree
 In tale classe vengono implementati i metodi per la gestione della struttura dati Tree.
